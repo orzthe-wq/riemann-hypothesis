@@ -1,14 +1,20 @@
 module
 
+public import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality
 public import GroundTheory.ProfiniteCohomology.InflationRestriction.CohomologyResMemCohomologyConjInvariants
+public import GroundTheory.ProfiniteCohomology.ShapiroDefs
+public import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
+public import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite
+public import GroundTheory.ProfiniteCohomology.InflationRestriction
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Descent
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction
+public import Mathlib.NumberTheory.LocalField.Basic
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.UnitsPower
+public import GroundTheory.LocalFields.UnitsBasic
 public import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.KummerOpen
-import GroundTheory.LocalFields.UnramifiedRootsOfUnity
-import GroundTheory.ProfiniteCohomology.ClassFormations.CorestrictionDefs
 public import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.Vanishing
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyKummer
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits
-import Mathlib.Algebra.Module.StablyFree.Basic
+import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -17,11 +23,11 @@ import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+import Mathlib.CategoryTheory.Monoidal.Mon
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -29,8 +35,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,8 +54,341 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
+import GroundTheory.LocalFields.UnramifiedRootsOfUnity
+import GroundTheory.ProfiniteCohomology.ClassFormations.CorestrictionDefs
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore, GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits, GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality\npublic import GroundTheory.ProfiniteCohomology.InflationRestriction.CohomologyResMemCohomologyConjInvariants\npublic import GroundTheory.ProfiniteCohomology.ShapiroDefs\npublic import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\npublic import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite\nimport GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality\npublic import GroundTheory.ProfiniteCohomology.InflationRestriction\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Descent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.Monoidal.Mon\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory Limits
+
+universe u
+
+section Trivial
+
+variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+  (N : Subgroup G) [N.Normal]
+
+def resTrivMor {X Y : Rep.{u} k G} (hX : ∀ (m : N) (x : X), X.ρ m x = x)
+    (hY : ∀ (m : N) (y : Y), Y.ρ m y = y) (f : X →ₗ[k] Y) :
+    Rep.res N.subtype X ⟶ Rep.res N.subtype Y :=
+  Rep.ofHom ⟨f, fun m => by
+    ext x
+    change f (X.ρ m x) = Y.ρ m (f x)
+    rw [hX, hY]⟩
+
+
+theorem cohomologyMap_comp_cohomologyConj_of_apply {T A : Rep.{u} k G} [IsDiscreteRep T]
+    [IsDiscreteRep A] (φ ψ : Rep.res N.subtype T ⟶ Rep.res N.subtype A) (g : G)
+    (h : ∀ t : T, A.ρ g (φ.hom t) = ψ.hom (T.ρ g t)) (n : ℕ) :
+    cohomologyMap φ n ≫ cohomologyConj A N n g = cohomologyConj T N n g ≫ cohomologyMap ψ n := by
+  rw [← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap,
+    cohomologyConj, cohomologyConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]
+  refine cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun t => ?_) n
+  exact h t
+
+theorem cohomologyConj_eq_cohomologyMap_of_sum {T A : Rep.{u} k G} [IsDiscreteRep T]
+    [IsDiscreteRep A] (hT : ∀ (m : N) (t : T), T.ρ m t = t) (hA : ∀ (m : N) (a : A), A.ρ m a = a)
+    {ι : Type} [Fintype ι] (i : ι → (T →ₗ[k] A)) (p : ι → (A →ₗ[k] T))
+    (hip : ∑ j, i j ∘ₗ p j = LinearMap.id) (g : G) (hg : ∀ t : T, T.ρ g t = t) (n : ℕ)
+    (hconj : cohomologyConj T N n g = 𝟙 _) :
+    cohomologyConj A N n g = cohomologyMap (resTrivMor N hA hA (A.ρ g)) n := by
+  have hipa : ∀ a : A, ∑ j, i j (p j a) = a := fun a => by
+    have := congrArg (fun f : A →ₗ[k] A => f a) hip
+    simpa [LinearMap.sum_apply] using this
+  have hsum : ∑ j, resTrivMor N hA hT (p j) ≫ resTrivMor N hT hA (i j) = 𝟙 _ := by
+    ext a
+    rw [Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]
+    exact hipa a
+  have hsum' : ∑ j, resTrivMor N hA hT (p j) ≫ resTrivMor N hT hA (A.ρ g ∘ₗ i j) =
+      resTrivMor N hA hA (A.ρ g) := by
+    ext a
+    rw [Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]
+    change ∑ j, A.ρ g (i j (p j a)) = A.ρ g a
+
+    rw [← map_sum, hipa]
+  have hj : ∀ j, cohomologyMap (resTrivMor N hT hA (i j)) n ≫ cohomologyConj A N n g =
+      cohomologyMap (resTrivMor N hT hA (A.ρ g ∘ₗ i j)) n := fun j => by
+    rw [cohomologyMap_comp_cohomologyConj_of_apply N _ (resTrivMor N hT hA (A.ρ g ∘ₗ i j)) g
+      (fun t => by rw [hg t]; rfl) n, hconj, Category.id_comp]
+  calc cohomologyConj A N n g = 𝟙 _ ≫ cohomologyConj A N n g := (Category.id_comp _).symm
+    _ = ∑ j, cohomologyMap (resTrivMor N hA hT (p j)) n ≫
+          (cohomologyMap (resTrivMor N hT hA (i j)) n ≫ cohomologyConj A N n g) := by
+        rw [← cohomologyMap_id, ← hsum, cohomologyMap_sum, Preadditive.sum_comp]
+        simp only [cohomologyMap_comp, Category.assoc]
+    _ = cohomologyMap (resTrivMor N hA hA (A.ρ g)) n := by
+        simp only [hj, ← cohomologyMap_comp]
+        rw [← cohomologyMap_sum, hsum']
+
+end Trivial
+
+section Descent
+
+variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+  [CompactSpace G] (U : OpenSubgroup G) [(U : Subgroup G).Normal]
+
+attribute [local instance] Subgroup.fintypeQuotientOfFiniteIndex
+
+
+omit [(U : Subgroup G).Normal] in
+theorem sum_quotient_out_apply_eq_zero (A : Rep.{u} k G)
+    (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
+    (hinv : ∀ a : A, (∀ g : G, A.ρ g a = a) → a = 0) (a : A) :
+    ∑ c : G ⧸ (U : Subgroup G), A.ρ c.out a = 0 := by
+  apply hinv
+  intro g
+
+  rw [map_sum]
+  have hc : ∀ c : G ⧸ (U : Subgroup G), A.ρ g (A.ρ c.out a) = A.ρ (g • c).out a := by
+    intro c
+    obtain ⟨m, hm⟩ := QuotientGroup.mk_out_eq_mul (U : Subgroup G) (g * c.out)
+    have e : (g • c).out = g * c.out * m := by
+      rw [← hm]
+      congr 1
+      conv_lhs => rw [← QuotientGroup.out_eq' c]
+      rfl
+    rw [e, map_mul, Module.End.mul_apply, hA m, ← Module.End.mul_apply, ← map_mul]
+  simp_rw [hc]
+  exact Fintype.sum_equiv (MulAction.toPerm g) _ _ (fun _ => rfl)
+
+theorem subsingleton_cohomology_of_cohomologyConj_eq (A : Rep.{u} k G) [IsDiscreteRep A]
+    (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
+    (hinv : ∀ a : A, (∀ g : G, A.ρ g a = a) → a = 0)
+    (hbij : Function.Bijective fun a : A => (U : Subgroup G).index • a) (n : ℕ)
+    (hconj : ∀ g : G, cohomologyConj A (U : Subgroup G) n g =
+      cohomologyMap (resTrivMor (U : Subgroup G) hA hA (A.ρ g)) n) :
+    Subsingleton (cohomology A n) := by
+  have hAU : Function.Bijective fun a : Rep.res (U : Subgroup G).subtype A =>
+      (U : Subgroup G).index • a := hbij
+  have hzero : ∑ c : G ⧸ (U : Subgroup G), resTrivMor (U : Subgroup G) hA hA (A.ρ c.out) = 0 := by
+    ext a
+    rw [Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]
+    exact sum_quotient_out_apply_eq_zero U A hA hinv a
+  refine ⟨fun x y => cohomologyRes_injective_of_bijective U A hbij n ?_⟩
+  suffices h : ∀ z : cohomology A n, (cohomologyRes A (U : Subgroup G) n).hom z = 0 by
+    rw [h x, h y]
+  intro z
+  set w := (cohomologyRes A (U : Subgroup G) n).hom z
+  have hw : ∀ g : G, (cohomologyConj A (U : Subgroup G) n g).hom w = w :=
+    cohomologyRes_apply_mem_cohomologyConjInvariants A _ n z
+  apply (bijective_nsmul_cohomology (Rep.res (U : Subgroup G).subtype A) _ hAU n).1
+  change (U : Subgroup G).index • w = (U : Subgroup G).index • 0
+  rw [smul_zero]
+  calc (U : Subgroup G).index • w = ∑ c : G ⧸ (U : Subgroup G), w := by
+        rw [Finset.sum_const, Finset.card_univ, Subgroup.index_eq_card, Nat.card_eq_fintype_card]
+    _ = ∑ c : G ⧸ (U : Subgroup G), (cohomologyConj A (U : Subgroup G) n c.out).hom w := by
+        simp only [hw]
+    _ = (cohomologyMap (∑ c : G ⧸ (U : Subgroup G),
+          resTrivMor (U : Subgroup G) hA hA (A.ρ c.out)) n).hom w := by
+        simp only [hconj, cohomologyMap_sum, ModuleCat.hom_sum, LinearMap.sum_apply]
+    _ = 0 := by
+        rw [hzero, cohomologyMap_zero]
+        rfl
+
+theorem subsingleton_cohomology_of_sum {T A : Rep.{u} k G} [IsDiscreteRep T] [IsDiscreteRep A]
+    (hT : ∀ (g : G) (t : T), T.ρ g t = t) (hA : ∀ (m : (U : Subgroup G)) (a : A), A.ρ m a = a)
+    (hinv : ∀ a : A, (∀ g : G, A.ρ g a = a) → a = 0)
+    (hbij : Function.Bijective fun a : A => (U : Subgroup G).index • a)
+    {ι : Type} [Fintype ι] (i : ι → (T →ₗ[k] A)) (p : ι → (A →ₗ[k] T))
+    (hip : ∑ j, i j ∘ₗ p j = LinearMap.id) (n : ℕ)
+    (hconj : ∀ g : G, cohomologyConj T (U : Subgroup G) n g = 𝟙 _) :
+    Subsingleton (cohomology A n) :=
+  subsingleton_cohomology_of_cohomologyConj_eq U A hA hinv hbij n fun g =>
+    cohomologyConj_eq_cohomologyMap_of_sum (U : Subgroup G) (fun m t => hT m t) hA i p hip g
+      (hT g) n (hconj g)
+
+end Descent
+
+section InfRes
+
+variable {k Γ : Type u} [CommRing k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
+
+variable [CompactSpace Γ] [TotallyDisconnectedSpace Γ]
+
+theorem subsingleton_cohomology_of_normal (W : Subgroup Γ) [W.Normal] (hW : IsClosed (W : Set Γ))
+    (A : Rep.{u} k Γ) [IsDiscreteRep A] (hinv : ∀ a : A, (∀ w : W, A.ρ w a = a) → a = 0) (q : ℕ)
+    (hq : ∀ i, 0 < i → i ≤ q → Subsingleton (cohomology (Rep.res W.subtype A) i)) :
+    ∀ i ≤ q, Subsingleton (cohomology A i) := by
+  intro i hi
+  rcases Nat.eq_zero_or_pos i with rfl | hpos
+  · have : Subsingleton (ModuleCat.of k A.ρ.invariants) := ⟨fun a b => Subtype.ext <| by
+      rw [hinv a (fun w => a.2 w), hinv b (fun w => b.2 w)]⟩
+    exact (H0Iso A).toLinearEquiv.toEquiv.subsingleton
+  · have hz : ∀ j, 0 < j → j < i → IsZero (cohomology (Rep.res W.subtype A) j) := fun j hj hji =>
+      (ModuleCat.isZero_iff_subsingleton).2 (hq j hj (by omega))
+    have hex := infRes_exact A W (hN := hW) (Nat.pos_iff_ne_zero.1 hpos) hz
+    have : Subsingleton (A.quotientToInvariants W) := ⟨fun a b => Subtype.ext <| by
+      rw [hinv a (fun w => a.2 w), hinv b (fun w => b.2 w)]⟩
+    have hs := subsingleton_cohomology_of_subsingleton (A.quotientToInvariants W) i
+    have hres := hq i hpos hi
+    have hmem : ∀ z : cohomology A i, z = 0 := by
+      intro z
+      have hk : z ∈ LinearMap.ker (cohomologyRes A W i).hom :=
+        LinearMap.mem_ker.2 (Subsingleton.elim _ _)
+      rw [← hex.2] at hk
+      obtain ⟨y, rfl⟩ := hk
+      rw [Subsingleton.elim y 0, map_zero]
+    exact ⟨fun x y => by rw [hmem x, hmem y]⟩
+
+end InfRes
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits", "h": "module\n\npublic import Mathlib.NumberTheory.LocalField.Basic\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.UnitsPower\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import GroundTheory.LocalFields.UnitsBasic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open GroundTheory.LocalField ValuativeRel IsLocalRing
+
+section Group
+
+variable {G : Type*} [CommGroup G]
+
+theorem mul_inv_mem_of_iterate_eq {l m : ℕ} (P O : Subgroup G) (s : G →* G)
+    (hPl : ∀ y : G, y ^ l ∈ P) (hO : ∀ x : G, s x * x⁻¹ ∈ O)
+    (hOP : ∀ e ∈ O, s e * e⁻¹ ∈ P) (hm : m.Coprime l) (hsm : ∀ x : G, s^[m] x = x) (x : G) :
+    s x * x⁻¹ ∈ P := by
+  have hPn : P.Normal := Subgroup.normal_of_isMulCommutative P
+  have hq : ∀ a b : G, a * b⁻¹ ∈ P → (a : G ⧸ P) = b := fun a b h => by
+    rw [QuotientGroup.eq]
+    have := P.inv_mem h
+    rwa [mul_inv_rev, inv_inv, mul_comm] at this
+  set c := s x * x⁻¹ with hc
+  have hOs : ∀ e ∈ O, s e ∈ O := fun e he => by
+    have := O.mul_mem (hO e) he
+    rwa [inv_mul_cancel_right] at this
+  have hcO : ∀ j : ℕ, s^[j] c ∈ O := fun j => by
+    induction j with
+    | zero => exact hO x
+    | succ j ih => rw [Function.iterate_succ_apply']; exact hOs _ ih
+  have hcj : ∀ j : ℕ, ((s^[j] c : G) : G ⧸ P) = c := fun j => by
+    induction j with
+    | zero => rfl
+    | succ j ih => rw [Function.iterate_succ_apply', hq _ _ (hOP _ (hcO j)), ih]
+  have hsx : s x = x * c := by rw [hc, mul_comm (s x), mul_inv_cancel_left]
+  have hxj : ∀ j : ℕ, ((s^[j] x : G) : G ⧸ P) = (x : G ⧸ P) * (c : G ⧸ P) ^ j := fun j => by
+    induction j with
+    | zero => simp
+    | succ j ih =>
+      rw [Function.iterate_succ_apply, hsx, iterate_map_mul, QuotientGroup.mk_mul, ih,
+        hcj, pow_succ, mul_assoc]
+  have h1 : (c : G ⧸ P) ^ m = 1 := by
+    have h := hxj m
+    rw [hsm] at h
+    exact mul_left_cancel (h.symm.trans (mul_one _).symm)
+  have h2 : (c : G ⧸ P) ^ l = 1 := by
+    rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
+    exact hPl c
+  have h3 : (c : G ⧸ P) = 1 := by
+    have h := (pow_gcd_eq_one (a := (c : G ⧸ P))).2 ⟨h1, h2⟩
+    rwa [Nat.Coprime.gcd_eq_one hm, pow_one] at h
+  exact (QuotientGroup.eq_one_iff c).1 h3
+
+end Group
+
+section LocalField
+
+variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
+
+theorem exists_map_units_eq_mul_pow {l m : ℕ} (hl : (l : 𝓀[F]) ≠ 0) (σ : F ≃+* F)
+    (hval : ∀ x : F, valuation F (σ x) = valuation F x)
+    (hin : ∀ x : F, valuation F x ≤ 1 → valuation F (σ x - x) < 1)
+    (hm : m.Coprime l) (hσm : ∀ x : F, σ^[m] x = x) (u : Fˣ) :
+    ∃ y : Fˣ, Units.map (σ : F →* F) u = u * y ^ l := by
+  set s : Fˣ →* Fˣ := Units.map (σ : F →* F) with hs_def
+  have hs : ∀ x : Fˣ, ((s x : Fˣ) : F) = σ x := fun x => rfl
+  let P : Subgroup Fˣ := (powMonoidHom l : Fˣ →* Fˣ).range
+  let O : Subgroup Fˣ :=
+    { carrier := {x | valuation F (x : F) = 1}
+      one_mem' := by simp
+      mul_mem' := fun {a b} ha hb => by
+        simp only [Set.mem_ofPred_eq, Units.val_mul, map_mul] at ha hb ⊢
+        rw [ha, hb, mul_one]
+      inv_mem' := fun {a} ha => by
+        simp only [Set.mem_ofPred_eq, Units.val_inv_eq_inv_val, map_inv₀] at ha ⊢
+        rw [ha, inv_one] }
+  have hmemO : ∀ x : Fˣ, x ∈ O ↔ valuation F (x : F) = 1 := fun x => Iff.rfl
+  have hv0 : ∀ x : Fˣ, valuation F (x : F) ≠ 0 := fun x => (valuation F).ne_zero_iff.2 x.ne_zero
+  have hO : ∀ x : Fˣ, s x * x⁻¹ ∈ O := fun x => by
+    rw [hmemO, Units.val_mul, hs, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hval,
+      mul_inv_cancel₀ (hv0 x)]
+  have hOP : ∀ e ∈ O, s e * e⁻¹ ∈ P := fun e he => by
+    rw [hmemO] at he
+    set t := s e * e⁻¹ with ht
+    have htv : valuation F (t : F) = 1 := (hmemO t).1 (hO e)
+    have ht1 : valuation F ((t : F) - 1) < 1 := by
+      have e1 : (t : F) - 1 = (σ e - e) * (e : F)⁻¹ := by
+        rw [ht, Units.val_mul, hs, Units.val_inv_eq_inv_val, sub_mul,
+          mul_inv_cancel₀ e.ne_zero]
+      rw [e1, map_mul, map_inv₀, he, inv_one, mul_one]
+      exact hin _ he.le
+    have hnt : normalizedValuation F (t : F) = 1 := by
+      rw [← map_one (normalizedValuation F), normalizedValuation_eq_iff, map_one]
+      exact htv
+    obtain ⟨t', ht'⟩ := mem_range_unitsIncl_iff.2 hnt
+    have ht'F : ((t' : 𝒪[F]) : F) = t := by rw [← coe_unitsIncl, ht']
+    have hmem : t' ∈ unitFiltration F 1 := by
+      rw [mem_unitFiltration, pow_one, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
+      intro hu
+      have h1 := valuation_unit hu.unit
+      rw [IsUnit.unit_spec] at h1
+      have h2 : (((t' : 𝒪[F]) - 1 : 𝒪[F]) : F) = (t : F) - 1 := by
+        push_cast
+        rw [ht'F]
+      rw [h2] at h1
+      exact (lt_irrefl _ (h1 ▸ ht1))
+    obtain ⟨z, -, hz⟩ := exists_pow_eq_of_mem_unitFiltration_one hl hmem
+    refine ⟨unitsIncl F z, ?_⟩
+    rw [powMonoidHom_apply, ← map_pow, hz, ht']
+  have hiter : ∀ (j : ℕ) (x : Fˣ), ((s^[j] x : Fˣ) : F) = σ^[j] (x : F) := fun j => by
+    induction j with
+    | zero => intro x; rfl
+    | succ j ih =>
+      intro x
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply', hs, ih]
+  have hsm : ∀ x : Fˣ, s^[m] x = x := fun x => Units.ext (by rw [hiter, hσm])
+  obtain ⟨y, hy⟩ := mul_inv_mem_of_iterate_eq P O s (fun y => ⟨y, rfl⟩) hO hOP hm hsm u
+  refine ⟨y, ?_⟩
+  rw [powMonoidHom_apply] at hy
+  rw [hy, mul_comm (s u), mul_inv_cancel_left]
+
+end LocalField
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.InflationRestriction.CohomologyResMemCohomologyConjInvariants\npublic import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.KummerOpen\nimport GroundTheory.LocalFields.UnramifiedRootsOfUnity\nimport GroundTheory.ProfiniteCohomology.ClassFormations.CorestrictionDefs\npublic import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.Vanishing\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyKummer\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingCore\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.VanishingUnits\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -386,3 +723,6 @@ theorem subsingleton_cohomology_of_inertia (hlp : l.Prime) (hl : (l : 𝓀[K]) �
 end LemmaY
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Vanishing =====

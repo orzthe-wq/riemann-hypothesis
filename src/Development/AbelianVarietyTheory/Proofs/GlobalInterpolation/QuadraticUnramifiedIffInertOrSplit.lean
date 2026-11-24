@@ -85,23 +85,18 @@ theorem _root_.GlobalTheory.quadratic_unramified_iff_inert_or_split (F E : Type)
   have hsum : ∑ P ∈ s, P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P = 2 := by
     rw [← h2, ← Ideal.sum_ramification_inertia (𝓞 E) F E hv]
     refine Finset.sum_congr rfl fun P hP => ?_
-    have hP' := (hs P).1 hP
-    haveI : P.IsPrime := hP'.1
-    haveI : P.LiesOver v.asIdeal := hP'.2
+    have : P.IsPrime := ((hs P).1 hP).1
+    have : P.LiesOver v.asIdeal := ((hs P).1 hP).2
     rw [Ideal.ramificationIdx_eq_ramificationIdx' v.asIdeal P hv]
   have hterm : ∀ P ∈ s, 1 ≤ P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P := by
     intro P hP
-    have hP' := (hs P).1 hP
-    haveI : P.IsPrime := hP'.1
-    haveI : P.LiesOver v.asIdeal := hP'.2
-    have h1 : 0 < P.ramificationIdx (𝓞 F) := Ideal.ramificationIdx_pos (R := 𝓞 F) P
-    have h2 : 0 < v.asIdeal.inertiaDeg' P := Ideal.inertiaDeg'_pos v.asIdeal P
-    exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero h1.ne' h2.ne')
+    have : P.IsPrime := ((hs P).1 hP).1
+    have : P.LiesOver v.asIdeal := ((hs P).1 hP).2
+    exact Nat.mul_pos (by apply Ideal.ramificationIdx_pos) (Ideal.inertiaDeg'_pos v.asIdeal P)
   have hncard : (v.asIdeal.primesOver (𝓞 E)).ncard = s.card := by
     rw [← Set.ncard_coe_finset, hsdef, IsDedekindDomain.coe_primesOverFinset hv]
   have hcard_le : s.card ≤ 2 := by
-    have := Finset.card_nsmul_le_sum s _ 1 hterm
-    simpa [hsum] using this
+    simpa [hsum] using Finset.card_nsmul_le_sum s _ 1 hterm
   have hcard_pos : 0 < s.card := by
     rw [← hncard]
     exact Nat.pos_of_ne_zero (IsDedekindDomain.primesOver_ncard_ne_zero v.asIdeal (𝓞 E))
@@ -109,23 +104,20 @@ theorem _root_.GlobalTheory.quadratic_unramified_iff_inert_or_split (F E : Type)
       Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal) ↔ ∀ P ∈ s, P.ramificationIdx (𝓞 F) = 1 := by
     constructor
     · intro h P hP
-      have hP' := (hs P).1 hP
-      haveI : P.IsPrime := hP'.1
-      haveI : P.LiesOver v.asIdeal := hP'.2
+      have hPp : P.IsPrime := ((hs P).1 hP).1
+      have hPl : P.LiesOver v.asIdeal := ((hs P).1 hP).2
       have hPb : P ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot hv P
-      exact Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 (h ⟨P, hP'.1, hPb⟩ hP'.2)
+      exact Ideal.ramificationIdx_eq_one_iff.mpr (h ⟨P, hPp, hPb⟩ hPl)
     · intro h w hw
       have hmem : w.asIdeal ∈ s := (hs _).2 ⟨w.isPrime, hw⟩
       exact Algebra.isUnramifiedAt_iff_of_isDedekindDomain.2 (h _ hmem)
   rw [hU, hncard]
-  have hI0 : I ≠ 0 := hI
   constructor
   · intro he
     by_cases h2c : s.card = 2
     · exact Or.inr h2c
     left
-    have h1 : s.card = 1 := by omega
-    obtain ⟨P, hsP⟩ := Finset.card_eq_one.1 h1
+    obtain ⟨P, hsP⟩ := Finset.card_eq_one.1 (by omega : s.card = 1)
     have hPs : P ∈ s := by simp [hsP]
     have hallM : ∀ Q ∈ M, Q = P := by
       intro Q hQ
@@ -139,7 +131,7 @@ theorem _root_.GlobalTheory.quadratic_unramified_iff_inert_or_split (F E : Type)
       exact (Multiset.count_eq_card.2 fun x hx => (hallM x hx).symm).symm
     have hMP : M = {P} := by
       rw [Multiset.eq_replicate_of_mem hallM, hcardM, Multiset.replicate_one]
-    have hassoc := UniqueFactorizationMonoid.prod_normalizedFactors hI0
+    have hassoc := UniqueFactorizationMonoid.prod_normalizedFactors hI
     rw [← hMdef, hMP, Multiset.prod_singleton] at hassoc
     rw [← associated_iff_eq.1 hassoc]
     exact ((hs P).1 hPs).1
@@ -155,10 +147,9 @@ theorem _root_.GlobalTheory.quadratic_unramified_iff_inert_or_split (F E : Type)
       rw [hcount P ((hs P).1 hP), hMI, hPI, Multiset.count_singleton_self]
     · intro P hP
       by_contra hne
-      have hP' := (hs P).1 hP
-      haveI : P.IsPrime := hP'.1
-      haveI : P.LiesOver v.asIdeal := hP'.2
-      have he : 0 < P.ramificationIdx (𝓞 F) := Ideal.ramificationIdx_pos (R := 𝓞 F) P
+      have : P.IsPrime := ((hs P).1 hP).1
+      have : P.LiesOver v.asIdeal := ((hs P).1 hP).2
+      have he : 0 < P.ramificationIdx (𝓞 F) := by apply Ideal.ramificationIdx_pos
       have hf : 0 < v.asIdeal.inertiaDeg' P := Ideal.inertiaDeg'_pos v.asIdeal P
       have hge : 2 * 1 ≤ P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P :=
         Nat.mul_le_mul (by omega) hf

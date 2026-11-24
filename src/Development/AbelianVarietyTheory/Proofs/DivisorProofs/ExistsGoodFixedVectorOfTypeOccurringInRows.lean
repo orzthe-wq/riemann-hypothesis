@@ -199,14 +199,7 @@ theorem finRep_irr (π : Formalism.L2.NG.FinTyp L n) :
 
 end FinRep
 
-theorem mult_lev {D : D7} {V : HSp D} {Sp : D.what₂.Tau → SPar} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
-    {M : DSModel V Sp} {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : T ∈ Mult θ M J χ) :
-    ∀ v, ∀ k ∈ J, ∀ g, T v (g * k) = χ k * T v g := by
-  induction hT using Submodule.span_induction with
-  | mem T h => exact h.lev
-  | zero => intro v k _ g; simp
-  | add T T' _ _ h h' => intro v k hk g; simp [h v k hk g, h' v k hk g, mul_add]
-  | smul c T _ h => intro v k hk g; simp [h v k hk g, mul_left_comm]
+alias mult_lev := _root_.Formalism.IndefR.principalLevelFrame.mult_lev
 
 theorem lev_triv {D : D7} {T : Type} (Lc : LevCh D T) (β : GL (Fin (Yc D 0).rank) (Lev.EAf D)) (P : LevelP Lc.Pg D.R.r ℂ)
     {x : GA D (Yc D 0)} (hx : x ∈ levS (Yc D 0) β (Lc.dat0 Lc.triv)) :

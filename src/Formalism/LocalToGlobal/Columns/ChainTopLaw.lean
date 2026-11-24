@@ -9,52 +9,10 @@ import Formalism.LocalToGlobal.Columns.ChainInst
 public import Formalism.LocalToGlobal.Columns.FirstUnfoldingEqZeroOfNotIntegral
 import Formalism.LocalToGlobal.Columns.RecLevelSymF
 public import Formalism.LocalToGlobal.Columns.XtLamGvSCongr
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.MemGoodPrimesOfNoExceptional
 
 @[expose] public section
 
@@ -95,10 +53,6 @@ private theorem intAt_zero_columns : IntAt P (0 : E) :=
 
 private theorem intAt_one_columns : IntAt P (1 : E) :=
   ⟨1, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h), by simp⟩
-
-private theorem intAt_neg_columns {a : E} (ha : IntAt P a) : IntAt P (-a) := by
-  obtain ⟨r, s, hs, h⟩ := ha
-  exact ⟨-r, s, hs, by rw [mul_neg, h, map_neg]⟩
 
 theorem ctl_red_symm {N : ℕ} {κ : Sp E N ≃ₗ[E] Sp E N} (hκ : κ ∈ GLint E N P) {H : GL (Fin N) (𝓞 E ⧸ P.asIdeal)}
     (hred : ∀ x ∈ stdAt E N P, redV P (κ x) = (H⁻¹).1.mulVec (redV P x)) :
@@ -266,7 +220,7 @@ theorem columns_ctl_fact {n : ℕ} (x : Sp E (n + 0)) : x ∈ LocE.lamY P q n 0 
   rw [Submodule.mem_comap, ciMem_stdAt, ciMem_stdAt]
   refine forall_congr' fun l => ?_
   have hl : l.1 < n := l.2
-  simp [LocE.scE, hl]
+  simp [LocE.scE]
 
 theorem ctl_stab0 {n : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint E n P) :
     κ ∈ stabL E (n + 0) (LocE.lamY P q n 0 (fun i => i + 1)) := by
@@ -504,10 +458,6 @@ private theorem exists_intAt_eq_q_mul_of_redP_eq_zero (hq : ((q : ℕ) : 𝓞 E)
   · rw [eq_comm, mul_div_assoc', div_eq_iff (mul_ne_zero hsE hs'E)]
     linear_combination hcE - (algebraMap (𝓞 E) E s') * h
 
-private theorem eN_eq_pi_single {N l : ℕ} (hl : l < N) : (Loc.eN E N l : Sp E N) = Pi.single (⟨l, hl⟩ : Fin N) 1 := by
-  funext m
-  simp [Loc.eN, Pi.single_apply, Fin.ext_iff]
-
 theorem ctl_tgt (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {N' k₀ r t m rS : ℕ}
     (hN' : N' = r + m * t) (hrN : r ≤ N' + 1) (hr' : r ≤ N') (hr : k₀ + rS < r) (hkN : k₀ ≤ N') (ht : 0 < t)
     {κ' : Sp E (N' + 1) ≃ₗ[E] Sp E (N' + 1)} (hκ' : κ' ∈ GLint E (N' + 1) P) {H' : GL (Fin (N' + 1)) (𝓞 E ⧸ P.asIdeal)}
@@ -539,12 +489,12 @@ theorem ctl_tgt (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : �
   · intro p l hp hl
     have hp1 : p < N' + 1 := by omega
     have hl1 : l < N' + 1 := by omega
-    rw [eN_eq_pi_single hl1, eN_eq_pi_single hl]
+    rw [_root_.Formalism.L2.Col.basisVec_eq_single hl1, _root_.Formalism.L2.Col.basisVec_eq_single hl]
     unfold Loc.atN
     rw [dite_eq_left hp1, dite_eq_left hp]
     obtain ⟨ia, ra⟩ := hEκ ⟨p, hp1⟩ ⟨l, hl1⟩
     obtain ⟨ib, rb⟩ := hEγ ⟨p, hp⟩ ⟨l, hl⟩
-    have hsub := intAt_add_columns ia (intAt_neg_columns ib)
+    have hsub := intAt_add_columns ia (_root_.Formalism.L2.Ker.intAt_neg_kernel_local_factors ib)
     rw [← sub_eq_add_neg] at hsub
     have hred0 : redP P (κ'.symm.toLinearMap (Pi.single ⟨l, hl1⟩ 1) ⟨p, hp1⟩ -
         γ.symm.toLinearMap (Pi.single ⟨l, hl⟩ 1) ⟨p, hp⟩) = 0 := by
@@ -558,7 +508,7 @@ theorem ctl_tgt (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : �
     exact ⟨d, hd, by rw [← hdeq]; ring⟩
   · intro p hp
     have hp1 : p < N' + 1 := by omega
-    rw [eN_eq_pi_single (by omega : N' < N' + 1)]
+    rw [_root_.Formalism.L2.Col.basisVec_eq_single (by omega : N' < N' + 1)]
     unfold Loc.atN
     rw [dite_eq_left hp1]
     obtain ⟨ia, ra⟩ := hEκ ⟨p, hp1⟩ ⟨N', by omega⟩
@@ -738,7 +688,7 @@ theorem ctl_det_red {n : ℕ} {κ : Sp E n ≃ₗ[E] Sp E n} (hκ : κ ∈ GLint
       one_mem' := intAt_one_columns
       add_mem' := fun ha hb => intAt_add_columns ha hb
       zero_mem' := intAt_zero_columns
-      neg_mem' := fun ha => intAt_neg_columns ha }
+      neg_mem' := fun ha => _root_.Formalism.L2.Ker.intAt_neg_kernel_local_factors ha }
   let f : S →+* 𝓞 E ⧸ P.asIdeal :=
     { toFun := fun a => redP P a.1
       map_one' := by

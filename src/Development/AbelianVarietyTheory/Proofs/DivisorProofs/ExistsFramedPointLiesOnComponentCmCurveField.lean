@@ -115,7 +115,7 @@ theorem exists_indicator {Y : Scheme.{0}} {Z : Set Y} (hZ : IsClopen Z) :
   let W : Y.Opens := ⟨Zᶜ, hZ.isClosed.isOpen_compl⟩
   have hVW : V ⊔ W = ⊤ := by
     apply TopologicalSpace.Opens.ext
-    simp [V, W, Set.union_compl_self]
+    simp [V, W]
   have hdis : Disjoint V W := by
     rw [disjoint_iff]
     apply TopologicalSpace.Opens.ext
@@ -127,25 +127,6 @@ theorem exists_indicator {Y : Scheme.{0}} {Z : Set Y} (hZ : IsClopen Z) :
   · have h := ev_eq_of_restrict x W p hp f 0 (by rw [hfW, Nat.cast_zero])
     simpa using h
 
-private theorem exists_isTypeFn' {E : Type} [Field E] [NumberField E] [IsCMField E]
-    (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p q : ℕ) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H p q ty := by
-  classical
-  let m : (E →+* ℂ) → ℕ := fun τ => if τ (H.rt : E) = H.rt0 then p else q
-  let e := Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))
-  refine ⟨_, fun i => (e.symm i).1, fun τ => ?_⟩
-  have hcard : Nat.card {i // (e.symm i).1 = τ} = m τ := by
-    rw [Nat.card_congr (e.symm.subtypeEquiv (p := fun i => (e.symm i).1 = τ) (q := fun s => s.1 = τ)
-      (fun _ => Iff.rfl)), Nat.card_congr (Equiv.sigmaSubtype τ), Nat.card_eq_fintype_card, Fintype.card_fin]
-  refine ⟨fun h => ?_, fun h => ?_⟩
-  · rw [hcard]; simp [m, h]
-  · rw [hcard]; simp [m, h]
-
-private theorem spMap_comp_spMap_divisor {R₀ R R' : Type} [CommRing R₀] [CommRing R] [CommRing R'] (f : R →+* R')
-    (g : R₀ →+* R) : spMap f ≫ spMap g = spMap (f.comp g) := by
-  show Spec.map _ ≫ Spec.map _ = Spec.map _
-  rw [← Spec.map_comp]
-  rfl
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
@@ -154,7 +135,7 @@ theorem exists_fixed_point (hD : 1 ≤ Dw.p + Dw.q)
     ∃ x : Sp ℂ ⟶ Xo.XF c, x ≫ strK = spMap (algebraMap c.F ℂ) ∧ (∀ p, x p ∈ (Z : Set (Xo.XF c))) ∧
       ∀ τ : ℂ ≃+* ℂ, (∀ a ∈ c.F, τ a = a) → FixesCurve H τ l.M' → spMap (τ : ℂ →+* ℂ) ≫ x = x := by
   classical
-  obtain ⟨g, ty, hty⟩ := exists_isTypeFn' H Dw.p Dw.q
+  obtain ⟨g, ty, hty⟩ := _root_.GlobalTheory.AllClasses.exists_isTypeFn H Dw.p Dw.q
   let σ₀ : KA l →+* ℂ := (algebraMap c.F ℂ).comp (IntermediateField.inclusion c.le).toRingHom
   have hσ₀ : σ₀ (baseKA l).ρ = H.rt0 := rfl
   obtain ⟨F⟩ := GlobalTheory.closing_of_abelianSchemeLaws E H Dw l Xo σ₀ g ty hD hσ₀ hty
@@ -176,11 +157,11 @@ theorem exists_fixed_point (hD : 1 ≤ Dw.p + Dw.q)
   have hover : x₀ ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap σ₀ := by
     rw [pullback.condition, ← Category.assoc]
     erw [hx₀]
-    rw [spMap_comp_spMap_divisor]
+    rw [_root_.Formalism.L2.Pj.spMap_comp_ring]
   obtain ⟨i, P, hP, hPx⟩ := F.onto _ (by rw [Category.assoc]; exact hover)
   obtain ⟨P', hP', hs⟩ := GlobalTheory.CompRat.exists_isSplit_period_anyLevel E H Dw l Xo σ₀ g ty F hD hσ₀ hty hsig i
   have hcond : F.u i P' ≫ Xo.s = spMap (algebraMap c.F ℂ) ≫ spMap (IntermediateField.inclusion c.le).toRingHom := by
-    rw [F.over_σ i P' hP', spMap_comp_spMap_divisor]
+    rw [F.over_σ i P' hP', _root_.Formalism.L2.Pj.spMap_comp_ring]
   let xs : Sp ℂ ⟶ Xo.XF c := pullback.lift (F.u i P') (spMap (algebraMap c.F ℂ)) hcond
   have hxs₁ : xs ≫ pullback.fst _ _ = F.u i P' := pullback.lift_fst _ _ _
   have hxs₂ : xs ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) := pullback.lift_snd _ _ _
@@ -204,7 +185,7 @@ theorem exists_fixed_point (hD : 1 ≤ Dw.p + Dw.q)
     have hfixed := GlobalTheory.CompRat.AnyLevel.conj_point_eq_of_isSplit F hD hσ₀ hty τ hτσ hfix i P' hP' hs
     apply pullback.hom_ext
     · rw [Category.assoc, hxs₁, hfixed]
-    · rw [Category.assoc, hxs₂, spMap_comp_spMap_divisor]
+    · rw [Category.assoc, hxs₂, _root_.Formalism.L2.Pj.spMap_comp_ring]
       congr 1
       exact RingHom.ext fun a => hτ a a.2
 
@@ -229,7 +210,7 @@ theorem exists_frPt_liesOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     exact congrArg (fun f => f.hom r) hab
   have hgK : g ≫ strK = spMap (algebraMap c.F K) := by
     apply hcancel
-    rw [← Category.assoc, hg, ‹x ≫ strK = spMap (algebraMap c.F ℂ)›, spMap_comp_spMap_divisor]
+    rw [← Category.assoc, hg, ‹x ≫ strK = spMap (algebraMap c.F ℂ)›, _root_.Formalism.L2.Pj.spMap_comp_ring]
     rfl
   have hfr : ∀ (x : Sp K ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c K), ∃ y : FrPt Xo c K, y.x = x := by
     intro x hx

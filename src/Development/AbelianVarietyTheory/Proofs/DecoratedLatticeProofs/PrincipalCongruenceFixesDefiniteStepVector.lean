@@ -171,7 +171,7 @@ theorem vac_one {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {ΛS : Submodule 
     rw [this]
     exact isClosed_iInter fun w => isClosed_eq
       ((hW.om_cont f hf w).comp (continuous_fst.prodMk continuous_const)) continuous_const
-  exact GlobalTheory.T.mem_closedSubgroup_of_localStabilizerPairs D S T βS βT H hcl (fun v ε hε g' h' hg' _ sg' _ =>
+  exact _root_.GlobalTheory.StabDense.mem_of_local D S T βS βT H hcl (fun v ε hε g' h' hg' _ sg' _ =>
     local_one hW hS hT hη frS frT hε g' hg' sg' f hf hvac) g 1 hg (Stab.one T βT)
 
 end GlobalTheory.SmallFix

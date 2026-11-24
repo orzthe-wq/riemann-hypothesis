@@ -85,8 +85,6 @@ theorem enorm_smulRight {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace 
 theorem mt_cont : Continuous (fun y : Formalism.QuantumDeterminants.Mt k r => (Matrix.of y : Mx k r)) := by
   first
     | exact continuous_id
-    | fun_prop
-    | continuity
 
 theorem inner_bound (hNI : NormInv) {μG : Measure (Formalism.QuantumDeterminants.Mt k r)} (hG : B.IsHaarOn (B.GV k r) μG)
     (hGc : ∀ᵐ x ∂μG, Matrix.of x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))

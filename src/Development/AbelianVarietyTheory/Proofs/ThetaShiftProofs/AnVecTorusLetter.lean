@@ -126,7 +126,7 @@ theorem fderiv_of_exp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f :
 theorem sum_dual_mul {E : Type} [Field E] [NumberField E] (τ ρ : E →+* ℂ) :
     ∑ i, τ ((Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E) i) *
       ρ (integralBasis E i) = if τ = ρ then 1 else 0 := by
-  have := idempotent_evaluation E ℂ _ (integralBasis E) ρ τ
+  have := _root_.PI.UnitaryGroupMassFormula.TBIdemDen.idemEval E ℂ _ (integralBasis E) ρ τ
 
   simpa only [TB.evAt, TB.idemOf, TB.trDual, map_sum, Algebra.TensorProduct.productMap_apply_tmul,
     AlgHom.id_apply, RingHom.toRatAlgHom_apply] using this

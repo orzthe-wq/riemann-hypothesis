@@ -493,7 +493,7 @@ theorem signature_form_diag_sq_one (c : Fin (k + 1)) : Hb k c c * Hb k c c = 1 :
   split_ifs <;> norm_num
 
 theorem split_form_matrix_sq_one : Hpk k r * Hpk k r = 1 := by
-  apply ReciprocityTheory.ChartRestriction.DS.Mult1.InvChr.Hpk_sq <;> assumption
+  apply ReciprocityTheory.ChartRestriction.DS.Mult1.InvChr.Hpk_sq
 
 variable {k r}
 

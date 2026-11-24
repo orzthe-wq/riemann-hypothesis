@@ -2,8 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.InertDef
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FinPartIdemMulMemIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchrodingerTensorEqLocalOfSupportedAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.AdelicSchrodingerTensorEqLocalOfSupportedAt
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 public import Development.WeilBound.CoreStatements.LocalThetaKernels.ExistsSmallSubgroups
 public import Development.WeilBound.CoreStatements.LocalThetaKernels.LinearIndependentOfNotMem
@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.FinSplit
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharSymplecticLocalLatticeEqOne
 
 @[expose] public section
 
@@ -99,7 +100,7 @@ theorem locRepEx : LocRepEx := by
   obtain ⟨χX, χW, hw⟩ := hP.weil
   have hs := IsUWeilPair.isUSplitting hw
   have hstd := hP.base.std
-  have hne : B.ψ ≠ 1 := fun h => GlobalTheory.PsiNontriv.psiV_ne_one B.ψ hstd v (by rw [h]; rfl)
+  have hne : B.ψ ≠ 1 := fun h => Tw.PsiNontriv.psiV_ne_one B.ψ hstd v (by rw [h]; rfl)
   have hH := (GlobalTheory.CompanionTheory.AdelicHeis.schr_mem_and_thetaSum F (Fin n × Fin d) B.ψ hstd.1 hne hstd.2.1).1
   obtain ⟨r₀, x₀, h₀, h₁⟩ := exists_base (Fin n × Fin d) v
   let loc : Module.End ℂ ((Fin n × Fin d → AF F) → ℂ) → Module.End ℂ (Fn F n d v) := fun T =>
@@ -127,7 +128,7 @@ theorem locRepEx : LocRepEx := by
     intro u hu φ hφ
     have e : ∀ a, evFin F v a = 0 → a • M.co.e u = 0 := fun a ha => by rw [← map_smul, hu a ha, map_zero]
     have A : Acts (evFin F v) (M.co.rho B.ψ u) φ _ := fun r hr =>
-      GlobalTheory.SchrLoc.schr_tens_of_at B.ψ v (M.co.e u) (fun i a ha => congrFun (congrArg Prod.fst (e a ha)) i)
+      Tw.SchrLoc.schr_tens_of_at B.ψ v (M.co.e u) (fun i a ha => congrFun (congrArg Prod.fst (e a ha)) i)
         (fun i a ha => congrFun (congrArg Prod.snd (e a ha)) i) φ r hr.1
     have := eq_of_acts v h₁ (h₀ φ hφ) A
     rw [this] at A

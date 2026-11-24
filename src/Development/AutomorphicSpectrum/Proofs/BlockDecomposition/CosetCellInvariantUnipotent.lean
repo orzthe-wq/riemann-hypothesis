@@ -44,6 +44,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.CoefDataExists
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalUnitaryGroupStructure
 
 @[expose] public section
 
@@ -82,30 +83,18 @@ theorem lowerC_mul_unip (X : Matrix (Fin (n + n)) (Fin (n + n)) K) (b : Matrix (
   rw [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁,
     Matrix.fromBlocks_apply₂₁, Matrix.one_apply, Matrix.zero_apply, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, ite_true, Finset.sum_const_zero, add_zero]
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true, Finset.sum_const_zero, add_zero]
 
 end Blocks
 
 variable {D : D7} {n : ℕ}
 
-private theorem incA_injective' (D : D7) : Function.Injective (incA D) := by
-  haveI : Nontrivial (AF D.host.F) :=
-    inferInstanceAs (Nontrivial (NumberField.InfiniteAdeleRing D.host.F ×
-      IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers D.host.F) D.host.F))
-  haveI : Nontrivial (AF D.host.F ⊗[D.host.F] D.host.E) :=
-    Function.Injective.nontrivial
-      (Algebra.TensorProduct.includeRight_injective (algebraMap D.host.F (AF D.host.F)).injective)
-  exact (incA D).injective
-
 theorem isUnit_det_of_mat (x : GF D n) {g : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E}
     (h : mat (x : G D n) = g.map (incA D)) : IsUnit g.det := by
   obtain ⟨g', hg', -, hg'm⟩ := GlobalTheory.CompanionTheory.RatPtsUnn.clause1 (x : G D n) x.2
-  have hgg : g = g' := Matrix.map_injective (incA_injective' D) (h.symm.trans hg'm)
+  have hgg : g = g' := Matrix.map_injective (_root_.GlobalTheory.Ker.Grp.incA_inj D) (h.symm.trans hg'm)
   rw [hgg]
   exact hg'
-
-private theorem mat_mul_eq_ite_of_hasMult {D : D7} {n : ℕ} (a b : G D n) : mat (a * b) = mat a * mat b := by
-  simp only [mat, map_mul, Units.val_mul]
 
 theorem cosetCell_rmulEquiv : ∀ {D : D7} {n : ℕ} (q : Cosets (P D n) (GF D n)) (γ : GF D n) (b : Matrix (Fin n) (Fin n) D.host.E), mat (γ : G D n) = blk4 1 (b.map (incA D)) 0 1 → cosetCell (rmulEquiv (P D n) (GF D n) γ q) = cosetCell q := by
   intro D n q γ b h
@@ -125,10 +114,10 @@ theorem cosetCell_rmulEquiv : ∀ {D : D7} {n : ℕ} (q : Cosets (P D n) (GF D n
     unfold blk4
     rw [← Matrix.submatrix_map, Matrix.fromBlocks_map, h1, h0]
   have hm := congrArg mat hp'
-  rw [mat_mul_eq_ite_of_hasMult, mat_mul_eq_ite_of_hasMult, h, mat_ratOf, mat_ratOf, mat_ratOf, hb, ← Matrix.map_mul,
+  rw [_root_.GlobalTheory.StdUnn.LeftInvSect.mat_mul, _root_.GlobalTheory.StdUnn.LeftInvSect.mat_mul, h, mat_ratOf, mat_ratOf, mat_ratOf, hb, ← Matrix.map_mul,
     ← Matrix.map_mul] at hm
   have hm2 : ratOf (p : GF D n) * ratOf q'.out = ratOf q.out * blk4 1 b 0 1 :=
-    Matrix.map_injective (incA_injective' D) hm
+    Matrix.map_injective (_root_.GlobalTheory.Ker.Grp.incA_inj D) hm
   have hpP : ((p : GF D n) : G D n) ∈ P D n := Subgroup.mem_subgroupOf.mp p.2
   have hS : IsSiegelP (ratOf (p : GF D n)) :=
     (GlobalTheory.CompanionTheory.RatPtsUnn.clause3 _ (p : GF D n).2 _ (mat_ratOf (p : GF D n))).mp hpP

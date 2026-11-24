@@ -104,8 +104,7 @@ theorem component_stable (i : κ) (a : Λ i) (j : κ) (c : Λ j) (x : V) (hx : x
 theorem component_le_component_sum (i : κ) (pi : Set (Λ i)) (a : Λ i) (ha : a ∈ pi) : J.W i a ≤ componentSum J i pi := le_iSup₂_of_le (f := fun a (_ : a ∈ pi) => J.W i a) a ha le_rfl
 
 theorem basis_mem_plane (x : X) : J.b x ∈ J.Pl := by
-  rw [← J.span]
-  exact Submodule.subset_span ⟨x, rfl⟩
+  simpa [← J.span] using Submodule.subset_span (Set.mem_range_self x)
 
 def projectorProduct (lam : ∀ i, Λ i) : List κ → Module.End K V
   | [] => 1
@@ -194,11 +193,8 @@ theorem sub_projector_mem_strict (lam : ∀ i, Λ i) (k : κ) (x : V) (hx : x �
   by_cases hal : a = lam k
   · subst hal
     rw [(J.sys k).id_on _ _ ((J.sys k).mem _ x), sub_self]
-  · have h1 : J.e k a x = 0 := by
-      have := (mem_component_sum_iff J k _ x).mp (hxM.2 k)
-      apply this
-      intro hle
-      exact ha ⟨hle.1, hle.2, hal⟩
+  · have h1 : J.e k a x = 0 :=
+      (mem_component_sum_iff J k _ x).mp (hxM.2 k) a (fun hle => ha ⟨hle.1, hle.2, hal⟩)
     have h2 : J.e k a (J.e k (lam k) x) = 0 := (J.sys k).zero_on a (lam k) (Ne.symm hal) _ ((J.sys k).mem _ x)
     rw [h1, h2, sub_zero]
 
@@ -219,33 +215,28 @@ theorem sub_projector_product_mem_strict (lam : ∀ i, Λ i) (l : List κ) (x : 
 theorem basis_mem_joint_lower_part (lam : ∀ i, Λ i) (x : X) (hx : ∀ i, J.P x i ∈ lowerLabels J lam i) : J.b x ∈ jointLowerPart J lam := by
   simp only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf]
   refine ⟨basis_mem_plane J x, fun i => ?_⟩
-  have : J.b x ∈ J.Pl ⊓ componentSum J i (lowerLabels J lam i) := by
+  exact (Submodule.mem_inf.mp (by
     rw [lower_part_eq_span]
-    exact Submodule.subset_span ⟨x, hx i, rfl⟩
-  exact this.2
+    exact Submodule.subset_span ⟨x, hx i, rfl⟩)).2
 
 private theorem mem_span_image_iInter_of_forall_mem_span {ι' : Type} [Nonempty ι'] (A : ι' → Set X) (x : V)
     (hA : ∀ k, x ∈ Submodule.span K (J.b '' A k)) : x ∈ Submodule.span K (J.b '' ⋂ k, A k) := by
   obtain ⟨k0⟩ := ‹Nonempty ι'›
-  obtain ⟨l0, hl0, hl0x⟩ := (Finsupp.mem_span_image_iff_linearCombination K).mp (hA k0)
+  obtain ⟨l0, _, hl0x⟩ := (Finsupp.mem_span_image_iff_linearCombination K).mp (hA k0)
   refine (Finsupp.mem_span_image_iff_linearCombination K).mpr ⟨l0, ?_, hl0x⟩
-  rw [Finsupp.mem_supported]
-  intro y hy
-  rw [Set.mem_iInter]
-  intro k
+  rw [Finsupp.mem_supported, Set.subset_iInter_iff]
+  intro k y hy
   obtain ⟨lk, hlk, hlkx⟩ := (Finsupp.mem_span_image_iff_linearCombination K).mp (hA k)
-  have hkk : lk = l0 := J.li (hlkx.trans hl0x.symm)
-  rw [hkk, Finsupp.mem_supported] at hlk
+  rw [J.li (hlkx.trans hl0x.symm), Finsupp.mem_supported] at hlk
   exact hlk hy
 
 theorem joint_lower_part_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
     jointLowerPart J lam = Submodule.span K (J.b '' {x | ∀ i, J.P x i ∈ lowerLabels J lam i}) := by
   apply le_antisymm
   · intro x hx
-    have hx' := hx
-    simp only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx'
+    simp only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx
     have hA : ∀ i, x ∈ Submodule.span K (J.b '' {y | J.P y i ∈ lowerLabels J lam i}) := fun i => by
-      rw [← lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx'.1, hx'.2 i⟩
+      rw [← lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx.1, hx.2 i⟩
     have := mem_span_image_iInter_of_forall_mem_span J (fun i => {y | J.P y i ∈ lowerLabels J lam i}) x hA
     have hset : {y | ∀ i, J.P y i ∈ lowerLabels J lam i} = ⋂ i, {y | J.P y i ∈ lowerLabels J lam i} := by
       ext y; simp
@@ -259,8 +250,7 @@ theorem strict_joint_lower_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
   apply le_antisymm
   · refine iSup_le fun j => ?_
     intro x hx
-    have hx' := hx
-    simp only [strictLowerPart, jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx'
+    simp only [strictLowerPart, jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx
     let A : Option κ → Set X := fun o =>
       o.elim {y | J.P y j ∈ strictLowerLabels J lam j} (fun i => {y | J.P y i ∈ lowerLabels J lam i})
     have hA : ∀ o, x ∈ Submodule.span K (J.b '' A o) := by
@@ -268,17 +258,16 @@ theorem strict_joint_lower_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
       cases o with
       | none =>
         show x ∈ Submodule.span K (J.b '' {y | J.P y j ∈ strictLowerLabels J lam j})
-        rw [← strict_lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx'.1.1, hx'.2⟩
+        rw [← strict_lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx.1.1, hx.2⟩
       | some i =>
         show x ∈ Submodule.span K (J.b '' {y | J.P y i ∈ lowerLabels J lam i})
-        rw [← lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx'.1.1, hx'.1.2 i⟩
+        rw [← lower_part_eq_span]; exact Submodule.mem_inf.mpr ⟨hx.1.1, hx.1.2 i⟩
     have := mem_span_image_iInter_of_forall_mem_span J A x hA
     refine Submodule.span_mono (Set.image_mono ?_) this
     intro y hy
     rw [Set.mem_iInter] at hy
     refine ⟨fun i => hy (some i), fun h => ?_⟩
-    have h0 : J.P y j ∈ strictLowerLabels J lam j := hy none
-    exact h0.2.2 (congrFun h j)
+    exact (hy none).2.2 (congrFun h j)
   · rw [Submodule.span_le]
     rintro _ ⟨y, ⟨hy1, hy2⟩, rfl⟩
     obtain ⟨j, hj⟩ : ∃ j, J.P y j ≠ lam j := by
@@ -405,10 +394,7 @@ theorem mem_iSup_of_split [DecidableEq κ] (pi : ∀ i, Set (Λ i)) (s : Finset 
       · intro i hi
         by_cases hik : i = k
         · subst hik; simpa using (J.sys i).mem a y
-        · have hW' := hW i (fun h => by
-            rcases Finset.mem_insert.mp h with h' | h'
-            · exact hik h'
-            · exact hi h')
+        · have hW' := hW i (by simp [Finset.mem_insert, hik, hi])
           simpa [hik] using component_stable J i (q i) k a y hW'
     · rw [(mem_component_sum_iff J k (pi k) y).mp (hT k) a ha]
       exact Submodule.zero_mem _

@@ -146,7 +146,7 @@ private theorem unr_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.U
 
 private theorem hEl_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (i j : Fin 4) :
     D.hEl (ρ.map f).hom i j = f (D.hEl ρ.hom i j) := by
-  simp [Raw.hEl, Lift.map_hom, map_add (f := _), map_mul, f.commutes]
+  simp [Raw.hEl, Lift.map_hom, map_add (f := _)]
 
 private theorem loc_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (v : ℕ) :
     D.loc (ρ.map f) v = (D.loc ρ v).map f := by

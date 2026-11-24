@@ -311,11 +311,11 @@ theorem isTest_indicator {H : Type} [Group H] (θ : H →* H) (K : Subgroup H) (
   · have hθ : θ k ∈ K := hK ⟨k, hk, rfl⟩
     by_cases hg : g ∈ K
     · have h' : k⁻¹ * g * θ k ∈ K := K.mul_mem (K.mul_mem (K.inv_mem hk) hg) hθ
-      simp [Set.indicator_apply, hg, h']
+      simp [hg, h']
     · have h' : k⁻¹ * g * θ k ∉ K := fun h => hg (by
         have e : g = k * (k⁻¹ * g * θ k) * (θ k)⁻¹ := by group
         rw [e]; exact K.mul_mem (K.mul_mem hk h) (K.inv_mem hθ))
-      simp [Set.indicator_apply, hg, h']
+      simp [hg, h']
   · have hgK : g ∈ K := by
       by_contra hn; exact hg (by simp [Set.indicator_apply, hn])
     exact ⟨1, Finset.mem_singleton_self _, 1, K.one_mem, g, hgK, by simp⟩

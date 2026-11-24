@@ -78,7 +78,7 @@ theorem conj_smul_ne_bot {𝔞 : Ideal (𝓞 D.host.E)} (h : 𝔞 ≠ ⊥) : D.h
   apply h
   rw [← conj_smul_conj_smul 𝔞, h']
   ext x
-  simp [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
+  simp
 
 theorem coe_ne_zero {𝔞 : Ideal (𝓞 D.host.E)} (h : 𝔞 ≠ ⊥) : ((𝔞 : Ideal (𝓞 D.host.E)) : FI D) ≠ 0 := by
   rwa [Ne, FractionalIdeal.coeIdeal_eq_zero]

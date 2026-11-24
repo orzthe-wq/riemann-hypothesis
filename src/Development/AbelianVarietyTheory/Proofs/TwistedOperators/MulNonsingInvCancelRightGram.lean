@@ -131,7 +131,7 @@ theorem quad_basis {ι A : Type} [Fintype ι] [DecidableEq ι] [Ring A] [Algebra
   simp only [e1, e2]
   calc _ = ∑ k, ∑ a, (X * U) k a • (x (Pi.single k 1) * c • y ((U * Δ) *ᵥ Pi.single a 1)) := by
         refine Finset.sum_congr rfl fun k _ => ?_
-        simp only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, Finset.mul_sum, mul_smul_comm, smul_smul]
+        simp only [Matrix.mul_apply, Finset.smul_sum, Finset.mul_sum, mul_smul_comm, smul_smul]
         rw [Finset.sum_comm]
         refine Finset.sum_congr rfl fun _ _ => ?_
         rw [Finset.sum_mul, Finset.sum_smul]
@@ -304,8 +304,7 @@ theorem sgn_mul (e e' : Bool) : sgn e * sgn e' = if e = e' then 1 else -1 := by 
 
 theorem Jm_eq (ε : Fin n → Bool) : Formalism.REAL.Jm ε = diagonal fun a => sgn (ε a) := rfl
 
-theorem Jm_mul_self (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  simp only [Jm_eq, diagonal_mul_diagonal, sgn_mul_self, diagonal_one]
+alias Jm_mul_self := _root_.Formalism.REAL.Jm_mul_self
 
 variable {F G X : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → Bool}
 

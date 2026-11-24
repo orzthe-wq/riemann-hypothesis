@@ -146,7 +146,7 @@ theorem exists_cov {p q n : ℕ} (T : GrpData p q) {fr G : Mn n} {ε : Fin n →
     simp only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hJ]
   have hJc : (Formalism.UG.Jpq p q).map (starRingEnd ℂ) = Formalism.UG.Jpq p q := by
     ext a b
-    rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply] <;> split_ifs <;> simp
+    rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply]
   set Z : Mat p q := Y.map (starRingEnd ℂ) with hZ
   have hZJ : Zᴴ * Formalism.UG.Jpq p q * Z = Formalism.UG.Jpq p q := by
     have := congrArg (fun A : Mat p q => A.map (starRingEnd ℂ)) hYJ

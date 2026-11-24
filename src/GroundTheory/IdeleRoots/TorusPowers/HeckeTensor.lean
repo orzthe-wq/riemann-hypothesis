@@ -3,49 +3,6 @@ module
 public import Formalism.UnipotentAdelicQuotients.ThmBInHecke
 public import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
 public import GroundTheory.GlobalFields.Adele.Approximation
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -149,15 +106,13 @@ theorem finiteAdeleMap_mem_integralFiniteAdeles {a : Af F} (ha : a ∈ intAf F) 
 
 theorem finEquiv_mem_of_mem_intAE {y : Af F ⊗[F] E} (hy : y ∈ intAE F E) :
     finEquiv F E y ∈ integralFiniteAdeles (𝓞 E) E := by
-  induction hy using AddSubgroup.closure_induction with
-  | mem y hy =>
-    obtain ⟨a, ha, x, rfl⟩ := hy
-    rw [finEquiv_tmul]
-    exact Subring.mul_mem _ (algebraMap_mem_integralFiniteAdeles x)
-      (finiteAdeleMap_mem_integralFiniteAdeles ha)
-  | zero => rw [map_zero]; exact Subring.zero_mem _
-  | add _ _ _ _ h1 h2 => rw [map_add (f := _)]; exact Subring.add_mem _ h1 h2
-  | neg _ _ h => rw [map_neg]; exact Subring.neg_mem _ h
+  change y ∈ (integralFiniteAdeles (𝓞 E) E).toAddSubgroup.comap (finEquiv F E).toAddMonoidHom
+  refine ((AddSubgroup.closure_le _).2 ?_) hy
+  rintro _ ⟨a, ha, x, rfl⟩
+  change finEquiv F E (a ⊗ₜ (x : E)) ∈ integralFiniteAdeles (𝓞 E) E
+  rw [finEquiv_tmul]
+  exact Subring.mul_mem _ (algebraMap_mem_integralFiniteAdeles x)
+    (finiteAdeleMap_mem_integralFiniteAdeles ha)
 
 theorem exists_basis_isIntegral :
     ∃ b : Module.Basis (Fin (Module.finrank F E)) F E, ∀ i, IsIntegral ℤ (b i) := by

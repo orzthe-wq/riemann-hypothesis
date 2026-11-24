@@ -238,7 +238,7 @@ private theorem exists_sq_sub_trace_mul_eq_rat_of_finrank_two {K : Type} [Field 
     exact Matrix.aeval_self_charpoly M
   rw [Polynomial.aeval_eq_sum_range, hnd] at hzero
   simp only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, pow_zero, pow_one, h2,
-    one_smul, Algebra.smul_def, mul_one, map_one, one_mul] at hzero
+    Algebra.smul_def, mul_one, map_one, one_mul] at hzero
   refine ⟨-M.charpoly.coeff 0, ?_⟩
   rw [htr, map_neg, map_neg]
   linear_combination hzero

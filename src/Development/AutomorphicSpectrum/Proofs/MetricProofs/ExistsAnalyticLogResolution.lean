@@ -397,7 +397,7 @@ theorem nonempty_anLogRes_of_smoothGenericFibre : ∀ (K : Type) [Fintype K] (ι
       refine ⟨0, fun m hm k => ?_⟩
       have : m = 0 := by
         by_contra h
-        simp [MvPolynomial.coeff_one, MvPolynomial.mem_support_iff, Ne.symm h] at hm
+        simp at hm
         exact h hm
       simp [this], by simp⟩
   have hJP : ¬ (⊤ : Ideal (MRing ι)) ≤ mCoordIdeal y := fun h =>

@@ -95,8 +95,7 @@ def scalGL {R : Type} [CommRing R] (n : ℕ) : Rˣ →* GL (Fin n) R :=
 
 theorem scalGL_comm {R : Type} [CommRing R] {n : ℕ} (a : Rˣ) (A : GL (Fin n) R) :
     scalGL n a * A = A * scalGL n a := by
-  apply Units.ext
-  exact Matrix.scalar_commute _ (fun _ => Commute.all _ _) _
+  exact Units.ext (Matrix.scalar_commute _ (fun _ => Commute.all _ _) _)
 
 def twGL {G R : Type} [Group G] [CommRing R] {r : ℕ} (ρ : G →* GL (Fin r) R) (χ : G →* Rˣ) :
     G →* GL (Fin r) R where
@@ -153,7 +152,6 @@ open Classical in
 def SigG (i : X.Tw) : Finset (X.Sig i) := Finset.univ.filter (goodS bkP i)
 
 theorem mem_SigG (i : X.Tw) (s : X.Sig i) : s ∈ SigG bkP i ↔ goodS bkP i s := by
-  classical
   simp [SigG]
 
 def Trep (i : X.Tw) (s : X.Sig i) (k : ℕ) (ψ : GE N →* (X.Ok i k)ˣ) :
@@ -294,8 +292,7 @@ theorem Tgl_coe (i : X.Tw) (s : X.Sig i) (g : GE N) :
     ((Tgl i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) =
       Tmat i s g := by
   show Matrix.scalar (Fin D.R.r) _ * _ = _
-  rw [Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]
-  rfl
+  simp [Tmat, Matrix.scalar_apply, Matrix.smul_eq_diagonal_mul]
 
 def Tdual (i : X.Tw) (s : X.Sig i) (g : GE N) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i) :=
   ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) • (Tmat i s g)⁻¹.transpose

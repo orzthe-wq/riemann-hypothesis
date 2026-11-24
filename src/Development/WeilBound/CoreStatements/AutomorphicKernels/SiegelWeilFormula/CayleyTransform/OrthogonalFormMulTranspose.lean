@@ -78,7 +78,7 @@ theorem QR_det_ne (K : Type) [Field K] (ε : ℤˣ) : (QR K n ε).det ≠ 0 := b
 
 theorem QR_map {K L : Type} [Field K] [Field L] (f : K →+* L) (ε : ℤˣ) : (QR K n ε).map f = QR L n ε := by
   ext i j
-  rcases i with i | i <;> rcases j with j | j <;> rcases eq_or_ne i j with rfl | hij <;> simp [QR, Matrix.one_apply, *]
+  rcases i with i | i <;> rcases j with j | j <;> rcases eq_or_ne i j with rfl | hij <;> simp [QR, *]
 
 theorem inU_iff (ε : ℤˣ) (h : M2 n) : InU (Qc n ε)ᵀ h ↔ hᵀ * Qc n ε * h.map star = Qc n ε := by
   have e : ∀ A : M2 n, (hᴴ * A * h)ᵀ = hᵀ * Aᵀ * h.map star := fun A => by

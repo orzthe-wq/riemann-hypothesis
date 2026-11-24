@@ -59,6 +59,7 @@ public import ReciprocityTheory.SemistableReduction.SemiAll
 import ReciprocityTheory.SemistableReduction.SemiDegAA
 import ReciprocityTheory.SemistableReduction.SemiDegH
 import ReciprocityTheory.SemistableReduction.SemiDegZ
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantTheorems.ScaledBoundInequality
 
 @[expose] public section
 
@@ -280,7 +281,7 @@ theorem exists_short_basis {S : HermForm K r} {L : Submodule (𝓞 K) (Fin r →
       rw [hψ, θ.norm_map, norm_smul, mul_pow, norm_emb_sq, div_pow, mul_pow, Real.sq_sqrt hε.le,
         hd2, div_le_iff₀ (by positivity), Real.norm_ofNat]
       linarith)
-  obtain ⟨s, hs1, hs2, -⟩ := euclidean_basis_exists K (Fin r → K) _ v hli (by
+  obtain ⟨s, hs1, hs2, -⟩ := _root_.PI.UnitaryGroupMassFormula.TBNum.eBasis K (Fin r → K) _ v hli (by
     simp [ShortVectors.finrank_eq])
   have hsr : s.card = r := by simpa using hs1
   let e : Fin r ≃ s := (s.equivFinOfCardEq hsr).symm

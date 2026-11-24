@@ -65,7 +65,6 @@ theorem Link.le_ker_pt {X : Space (T.fr ∅) (inc h)} {B : W.UniversalOrdinaryDe
     (J₀ : Ideal B.B) (hy : ∀ b ∈ J₀.map φ, y (algebraMap X.B X.A b) = 0) : J₀ ≤ RingHom.ker (Link.pt φ y) := by
   intro b hb
   rw [RingHom.mem_ker]
-  change Link.pt φ y b = 0
   rw [Link.pt_apply]
   exact hy (φ b) (Ideal.mem_map_of_mem _ hb)
 

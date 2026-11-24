@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.ScalingSwapLemmas
 
 @[expose] public section
 
@@ -79,7 +80,7 @@ theorem ThmSUniform_of (hB : BetaIsG) (hK : CyclicPowerClassOfExpEquiv) (hM : Ma
     hjc hjc' hμ0 hμ hU0 hΦ0 hΦ hsim'
 
 theorem theorem_s_uniform : ThmSUniform :=
-  ThmSUniform_of Top.betaIsG Top.theorem_s_from_k_one Top.mapSimeq
+  ThmSUniform_of Top.betaIsG Top.theorem_s_from_k_one _root_.Formalism.InvariantFactorPaths.G7.mapSimeq_statement
 
 theorem GcUnique_of (hD : DworkMv) (hFr : FrobExprG) : GcUnique := by
   intro K _ _ _ p σ hU c d hc hd hsim
@@ -122,6 +123,6 @@ theorem GcUnique_of (hD : DworkMv) (hFr : FrobExprG) : GcUnique := by
     exact le_of_mul_le_mul_left (by simpa using h) hpos
   exact sub_eq_zero.mp hz
 
-theorem g_c_unique : GcUnique := GcUnique_of Top.dworkMv Top.frobExprG
+theorem g_c_unique : GcUnique := GcUnique_of _root_.Formalism.InvariantFactorPaths.G7.dwork_multivariable _root_.Formalism.InvariantFactorPaths.G7.frobenius_expression_g
 
 end Formalism.InvariantFactorPaths.G7

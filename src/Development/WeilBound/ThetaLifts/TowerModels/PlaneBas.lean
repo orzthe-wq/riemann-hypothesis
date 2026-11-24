@@ -107,7 +107,7 @@ theorem exists_basis (n n₁ : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (x y 
     rw [Fintype.bijective_iff_injective_and_card]
     refine ⟨?_, by simp [hn]⟩
     rintro (a | _ | _) (b | _ | _) e <;>
-      simp only [f, Sum.elim_inl, Sum.elim_inr, cond, Fin.mk.injEq, skip, Sum.inl.injEq, Fin.ext_iff] at e ⊢ <;>
+      simp only [f, Sum.elim_inl, Sum.elim_inr, cond, skip, Sum.inl.injEq, Fin.ext_iff] at e ⊢ <;>
       first | omega | (split_ifs at e <;> omega)
   let e := Equiv.ofBijective f hf
   let c : Fin n₁ ⊕ Bool → Fin n → Fv F v := Sum.elim (fun j r => (ι.map τ * β₁.1) r j)

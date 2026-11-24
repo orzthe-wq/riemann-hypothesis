@@ -2,23 +2,26 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FirstIndexEqOfUnfolded
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualTr
-import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.ExistsFundSetOrth
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtensionStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ImNegOfFramePeriodVector
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsInvariantNatLengthLattice
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.BlockTriangularOfMulEqOne
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFlagDomainModelsOfFamilyUniformisation
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsUnf
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnfFamily
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
+import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.ExistsFundSetOrth
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangent
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinrankEqOfInjectiveOfSpan
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeByMatricesReflAndCompStatement
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeByMatricesReflAndComp
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LowerTriIsUnitDet
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PerFrLact
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalGroupActsFreelyOnFlagsStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelGroupFiniteIndexUnitaryStabiliserStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TransvectionMemPrincipalCongruenceGroupStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalGroupActsFreelyOnFlags
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.PrincipalLevelGroupFiniteIndexUnitaryStabiliser
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TransvectionMemPrincipalCongruenceGroup
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UniformizationPeriodLatticeChange
 import Formalism.LocalToGlobal.ProjectiveLattices.UnifDom
 import Mathlib.Algebra.Order.Floor.Extended
@@ -58,7 +61,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.KaUnfoldPfC
-public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
 
 @[expose] public section
 
@@ -152,7 +154,7 @@ theorem fib_single {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ
     unfold cc at hcc ⊢
     rw [map_neg, hcc]
   obtain ⟨Gm, φ0, hφ0⟩ := GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ₀) hcc' (neg_ne_zero.2 hne) r hr
-  obtain ⟨M0, hM0, hN0, -⟩ := GlobalTheory.ModelsExist.exists_modelsOf GlobalTheory.T.hasse_norm_theorem_quadratic_extension E H Dw l Xo _ _ _ F r ξ₀ Gm φ0 hcc him hφ0
+  obtain ⟨M0, hM0, hN0, -⟩ := GlobalTheory.ModelsExist.exists_modelsOf _root_.GlobalTheory.QNorm.hasseNormSt E H Dw l Xo _ _ _ F r ξ₀ Gm φ0 hcc him hφ0
   let Good : ∀ i : Fin F.n, (Σ X : Data E r, (F.Di i).La ≃ₗ[𝓞 E] X.Λ) → Prop := fun i p =>
     (p.1.p0 = Dw.q ∧ ∀ τ : E →+* ℂ, τ ∈ p.1.Ψ ↔ τ (H.rt : E) = H.rt0) ∧ (∀ la γ, p.1.χ la γ = 1) ∧
     (∀ a b, (((F.Di i).EF a b : ℤ) : ℚ) =
@@ -236,9 +238,9 @@ theorem exists_levGrp_covol : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     obtain ⟨Pm, h1, h2, -⟩ := hun k ⟨x, hx⟩
     exact GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (φ k) hσ hr (hty k).1 (hty k).2 (hef k)
       x hx Pm h1 h2 (by omega)
-  obtain ⟨m, hm, ht⟩ := GlobalTheory.T.transvection_mem_principalCongruenceGroup E H l _ r _ _ φ0 hξ hlat
-  have hi := GlobalTheory.T.principalLevelGroup_finiteIndex_unitaryStabiliser E H l _ r _ _ φ0 hξ hlat
-  have hf := GlobalTheory.T.principalGroup_acts_freely_on_flags E H l _ r _ _ φ0 hξ hlat (U.X k).Ψ (U.X k).p0 (hty k).2
+  obtain ⟨m, hm, ht⟩ := _root_.GlobalTheory.PrincTransv.transv_mem_princ E H l _ r _ _ φ0 hξ hlat
+  have hi := _root_.GlobalTheory.FrameUnif.princ_finiteIndex E H l _ r _ _ φ0 hξ hlat
+  have hf := _root_.GlobalTheory.PrincFree.princ_free E H l _ r _ _ φ0 hξ hlat (U.X k).Ψ (U.X k).p0 (hty k).2
   have hmem : ∀ γ : GL (Fin r) E, γ ∈ princ l (U.X k).Gm (F.Di (ik k)) φ0 ↔ IsUStab (U.X k).Gm (U.X k).Λ γ ∧
       (∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) (F.Di (ik k)).La), ∃ b : (F.Di (ik k)).La,
         (γ : Matrix (Fin r) (Fin r) E).mulVec (φ k a : Fin r → E) =
@@ -338,7 +340,7 @@ theorem exists_levGrp_covol : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
         refine ⟨(1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) i, by simp,
           fun j hij => Matrix.one_apply_ne hij.ne, ?_⟩
         rw [hu]
-        exact (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c (CAt σ) (U.un k ⟨x, hx⟩) (U.un k ⟨x, hx⟩) (U.un k ⟨x, hx⟩)).1.2.1 τ i
+        exact (_root_.GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c (CAt σ) (U.un k ⟨x, hx⟩) (U.un k ⟨x, hx⟩) (U.un k ⟨x, hx⟩)).1.2.1 τ i
     obtain ⟨γ', hγ', b', hb', h'⟩ := (h4 k k ⟨x, hx⟩ ⟨x', hx'⟩).1
       ⟨t2 * t1, (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) _ _ _).2.2.1 t1 t2 ht1 ht2⟩
     exact ⟨γ', hγ', b', hb', eq_of_heq (Sigma.mk.inj_iff.1 h').2⟩

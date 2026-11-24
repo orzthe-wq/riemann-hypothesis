@@ -7,49 +7,8 @@ public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
 public import Mathlib.RingTheory.Flat.Basic
 public import Lemmata.FirstBlockLemmaH.Imports
 public import Lemmata.GeneralBFactThirdVariant.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.Module.Torsion.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 
@@ -87,10 +46,7 @@ theorem conj_mem_iff (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding
   rw [hΨ]
   simp [ComplexEmbedding.conjugate]
 
-theorem li1 (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ)
-    (x : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℝ)
-    (hx : ∀ τ ∈ Ψ, ∑ k, (x k : ℂ) * τ ((RingOfIntegers.basis E k : 𝓞 E) : E) = 0) : x = 0 := by
-  first | exact Bl.general_b_fact_third_variant.goal1 .. | (apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_variant.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_variant.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ x hx | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ x | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ hΨ | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› Ψ | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› ‹_› | exact @Bl.general_b_fact_third_variant.goal1 E ‹_› | exact @Bl.general_b_fact_third_variant.goal1 E
+alias li1 := _root_.Bl.general_b_fact_third_variant.goal1
 
 theorem two_card (hΨ : ∀ σ : E →+* ℂ, σ ∈ Ψ ↔ ComplexEmbedding.conjugate σ ∉ Ψ) :
     2 * Ψ.card = Module.finrank ℚ E := by
@@ -185,10 +141,7 @@ theorem flat_real : Module.Flat ℤ ℝ := by
 
 variable {b M}
 
-theorem exists_den (hfg : Module.Finite (𝓞 E) M) :
-    ∃ s ∈ (𝓞 E)⁰, ∀ v ∈ M, ∀ i,
-      algebraMap (𝓞 E) E s * b.repr v i ∈ (algebraMap (𝓞 E) E).range := by
-  first | exact Bl.FirstBlockLemmaH.goal1 .. | (apply Bl.FirstBlockLemmaH.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaH.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaH.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaH.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaH.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι ‹_› ‹_› b M hfg | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι ‹_› ‹_› b M | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι ‹_› ‹_› b | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι ‹_› ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› ι | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› V | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E ‹_› | exact @Bl.FirstBlockLemmaH.goal1 E
+alias exists_den := _root_.Bl.FirstBlockLemmaH.goal1
 
 variable (b M)
 

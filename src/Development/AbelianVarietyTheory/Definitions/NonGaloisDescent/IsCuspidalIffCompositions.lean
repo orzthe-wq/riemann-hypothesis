@@ -92,7 +92,7 @@ def levi (b : Fin N → ℕ) : Subgroup (GL (Fin N) k) where
   inv_mem' := by
     intro x hx
     have hx' := blockDiag_iff.1 hx
-    letI := x.invertible
+    let := x.invertible
     refine blockDiag_iff.2 ?_
     rw [Matrix.coe_units_inv]
     exact ⟨blockTriangular_inv_of_blockTriangular hx'.1, blockTriangular_inv_of_blockTriangular hx'.2⟩
@@ -232,7 +232,7 @@ theorem conj_mem_unipRadical {b : Fin N → ℕ} {w : Equiv.Perm (Fin N)} {g : G
 
 def leviConj (b : Fin N → ℕ) (w : Equiv.Perm (Fin N)) : levi k (b ∘ w) ≃* levi k b where
   toFun x := ⟨permGL k w * x * (permGL k w)⁻¹, conj_mem_levi.2 x.2⟩
-  invFun y := ⟨(permGL k w)⁻¹ * y * permGL k w, conj_mem_levi.1 (by simpa [mul_assoc] using y.2)⟩
+  invFun y := ⟨(permGL k w)⁻¹ * y * permGL k w, conj_mem_levi.1 (by simp [mul_assoc])⟩
   left_inv x := Subtype.ext (by simp [mul_assoc])
   right_inv y := Subtype.ext (by simp [mul_assoc])
   map_mul' x y := Subtype.ext (by simp [mul_assoc])
@@ -283,7 +283,7 @@ def blockDiagHom (e : (Σ a, Fin (d a)) ≃ Fin N) : (∀ a, GL (Fin (d a)) k) �
       (fun a => (x a : Matrix (Fin (d a)) (Fin (d a)) k)) (e.symm i).2 (e.symm j).2 fun e' => hij (congrArg Fin.val e')
 
 def leviEquiv (e : (Σ a, Fin (d a)) ≃ Fin N) : levi k (blockOf e) ≃* ∀ a, GL (Fin (d a)) k :=
-  MonoidHom.toMulEquiv (Pi.monoidHom (blockAt e)) (blockDiagHom e)
+  MonoidHom.toMulEquiv (MonoidHom.pi (blockAt e)) (blockDiagHom e)
     (by
       ext g i j
       obtain ⟨⟨a, i⟩, rfl⟩ := e.surjective i
@@ -423,7 +423,7 @@ theorem mem_fixed {ρ : Representation ℂ G V} {U : Subgroup G} {v : V} : v ∈
 theorem bijective_fixed_mkQ (ρ : Representation ℂ G V) (U : Subgroup G) [Finite U] :
     Function.Bijective ((twKer ρ U 1).mkQ ∘ₗ (fixed ρ U).subtype) := by
   classical
-  letI := Fintype.ofFinite U
+  let := Fintype.ofFinite U
   have hc : (Fintype.card U : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
   let S : V →ₗ[ℂ] V := ∑ u : U, ρ u
   have hS : ∀ v, S v = ∑ u : U, ρ u v := fun v => LinearMap.sum_apply _ _ _
@@ -477,7 +477,7 @@ theorem isIrreducible_of_equiv {ρ : Representation ℂ G V} {σ : Representatio
 
 def extTensor {ι : Type} {Γ Y : ι → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (ρ : ∀ a, Representation ℂ (Γ a) (Y a)) : Representation ℂ (∀ a, Γ a) (⨂[ℂ] a, Y a) :=
-  PiTensorProduct.mapMonoidHom.comp (Pi.monoidHom fun a => (ρ a).comp (Pi.evalMonoidHom Γ a))
+  PiTensorProduct.mapMonoidHom.comp (MonoidHom.pi fun a => (ρ a).comp (Pi.evalMonoidHom Γ a))
 
 @[simp] theorem extTensor_tprod {ι : Type} {Γ Y : ι → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (Y a)]
     [∀ a, Module ℂ (Y a)] (ρ : ∀ a, Representation ℂ (Γ a) (Y a)) (x : ∀ a, Γ a) (v : ∀ a, Y a) :

@@ -1,30 +1,34 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.Topology.ContinuousMap.Bounded.Star
+public import Mathlib.MeasureTheory.Measure.FiniteMeasureExt
+public import Mathlib.MeasureTheory.Function.AEEqOfLIntegral
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 public import Development.WeilBound.ThetaLifts.FrameEstimates.SquareIntegrableWeilRange
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
-public import Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA
-import GroundTheory.GlobalFields.Adele.IntegersLattice
-import Mathlib.Algebra.Module.Torsion.Prod
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.CStarAlgebra.ContinuousMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,9 +48,152 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Topology.UniformSpace.Uniformizable
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
+import GroundTheory.GlobalFields.Adele.IntegersLattice
+import Mathlib.Algebra.Module.Torsion.Prod
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Topology.Separation.CompletelyRegular
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA, Development.WeilBound.ThetaLifts.FrameEstimates.FourierInj
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Mathlib.Topology.ContinuousMap.Bounded.Star\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Measure.FiniteMeasureExt\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.Topology.UniformSpace.Uniformizable\npublic import Mathlib.MeasureTheory.Function.AEEqOfLIntegral\npublic import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory BoundedContinuousFunction
+
+namespace PositivityTheory.ThKEst.FourInj
+
+theorem polish_of_lc (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G]
+    [LocallyCompactSpace G] [SecondCountableTopology G] : PolishSpace G := by
+  let _ : UniformSpace G := IsTopologicalAddGroup.rightUniformSpace G
+  have : IsUniformAddGroup G := isUniformAddGroup_of_addCommGroup
+  have : CompleteSpace G := IsRightUniformAddGroup.completeSpace_of_weaklyLocallyCompactSpace G
+  have : (uniformity G).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated
+  have : TopologicalSpace.IsCompletelyMetrizableSpace G := inferInstance
+  infer_instance
+
+variable {X A : Type} [TopologicalSpace X] [PolishSpace X] [MeasurableSpace X] [BorelSpace X]
+
+theorem real_ae_zero (μ : Measure X) (e : A → X →ᵇ ℂ) (h1 : ∃ a, e a = 1) (hmul : ∀ a b, ∃ c, e c = e a * e b)
+    (hstar : ∀ a, ∃ c, e c = star (e a)) (hsep : ∀ x y, x ≠ y → ∃ a, e a x ≠ e a y) {h : X → ℝ}
+    (hi : Integrable h μ) (h0 : ∀ a, ∫ x, h x • e a x ∂μ = 0) : h =ᵐ[μ] 0 := by
+  let V : Submodule ℂ (X →ᵇ ℂ) := Submodule.span ℂ (Set.range e)
+  have hV1 : (1 : X →ᵇ ℂ) ∈ V := Submodule.subset_span h1
+  have hVmul : ∀ p ∈ V, ∀ q ∈ V, p * q ∈ V := by
+    intro p hp q hq
+    have : V * V ≤ V := by
+      rw [Submodule.span_mul_span]
+      refine Submodule.span_mono ?_
+      rintro _ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩
+      exact hmul a b
+    exact this (Submodule.mul_mem_mul hp hq)
+  have hVstar : ∀ p ∈ V, star p ∈ V := by
+    intro p hp
+    induction hp using Submodule.span_induction with
+    | mem x hx =>
+      obtain ⟨a, rfl⟩ := hx
+      exact Submodule.subset_span (hstar a)
+    | zero => rw [star_zero]; exact V.zero_mem
+    | add x y _ _ hx hy => rw [star_add]; exact V.add_mem hx hy
+    | smul c x _ hx => rw [star_smul]; exact V.smul_mem _ hx
+  let S : StarSubalgebra ℂ (X →ᵇ ℂ) :=
+    { toSubalgebra := V.toSubalgebra hV1 (fun p q hp hq => hVmul p hp q hq)
+      star_mem' := fun {p} hp => hVstar p hp }
+  have hint : ∀ {k : X → ℝ}, Integrable k μ → ∀ g : X →ᵇ ℂ, Integrable (fun x => k x • g x) μ := by
+    intro k hk g
+    exact hk.smul_bdd ‖g‖ g.continuous.aestronglyMeasurable
+      (Filter.Eventually.of_forall fun x => g.norm_coe_le_norm x)
+  have hV0 : ∀ g ∈ V, ∫ x, h x • g x ∂μ = 0 := by
+    intro g hg
+    induction hg using Submodule.span_induction with
+    | mem x hx =>
+      obtain ⟨a, rfl⟩ := hx
+      exact h0 a
+    | zero => simp
+    | add p q _ _ hp hq =>
+      simp only [BoundedContinuousFunction.add_apply, smul_add]
+      rw [integral_add (hint hi p) (hint hi q), hp, hq, add_zero]
+    | smul c p _ hp =>
+      simp only [BoundedContinuousFunction.smul_apply, smul_comm (h _) c]
+      rw [integral_smul, hp, smul_zero]
+  have hfin : ∀ {k : X → ℝ}, Integrable k μ → IsFiniteMeasure (μ.withDensity fun x => ENNReal.ofReal (k x)) :=
+    fun hk => isFiniteMeasure_withDensity_ofReal hk.2
+  have hwd : ∀ {k : X → ℝ}, Integrable k μ → ∀ g : X →ᵇ ℂ,
+      ∫ x, g x ∂(μ.withDensity fun x => ENNReal.ofReal (k x)) = ∫ x, max (k x) 0 • g x ∂μ := by
+    intro k hk g
+    rw [integral_withDensity_eq_integral_toReal_smul₀ hk.aemeasurable.ennreal_ofReal
+      (Filter.Eventually.of_forall fun x => ENNReal.ofReal_lt_top)]
+    simp only [ENNReal.toReal_ofReal']
+  have := hfin hi
+  have := hfin hi.neg
+  have hPP : (μ.withDensity fun x => ENNReal.ofReal (h x)) = μ.withDensity fun x => ENNReal.ofReal ((-h) x) := by
+    refine ext_of_forall_mem_subalgebra_integral_eq_of_polish (𝕜 := ℂ) (A := S) ?_ ?_
+    · intro x y hxy
+      obtain ⟨a, ha⟩ := hsep x y hxy
+      exact ⟨e a, ⟨(e a).toContinuousMap, ⟨e a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, rfl⟩, ha⟩
+    · intro g hg
+      rw [hwd hi, hwd hi.neg, ← sub_eq_zero, ← integral_sub (hint hi.pos_part g) (hint hi.neg.pos_part g),
+        ← hV0 g hg]
+      refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
+      simp only [← sub_smul, Pi.neg_apply, max_zero_sub_max_neg_zero_eq_self]
+  have hae := (withDensity_eq_iff hi.aemeasurable.ennreal_ofReal hi.neg.aemeasurable.ennreal_ofReal
+    ((lintegral_ofReal_le_lintegral_enorm h).trans_lt hi.2).ne).1 hPP
+  filter_upwards [hae] with x hx
+  have := congrArg ENNReal.toReal hx
+  simp only [ENNReal.toReal_ofReal', Pi.neg_apply] at this
+  have h2 := max_zero_sub_max_neg_zero_eq_self (h x)
+  rw [this, sub_self] at h2
+  exact h2.symm
+
+theorem complex_ae_zero (μ : Measure X) (e : A → X →ᵇ ℂ) (h1 : ∃ a, e a = 1) (hmul : ∀ a b, ∃ c, e c = e a * e b)
+    (hstar : ∀ a, ∃ c, e c = star (e a)) (hsep : ∀ x y, x ≠ y → ∃ a, e a x ≠ e a y) {H : X → ℂ}
+    (hi : Integrable H μ) (h0 : ∀ a, ∫ x, e a x * H x ∂μ = 0) : H =ᵐ[μ] 0 := by
+  have hint : ∀ {k : X → ℂ}, Integrable k μ → ∀ g : X →ᵇ ℂ, Integrable (fun x => g x * k x) μ := by
+    intro k hk g
+    exact hk.bdd_mul (c := ‖g‖) g.continuous.aestronglyMeasurable
+      (Filter.Eventually.of_forall fun x => g.norm_coe_le_norm x)
+  have hic : Integrable (fun x => (starRingEnd ℂ) (H x)) μ :=
+    (Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp hi
+  have hc : ∀ a, ∫ x, e a x * (starRingEnd ℂ) (H x) ∂μ = 0 := by
+    intro a
+    obtain ⟨c, hc⟩ := hstar a
+    have := congrArg (starRingEnd ℂ) (h0 c)
+    rw [← integral_conj, map_zero, hc] at this
+    simpa using this
+  have hre : (fun x => (H x).re) =ᵐ[μ] 0 := by
+    refine real_ae_zero μ e h1 hmul hstar hsep hi.re fun a => ?_
+    have : ∀ x, (H x).re • e a x = (1 / 2 : ℂ) * (e a x * H x + e a x * (starRingEnd ℂ) (H x)) := fun x => by
+      rw [← mul_add, Complex.add_conj, Complex.real_smul]; push_cast; ring
+    simp only [this]
+    rw [integral_const_mul, integral_add (hint hi _) (hint hic _), h0, hc]; simp
+  have him : (fun x => (H x).im) =ᵐ[μ] 0 := by
+    refine real_ae_zero μ e h1 hmul hstar hsep hi.im fun a => ?_
+    have : ∀ x, (H x).im • e a x = (-Complex.I / 2 : ℂ) * (e a x * H x - e a x * (starRingEnd ℂ) (H x)) := fun x => by
+      rw [← mul_sub, Complex.sub_conj, Complex.real_smul]; push_cast
+      linear_combination ((H x).im * e a x) * Complex.I_mul_I
+    simp only [this]
+    rw [integral_const_mul, integral_sub (hint hi _) (hint hic _), h0, hc]; simp
+  filter_upwards [hre, him] with x h1 h2
+  exact Complex.ext h1 h2
+
+end PositivityTheory.ThKEst.FourInj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA =====
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.FrameEstimates.FourierInj =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.FrameEstimates.FourierInj", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.FrameEstimates.SquareIntegrableWeilRange\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup\npublic import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant\npublic import Development.WeilBound.ThetaLifts.FrameEstimates.FourierInjA\nimport GroundTheory.GlobalFields.Adele.IntegersLattice\nimport Mathlib.Algebra.Module.Torsion.Prod\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -156,12 +302,12 @@ theorem exists_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : ∃ x, ψ x �
 theorem norm_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) : ‖ψ x‖ = 1 := by
   obtain ⟨s, hs⟩ := exists_ne_one hψ
   have hne : ψ ≠ 1 := fun h1 => hs (by rw [h1]; rfl)
-  exact (GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).1 x
+  exact (_root_.UpperTheory.Reformulated.B.UnitaryAnnihilator.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).1 x
 
 theorem nondeg {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (x : AF F) (h : ∀ y, ψ (x * y) = 1) : x = 0 := by
   obtain ⟨s, hs⟩ := exists_ne_one hψ
   have hne : ψ ≠ 1 := fun h1 => hs (by rw [h1]; rfl)
-  obtain ⟨b, rfl⟩ := (GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).2 x fun a => h _
+  obtain ⟨b, rfl⟩ := (_root_.UpperTheory.Reformulated.B.UnitaryAnnihilator.unitary_and_annihilator_eq F ψ hψ.1 hne hψ.2.1).2 x fun a => h _
   by_cases hb : b = 0
   · rw [hb, map_zero]
   · refine absurd ?_ hs
@@ -247,3 +393,6 @@ theorem fourierInj_of : FourierInj := by
 end PositivityTheory.ThKEst
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.FrameEstimates.FourierInj =====

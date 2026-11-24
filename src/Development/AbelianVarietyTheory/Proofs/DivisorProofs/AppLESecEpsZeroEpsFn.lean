@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsIsoQuotToImOmegaLieOfSplit
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberSpecAffineOpenFunctionsBijectiveStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualNumberSpecAffineOpenFunctionsBijective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -100,7 +100,7 @@ theorem appLE_lieG (x : LieG G) {U : (Sp O).Opens} (hU : IsAffineOpen U) {W : G.
       (specO O (DualNumber O)).hom.appLE U _ le_rfl ((unitSec G).appLE W U h f) +
         (specO O (DualNumber O)).hom.appLE U _ le_rfl
           (GlobalTheory.VB.dualApp (tangent x) le_top (dUnit G h f)) * resG _ le_top (epsFn O) := by
-  obtain ⟨⟨a, b⟩, e⟩ := (GlobalTheory.T.dualNumberSpec_affineOpen_functions_bijective O U hU).2 (x.1.left.appLE W _ (preimage_le_of_lieG x h) f)
+  obtain ⟨⟨a, b⟩, e⟩ := (_root_.GlobalTheory.LieVB.bijective_add_mul_epsFn O U hU).2 (x.1.left.appLE W _ (preimage_le_of_lieG x h) f)
   have hV : U ≤ sec (epsZero O) ⁻¹ᵁ (specO O (DualNumber O)).hom ⁻¹ᵁ U :=
     (le_preimage_of_comp (sec_hom (epsZero O))).2 le_rfl
   have hb := dualApp_tangent_dUnit x h f hV le_rfl (preimage_le_of_lieG x h) a b e.symm

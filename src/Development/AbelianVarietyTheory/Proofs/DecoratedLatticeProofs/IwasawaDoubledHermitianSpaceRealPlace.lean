@@ -235,7 +235,7 @@ theorem swapMat_mul_self (ε : n → Bool) : swapMat (A := A) e ε * swapMat e �
   rw [swapMat, submatrix_mul_equiv, fromBlocks_multiply, ← blkMat_one e, blkMat]
   congr 1
   simp only [projT, projF, diagonal_mul_diagonal, diagonal_add, fromBlocks_inj]
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> by_cases h : i = j <;> simp [diagonal_apply, one_apply, h] <;> cases ε j <;> simp [Matrix.one_apply, h]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> by_cases h : i = j <;> simp [h] <;> cases ε j <;> simp [Matrix.one_apply, h]
 
 end Swap
 
@@ -257,9 +257,8 @@ theorem swapMat_dblGram (ε : n → Bool) :
   rw [swapMat, dblGram, dblGram, blkMat, blkMat, submatrix_mul_equiv, submatrix_mul_equiv, fromBlocks_multiply,
     fromBlocks_multiply]
   congr 1
-  simp only [projT, projF, sgnMat, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul,
-    diagonal_neg, diagonal_mul_diagonal, diagonal_add, fromBlocks_inj]
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> by_cases h : i = j <;> simp [diagonal_apply, one_apply, h] <;> cases ε j <;> simp [Matrix.one_apply, h]
+  simp only [projT, projF, sgnMat, Matrix.mul_zero, add_zero, zero_add, diagonal_neg, diagonal_mul_diagonal, diagonal_add, fromBlocks_inj]
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> ext i j <;> by_cases h : i = j <;> simp [h] <;> cases ε j <;> simp [Matrix.one_apply, h]
 
 theorem keepsDiag_swapMat (ε : n → Bool) : KeepsDiag e (swapMat (A := A) e ε) := by
   simp [KeepsDiag, leviMat, swapMat, add_comm]

@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV
 
 @[expose] public section
 
@@ -69,8 +70,8 @@ theorem herm_sum_left {ι : Type*} (s : Finset ι) (f : ι → Fin (2 * r + k + 
 
 theorem herm_sum_right {ι : Type*} (s : Finset ι) (f : ι → Fin (2 * r + k + 1) → ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x (∑ j ∈ s, f j) = ∑ j ∈ s, herm (Hpk k r) x (f j) := by
-  rw [herm_swap, herm_sum_left, star_sum]
-  exact Finset.sum_congr rfl (fun j _ => by rw [← herm_swap])
+  rw [_root_.PI.StabPairsW.herm_swap, herm_sum_left, star_sum]
+  exact Finset.sum_congr rfl (fun j _ => by rw [← _root_.PI.StabPairsW.herm_swap])
 
 theorem mulVec_sum' {ι : Type*} (s : Finset ι) (g : B.Mat k r) (f : ι → Fin (2 * r + k + 1) → ℂ) :
     g *ᵥ (∑ j ∈ s, f j) = ∑ j ∈ s, g *ᵥ f j :=
@@ -136,7 +137,7 @@ theorem dlem_ii (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) (a : ℕ) (
   have hMy : star y' ᵥ* Mblk g a ha = 0 := by
     funext c
     have hc := h ⟨c.val, by omega⟩ c.isLt
-    rw [herm_swap, star_eq_zero, flt_decomp a ha y hy, herm_sum_right] at hc
+    rw [_root_.PI.StabPairsW.herm_swap, star_eq_zero, flt_decomp a ha y hy, herm_sum_right] at hc
     simp only [herm_smul_right] at hc
     rw [Pi.zero_apply, ← hc]
     simp only [vecMul, dotProduct, Mblk, y', Pi.star_apply]

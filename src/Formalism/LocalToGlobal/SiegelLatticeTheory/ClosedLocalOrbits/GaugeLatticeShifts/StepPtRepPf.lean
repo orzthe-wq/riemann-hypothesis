@@ -6,46 +6,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StepPtRepPfD
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHAlg
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HermitianFrameExistence.Transfer
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -56,10 +16,6 @@ open NumberField Matrix Formalism.BasicNotions Formalism.MainNotions.S
 namespace Formalism.L2.SG.RealObj.InfCut
 
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
-
-def StepPtRepDiag : Prop :=
-  ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u u' : D.what₂.Word) (sc : ℝ), 0 < sc →
-    ∀ (i0 : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k), PtRepExists X u u' sc i0 i0
 
 namespace PtRepPf
 
@@ -72,8 +28,6 @@ theorem hJ_crd (v : InfinitePlace X.B.I.F) (x y : (VS D).V) :
   rw [← Formalism.L2.SG.PoincareInHH.Cut.hform_crd (X := X) x y]
   first
   | rw [RingEquiv.symm_apply_apply]
-  | simp only [RingEquiv.symm_apply_apply]
-  | simp
   exact PI.ScPiFrameW.hJ_rv X.B.I v (X.crd x) (X.crd y)
 
 def frU (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Fr (X.B.I.ε v) D.R.rS D.R.k where
@@ -122,7 +76,7 @@ end PtRepPf
 
 
 open PtRepPf in
-theorem real_point_representative_diagonal : StepPtRepDiag := by
+theorem real_point_representative_diagonal : _root_.Formalism.L2.SG.RealObj.InfCut.StepPtRep := by
   intro D X u u' sc hsc i0 w hw
   have hloc := fun v => locMain (frU X u v) (frU X u' v) rfl (i0 v) (ZhatO (ptC X v w)) (hw v) sc hsc
   choose g hgZ φ hφ hD using hloc
@@ -164,7 +118,7 @@ theorem real_point_representative_diagonal : StepPtRepDiag := by
         · simp [ha, Ne.symm ha]
       · by_cases hb : b = i0 v
         · subst hb; simp [hab]
-        · simp [hab, hb, Ne.symm hb]
+        · simp [hab, Ne.symm hb]
     rw [hm1, hm2]
     exact hD v
 

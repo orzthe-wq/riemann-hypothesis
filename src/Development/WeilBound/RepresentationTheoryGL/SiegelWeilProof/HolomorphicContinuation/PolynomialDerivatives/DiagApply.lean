@@ -190,7 +190,7 @@ theorem bicomm : Bicomm := by
         simp only [T', diag_apply]
         by_cases hl : l' = l
         · subst hl; simp
-        · simp [Pi.single_apply, hl]
+        · simp [hl]
       have := LinearMap.congr_fun (ht i) (Pi.single l u)
       simp only [Module.End.mul_apply] at this
       simp only [Module.End.mul_apply, tt, LinearMap.comp_apply, LinearMap.coe_single, LinearMap.coe_proj,

@@ -45,7 +45,4 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 open GlobalTheory.PDiv
 
-theorem GlobalTheory.T.omega_baseChange_bijective_of_p_eq_zero {p : ℕ} {R : Type}
-    [CommRing R] (G : GlobalTheory.PDivGroup p R) (R' : Type) [CommRing R'] [Algebra R R']
-    (hp : (p : R) = 0) : Function.Bijective (liftSemi (G.toBase R').omega) :=
-  G.omega_baseChange_bijective R' hp
+alias GlobalTheory.T.omega_baseChange_bijective_of_p_eq_zero := _root_.GlobalTheory.PDivGroup.omega_baseChange_bijective

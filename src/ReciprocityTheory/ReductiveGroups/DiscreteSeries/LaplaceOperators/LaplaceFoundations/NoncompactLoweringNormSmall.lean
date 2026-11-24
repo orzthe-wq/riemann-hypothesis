@@ -4,7 +4,6 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -39,9 +38,200 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Star.Real
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit, ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.NoncompactLoweringNormSmall
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.RaisingLoweringNormIdentities\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset
+open scoped InnerProductSpace
+
+namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
+
+open ReciprocityTheory.ChartRestriction.DS
+
+theorem double_sum_diag_split {n : ℕ} (f : Fin n → Fin n → ℝ) :
+    ∑ a, ∑ b, f a b = ∑ a, f a a + ∑ a, ∑ b, (if a < b then f a b + f b a else 0) := by
+  have h1 : ∀ a b, f a b = (if a < b then f a b else 0) + (if a = b then f a b else 0)
+      + (if b < a then f a b else 0) := by
+    intro a b
+    rcases lt_trichotomy a b with h | h | h
+    · simp [h, h.ne, not_lt.mpr h.le]
+    · subst h; simp
+    · simp [h, h.ne', not_lt.mpr h.le]
+  have h2 : ∑ a, ∑ b, (if b < a then f a b else 0) = ∑ a, ∑ b, (if a < b then f b a else 0) :=
+    Finset.sum_comm
+  calc ∑ a, ∑ b, f a b
+      = ∑ a, ∑ b, ((if a < b then f a b else 0) + (if a = b then f a b else 0)
+          + (if b < a then f a b else 0)) :=
+        Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => h1 a b))
+    _ = ∑ a, ∑ b, (if a < b then f a b else 0) + ∑ a, f a a
+          + ∑ a, ∑ b, (if b < a then f a b else 0) := by
+        simp only [Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    _ = _ := by
+        rw [h2, add_comm (∑ a, ∑ b, (if a < b then f a b else 0)) (∑ a, f a a), add_assoc,
+          ← Finset.sum_add_distrib]
+        congr 1
+        refine Finset.sum_congr rfl (fun a _ => ?_)
+        rw [← Finset.sum_add_distrib]
+        refine Finset.sum_congr rfl (fun b _ => ?_)
+        split_ifs <;> simp
+
+theorem b2Id : RaisingLoweringNormIdentities := by
+  intro n ε M _ _ E lam w hD
+  obtain ⟨hGl, hU, hw1, ⟨hdiag, hup⟩, hcas⟩ := hD
+  set Λ := lowK ε lam with hΛ
+  let sR : Fin n → Fin n → ℝ := fun a b => if ε a = ε b then 1 else -1
+  have hsC : ∀ a b, adjSign ε a b = ((sR a b : ℝ) : ℂ) := by
+    intro a b; simp only [adjSign, sR]; split_ifs <;> simp
+  have hsymm : ∀ a b, sR a b = sR b a := by
+    intro a b; simp only [sR]
+    by_cases h : ε a = ε b
+    · simp [h]
+    · simp [h, Ne.symm h]
+  have hsq : ∀ a b, sR a b * sR a b = 1 := by
+    intro a b; simp only [sR]; split_ifs <;> norm_num
+  have hww : ⟪w, w⟫_ℂ = 1 := by
+    rw [inner_self_eq_norm_sq_to_K, hw1]; simp
+  have hQ : ∀ a b, ⟪w, E a b (E b a w)⟫_ℂ = ((sR a b * ‖E b a w‖ ^ 2 : ℝ) : ℂ) := by
+    intro a b
+    have h := hU b a w (E b a w)
+    rw [inner_self_eq_norm_sq_to_K, hsC] at h
+    have h1 : ((sR b a : ℝ) : ℂ) * ((sR b a : ℝ) : ℂ) = 1 := by
+      rw [← Complex.ofReal_mul, hsq]; simp
+    calc ⟪w, E a b (E b a w)⟫_ℂ
+        = ((sR b a : ℝ) : ℂ) * (((sR b a : ℝ) : ℂ) * ⟪w, E a b (E b a w)⟫_ℂ) := by
+          rw [← mul_assoc, h1, one_mul]
+      _ = _ := by
+          rw [← h, hsymm b a]; try simp only [RCLike.ofReal_eq_complex_ofReal]
+          push_cast; ring
+  have hC : ∀ a b, ⟪w, E a b (E b a w)⟫_ℂ - ⟪w, E b a (E a b w)⟫_ℂ = (((Λ a - Λ b : ℝ)) : ℂ) := by
+    intro a b
+    have h := hGl a b b a
+    rw [if_pos rfl, if_pos rfl] at h
+    have h2 := congrArg (fun T : Module.End ℂ M => T w) h
+    simp only [LinearMap.sub_apply, Module.End.mul_apply] at h2
+    rw [← inner_sub_right, h2, hdiag a, hdiag b, ← sub_smul, inner_smul_right, hww, mul_one]
+    push_cast; ring
+  have hR1 : ∀ a b, sR a b * ‖E b a w‖ ^ 2 - sR b a * ‖E a b w‖ ^ 2 = Λ a - Λ b := by
+    intro a b
+    have h := hC a b
+    rw [hQ a b, hQ b a, ← Complex.ofReal_sub] at h
+    exact_mod_cast h
+  have hR2 : ∀ a, ‖E a a w‖ ^ 2 = Λ a ^ 2 := by
+    intro a
+    rw [hdiag a, norm_smul, hw1, mul_one, Complex.norm_real, Real.norm_eq_abs, sq_abs]
+  have hR3 : ∀ a b, a < b → ε a = ε b → ‖E a b w‖ ^ 2 = 0 := by
+    intro a b hab he; rw [hup a b hab he]; simp
+  have hcasR : casVal lam = ∑ a, ∑ b, sR a b * ‖E b a w‖ ^ 2 := by
+    have h1 : ⟪w, casimir E w⟫_ℂ = ∑ a, ∑ b, ⟪w, E a b (E b a w)⟫_ℂ := by
+      simp only [casimir, LinearMap.sum_apply, Module.End.mul_apply, inner_sum]
+    rw [hcas, inner_smul_right, hww, mul_one] at h1
+    simp only [hQ] at h1
+    exact_mod_cast h1
+  refine ⟨?_, ?_, ?_⟩
+  · intro a b hab he
+    have h := hR1 a b
+    have hs1 : sR a b = 1 := if_pos he
+    have hs2 : sR b a = 1 := if_pos he.symm
+    rw [hs1, hs2, hR3 a b hab he] at h
+    linarith
+  · intro a b hab he
+    have h := hR1 a b
+    have hs1 : sR a b = -1 := if_neg he
+    have hs2 : sR b a = -1 := if_neg (Ne.symm he)
+    rw [hs1, hs2] at h
+    linarith
+  · have hpt : ∀ a b, (if a < b then sR a b * ‖E b a w‖ ^ 2 + sR b a * ‖E a b w‖ ^ 2 else 0) =
+        (if a < b ∧ ε b = ε a then Λ a else 0) - (if a < b ∧ ε a = ε b then Λ b else 0)
+        - ((if a < b ∧ ε b ≠ ε a then Λ a else 0) - (if a < b ∧ ε a ≠ ε b then Λ b else 0))
+        - 2 * (if a < b ∧ ε a ≠ ε b then ‖E b a w‖ ^ 2 else 0) := by
+      intro a b
+      by_cases hab : a < b
+      · have h := hR1 a b
+        by_cases he : ε a = ε b
+        · have hs1 : sR a b = 1 := if_pos he
+          have hs2 : sR b a = 1 := if_pos he.symm
+          have h0 := hR3 a b hab he
+          rw [hs1, hs2, h0] at h
+          simp [hab, he, hs1, hs2, h0]
+          linarith
+        · have hs1 : sR a b = -1 := if_neg he
+          have hs2 : sR b a = -1 := if_neg (Ne.symm he)
+          rw [hs1, hs2] at h
+          simp [hab, he, Ne.symm he, hs1, hs2]
+          linarith
+      · simp [hab]
+    have hsw1 : ∑ a, ∑ b, (if b < a ∧ ε b = ε a then Λ a else 0) =
+        ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0) := Finset.sum_comm
+    have hsw2 : ∑ a, ∑ b, (if b < a ∧ ε b ≠ ε a then Λ a else 0) =
+        ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0) := Finset.sum_comm
+    have hA : 2 * ∑ a, Λ a * rhoC ε a = ∑ a, ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0)
+        - ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0) := by
+      rw [← hsw1, ← Finset.sum_sub_distrib, Finset.mul_sum]
+      refine Finset.sum_congr rfl (fun a _ => ?_)
+      have e1 : ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0) =
+          Λ a * ∑ b, (if a < b ∧ ε b = ε a then (1:ℝ) else 0) := by
+        rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)
+      have e2 : ∑ b, (if b < a ∧ ε b = ε a then Λ a else 0) =
+          Λ a * ∑ b, (if b < a ∧ ε b = ε a then (1:ℝ) else 0) := by
+        rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)
+      rw [e1, e2]
+      simp only [rhoC, Finset.natCast_card_filter]
+      ring
+    have hB : 2 * ∑ a, Λ a * rhoN ε a = ∑ a, ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0)
+        - ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0) := by
+      rw [← hsw2, ← Finset.sum_sub_distrib, Finset.mul_sum]
+      refine Finset.sum_congr rfl (fun a _ => ?_)
+      have e1 : ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0) =
+          Λ a * ∑ b, (if a < b ∧ ε b ≠ ε a then (1:ℝ) else 0) := by
+        rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)
+      have e2 : ∑ b, (if b < a ∧ ε b ≠ ε a then Λ a else 0) =
+          Λ a * ∑ b, (if b < a ∧ ε b ≠ ε a then (1:ℝ) else 0) := by
+        rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun b _ => by split_ifs <;> simp)
+      rw [e1, e2]
+      simp only [rhoN, Finset.natCast_card_filter]
+      ring
+    have hdiagsum : ∑ a, sR a a * ‖E a a w‖ ^ 2 = ∑ a, Λ a ^ 2 :=
+      Finset.sum_congr rfl (fun a _ => by rw [hR2 a, show sR a a = 1 from if_pos rfl, one_mul])
+    have hspl := double_sum_diag_split (fun a b => sR a b * ‖E b a w‖ ^ 2)
+    have hcasv : casVal lam = ∑ a, Λ a ^ 2 + (∑ a, ∑ b, (if a < b ∧ ε b = ε a then Λ a else 0)
+        - ∑ a, ∑ b, (if a < b ∧ ε a = ε b then Λ b else 0)
+        - (∑ a, ∑ b, (if a < b ∧ ε b ≠ ε a then Λ a else 0)
+          - ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then Λ b else 0))
+        - 2 * ∑ a, ∑ b, (if a < b ∧ ε a ≠ ε b then ‖E b a w‖ ^ 2 else 0)) := by
+      rw [hcasR, hspl, hdiagsum]
+      congr 1
+      rw [Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => hpt a b))]
+      simp only [Finset.sum_sub_distrib, ← Finset.mul_sum]
+    have hz : ∑ a, (Λ a ^ 2 + 2 * (Λ a * rhoC ε a) - 2 * (Λ a * rhoN ε a) - lam a * lam a
+        + (rhoN ε - rhoC ε) a * (rhoN ε - rhoC ε) a) = 0 :=
+      Finset.sum_eq_zero (fun a _ => by simp only [hΛ, lowK, Pi.add_apply, Pi.sub_apply]; ring)
+    simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum] at hz
+    simp only [Finset.sum_filter]
+    simp only [casVal, nsq, dot] at hcasv ⊢
+    linarith [hcasv, hz, hA, hB]
+
+end ReciprocityTheory.ChartRestriction.DS.Lap.Base
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.NoncompactLoweringNormSmall =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.NoncompactLoweringNormSmall", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.RaisingLoweringNormIdentities\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.DoubleSumDiagSplit\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -66,10 +256,10 @@ theorem one_le_highestWeightBoundConst {n : ℕ} (ε : Fin n → Bool) (d Λ₀ 
 theorem le_mul_of_sq_le_mul_sq {x C s : ℝ} (_hx : 0 ≤ x) (hC : 1 ≤ C) (hs : 1 ≤ s) (h : x ^ 2 ≤ C * s ^ 2) :
     x ≤ C * s := by
   have h1 : C * s ^ 2 ≤ (C * s) ^ 2 := by
-    nlinarith [mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ C - 1) (by linarith : (0:ℝ) ≤ C))
+    linarith [hs, mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ C - 1) (by linarith : (0:ℝ) ≤ C))
       (sq_nonneg s)]
   have h2 : 0 ≤ C * s := by positivity
-  nlinarith
+  exact (sq_le_sq₀ _hx h2).mp (h.trans h1)
 
 section Datum
 
@@ -134,22 +324,22 @@ theorem highest_weight_datum_bounds {d Λ₀ : Fin n → ℝ} {t : ℝ} (ht : 1 
     have e6 : t * |d b| ≤ t * S := mul_le_mul_of_nonneg_left (hdS b) ht0
     have e7 := hΛT a
     have e8 := hΛT b
-    have e9 : T ≤ T * t := by nlinarith
-    nlinarith
+    have e9 : T ≤ T * t := le_mul_of_one_le_right hT0 ht
+    linarith
   have hsqb : ∀ a b, a ≠ b → ‖E a b w‖ ^ 2 ≤ C * t := by
     intro a b hab
-    have hKt : |K0| ≤ |K0| * t := by nlinarith
+    have hKt : |K0| ≤ |K0| * t := le_mul_of_one_le_right hK0a ht
     rcases lt_or_gt_of_ne hab with h | h <;> by_cases he : ε a = ε b
     · rw [hup a b h he]; simp; positivity
     · have h1 := hI2 a b h he
       have h2 := noncompact_lowering_norm_small hw h he
       have h3 := hdiff a b
-      rw [h1]; nlinarith
+      rw [h1, hCe]; linarith
     · have h1 := hI1 b a h he.symm
       have h3 := hdiff b a
-      rw [h1]; nlinarith
+      rw [h1, hCe]; linarith [hK0a]
     · have h2 := noncompact_lowering_norm_small hw h (Ne.symm he)
-      nlinarith
+      rw [hCe]; linarith [mul_nonneg hS0 ht0, mul_nonneg hT0 ht0]
   have hsq1 : 1 ≤ Real.sqrt t := by
     rw [show (1:ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]; exact Real.sqrt_le_sqrt ht
   have hsq2 : Real.sqrt t ^ 2 = t := Real.sq_sqrt ht0
@@ -164,7 +354,7 @@ theorem highest_weight_datum_bounds {d Λ₀ : Fin n → ℝ} {t : ℝ} (ht : 1 
     · subst hab
       rw [if_pos rfl, hdg]
       have := hΛT a
-      nlinarith
+      linarith [hS0, hT0, hK0a, le_mul_of_one_le_right (show 0 ≤ C by linarith) hsq1]
     · rw [if_neg hab, zero_smul, sub_zero]
       exact le_mul_of_sq_le_mul_sq (norm_nonneg _) hC1 hsq1 (by rw [hsq2]; exact hsqb a b hab)
   refine ⟨?_, ?_, ?_⟩
@@ -172,7 +362,7 @@ theorem highest_weight_datum_bounds {d Λ₀ : Fin n → ℝ} {t : ℝ} (ht : 1 
     rcases hab with ⟨h, he, -⟩ | ⟨h, he⟩
     · rw [hup a b h he, norm_zero]; linarith
     · have h2 := noncompact_lowering_norm_small hw h (Ne.symm he)
-      have := le_mul_of_sq_le_mul_sq (norm_nonneg (E a b w)) hC1 le_rfl (by nlinarith)
+      have := le_mul_of_sq_le_mul_sq (norm_nonneg (E a b w)) hC1 le_rfl (by linarith [hS0, hT0])
       linarith
   · intro a b hab
     obtain ⟨he, hd⟩ := hab
@@ -190,7 +380,7 @@ theorem highest_weight_datum_bounds {d Λ₀ : Fin n → ℝ} {t : ℝ} (ht : 1 
         have e8 := hΛT b
         have e3 := neg_abs_le (Λ₀ a)
         have e4 := le_abs_self (Λ₀ b)
-        have := le_mul_of_sq_le_mul_sq (norm_nonneg (E a b w)) hC1 le_rfl (by rw [h1]; nlinarith)
+        have := le_mul_of_sq_le_mul_sq (norm_nonneg (E a b w)) hC1 le_rfl (by rw [h1]; linarith [hS0, hK0a])
         linarith
   · intro X
     have key : actM E X w - ((t : ℂ) * trace (dMat d * X)) • w =
@@ -228,3 +418,7 @@ theorem b2 : HighestWeightVectorUniformBounds := by
   exact highest_weight_datum_bounds ht hw hΛ
 
 end ReciprocityTheory.ChartRestriction.DS.Lap.Base
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.NoncompactLoweringNormSmall =====

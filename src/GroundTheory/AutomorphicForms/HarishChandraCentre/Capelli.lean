@@ -2,49 +2,6 @@ module
 
 public import GroundTheory.AutomorphicForms.HarishChandraCentre.MemCenterOfCommuteE
 public import Mathlib.LinearAlgebra.Matrix.Trace
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.EMulSubMulCapelliMatrixPow
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -56,11 +13,38 @@ noncomputable def capelliMatrix : Matrix (Fin n) (Fin n) (U n) := fun i j => e (
 
 noncomputable def capelli (k : ℕ) : U n := Matrix.trace (capelliMatrix ^ k)
 
+/-- Commutation relation between the generator `e (a, b)` and an entry of `capelliMatrix ^ k`. -/
 theorem e_mul_sub_mul_capelliMatrix_pow (a b : Fin n) (k : ℕ) (c d : Fin n) :
     e (a, b) * (capelliMatrix ^ k) c d - (capelliMatrix ^ k) c d * e (a, b) =
       (if b = c then (capelliMatrix ^ k) a d else 0) -
-        (if d = a then (capelliMatrix ^ k) c b else 0) :=
-  _root_.UpperTheory.Reformulated.B.Qk36.e_mul_sub_mul_capelliMatrix_pow a b k c d
+        (if d = a then (capelliMatrix ^ k) c b else 0) := by
+  induction k generalizing d with
+  | zero =>
+    simp only [pow_zero, Matrix.one_apply, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul,
+      sub_self]
+    by_cases h1 : b = c <;> by_cases h2 : d = a <;>
+      simp [h1, h2, eq_comm (a := a), eq_comm (a := c)]
+  | succ k ih =>
+    have hstep (j : Fin n) :
+        e (a, b) * ((capelliMatrix ^ k) c j * capelliMatrix j d) -
+          (capelliMatrix ^ k) c j * capelliMatrix j d * e (a, b) =
+        ((if b = c then (capelliMatrix ^ k) a j else 0) -
+          (if j = a then (capelliMatrix ^ k) c b else 0)) * capelliMatrix j d +
+        (capelliMatrix ^ k) c j *
+          ((if b = j then capelliMatrix a d else 0) -
+            (if d = a then capelliMatrix j b else 0)) := by
+      have hcomm : e (a, b) * capelliMatrix j d - capelliMatrix j d * e (a, b) =
+          (if b = j then capelliMatrix a d else 0) - (if d = a then capelliMatrix j b else 0) :=
+        e_mul_sub_mul (a, b) (j, d)
+      rw [← ih j, ← hcomm]
+      simp only [sub_mul, mul_sub, mul_assoc, sub_add_sub_cancel]
+    simp only [pow_succ, Matrix.mul_apply]
+    rw [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib,
+      Finset.sum_congr rfl fun j _ => hstep j]
+    simp only [sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul, mul_ite,
+      zero_mul, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
+    by_cases h1 : b = c <;> by_cases h2 : d = a <;>
+      simp only [h1, h2, ite_true, ite_false, Finset.sum_const_zero] <;> abel
 
 theorem capelli_mem_center (k : ℕ) : capelli (n := n) k ∈ Subalgebra.center ℂ (U n) := by
   apply mem_center_of_commute_e

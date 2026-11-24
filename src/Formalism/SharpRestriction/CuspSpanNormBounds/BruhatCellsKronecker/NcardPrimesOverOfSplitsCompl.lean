@@ -59,12 +59,9 @@ section General
 private theorem absNorm_eq_prime_pow_of_natCast_mem (K : Type) [Field K] [NumberField K] {g : ℕ} (hg : g.Prime)
     (P : Ideal (𝓞 K)) [hP : P.IsMaximal] (hgP : ((g : ℕ) : 𝓞 K) ∈ P) :
     ∃ m, 0 < m ∧ Ideal.absNorm P = g ^ m := by
-  have h1 : (Ideal.absNorm P : ℤ) ∣ Algebra.norm ℤ ((g : ℕ) : 𝓞 K) := Ideal.absNorm_dvd_norm_of_mem hgP
-  have h2 : Algebra.norm ℤ ((g : ℕ) : 𝓞 K) = (g : ℤ) ^ Module.finrank ℤ (𝓞 K) := by
-    rw [← map_natCast (algebraMap ℤ (𝓞 K)), Algebra.norm_algebraMap]
-  rw [h2] at h1
-  have h3 : Ideal.absNorm P ∣ g ^ Module.finrank ℤ (𝓞 K) := by exact_mod_cast h1
-  obtain ⟨m, -, hm⟩ := (Nat.dvd_prime_pow hg).mp h3
+  have h1 := Ideal.absNorm_dvd_norm_of_mem hgP
+  rw [← map_natCast (algebraMap ℤ (𝓞 K)), Algebra.norm_algebraMap] at h1
+  obtain ⟨m, -, hm⟩ := (Nat.dvd_prime_pow hg).mp (by exact_mod_cast h1)
   refine ⟨m, Nat.pos_of_ne_zero ?_, hm⟩
   rintro rfl
   rw [pow_zero, Ideal.absNorm_eq_one_iff] at hm
@@ -99,12 +96,10 @@ theorem splitsCompl_down (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   · intro hsq2
     apply hsq
     have hle : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) P ≤ Q := Ideal.map_le_iff_le_comap.mpr hPQ.le
-    have h2 : algebraMap (𝓞 F) (𝓞 E) ((g : ℕ) : 𝓞 F) ∈ Q ^ 2 := by
-      rw [sq] at hsq2 ⊢
-      have h3 := Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hsq2
-      rw [Ideal.map_mul] at h3
-      exact Ideal.mul_mono hle hle h3
-    simpa using h2
+    rw [sq] at hsq2 ⊢
+    have h3 := Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hsq2
+    rw [Ideal.map_mul] at h3
+    simpa using Ideal.mul_mono hle hle h3
 
 variable (K : Type) [Field K] [NumberField K]
 
@@ -133,8 +128,7 @@ theorem card_primesOver {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) :
     simpa [Ideal.under_def] using h1
   have hne : P ≠ ⊥ := by
     rintro rfl
-    simp only [Submodule.mem_bot, Nat.cast_eq_zero] at hgP
-    exact hg.ne_zero hgP
+    exact hg.ne_zero (by simpa only [Submodule.mem_bot, Nat.cast_eq_zero] using hgP)
   have hmax : P.IsMaximal := Ring.DimensionLEOne.maximalOfPrime hne hPp
   obtain ⟨hN, hsq⟩ := h P hmax hgP
   have he : (Ideal.span {(g : ℤ)}).ramificationIdx' P = 1 := by
@@ -146,10 +140,7 @@ theorem card_primesOver {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) :
   have hf : (Ideal.span {(g : ℤ)}).inertiaDeg' P = 1 := by
     have h1 := Ideal.absNorm_eq_pow_inertiaDeg' P hg
     rw [hN] at h1
-    have h2 : g ^ (Ideal.span {(g : ℤ)}).inertiaDeg' P = g ^ 1 := by
-      rw [pow_one]
-      exact h1.symm
-    exact Nat.pow_right_injective hg.two_le h2
+    exact Nat.pow_right_injective hg.two_le (by simpa using h1.symm)
   rw [he, hf]
 
 theorem image_plOver {g : ℕ} (hg : g.Prime) :
@@ -162,8 +153,7 @@ theorem image_plOver {g : ℕ} (hg : g.Prime) :
     refine ⟨v.isPrime, ⟨?_⟩⟩
     refine (span_isMaximal hg).eq_of_le (Ideal.comap_ne_top _ v.isPrime.ne_top) ?_
     rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]
-    have hv' : ((g : ℕ) : 𝓞 K) ∈ v.asIdeal := hv
-    simpa using hv'
+    simpa [plOver] using hv
   · rintro ⟨hPp, hPl⟩
     have hgP : ((g : ℕ) : 𝓞 K) ∈ P := by
       have h1 : (g : ℤ) ∈ P.under ℤ := hPl.over ▸ Ideal.mem_span_singleton_self _
@@ -177,8 +167,7 @@ theorem image_plOver {g : ℕ} (hg : g.Prime) :
 theorem injOn_asIdeal (s : Set (HeightOneSpectrum (𝓞 K))) : Set.InjOn HeightOneSpectrum.asIdeal s := fun _ _ _ _ h => HeightOneSpectrum.ext h
 
 theorem finite_plOver {g : ℕ} (hg : g.Prime) : (plOver K g).Finite := by
-  have h := image_plOver K hg
-  exact Set.Finite.of_finite_image (h ▸ Finset.finite_toSet _) (injOn_asIdeal K _)
+  exact Set.Finite.of_finite_image (image_plOver K hg ▸ Finset.finite_toSet _) (injOn_asIdeal K _)
 
 theorem ncard_plOver {g : ℕ} (hg : g.Prime) (h : SplitsCompl K g) : (plOver K g).ncard = Module.finrank ℚ K := by
   rw [← (injOn_asIdeal K _).ncard_image, image_plOver K hg, Set.ncard_coe_finset,
@@ -213,8 +202,7 @@ section Record
 variable (D : D7)
 
 theorem finrank_hostF_eq : Module.finrank ℚ D.host.F = D.R.f := by
-  rw [D.host.der.finrank_F]
-  rfl
+  exact D.host.der.finrank_F
 
 theorem typedPl_eq : typedPl D = plOver D.host.F (D.host.g 0) ∪ plOver D.host.F (D.host.g 1) := rfl
 
@@ -230,8 +218,7 @@ theorem finprod_typedPl (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 
 theorem gaG_eq (h0 : SplitsE D (D.host.g 0)) (h1 : SplitsE D (D.host.g 1)) :
     gaG D = (∏ i ∈ Finset.Icc 1 D.R.k, ((D.host.g 0 : ℝ) ^ i - 1)) ^ D.R.f *
       (∏ i ∈ Finset.Icc 1 D.R.k, ((D.host.g 1 : ℝ) ^ i - 1)) ^ D.R.f := by
-  unfold gaG
-  exact finprod_typedPl D h0 h1 (fun x : ℝ => ∏ i ∈ Finset.Icc 1 D.R.k, (x ^ i - 1))
+  simpa [gaG] using finprod_typedPl D h0 h1 (fun x : ℝ => ∏ i ∈ Finset.Icc 1 D.R.k, (x ^ i - 1))
 
 end Record
 

@@ -149,7 +149,7 @@ theorem finite_range {O M : Type} [AddCommGroup O] [Module.Finite ℤ O] [CommGr
   let φ : Multiplicative O →* M := MonoidHom.mk' (fun x => f x.toAdd) fun x y => hf _ _
   have : AddGroup.FG O := Module.Finite.iff_addGroup_fg.1 inferInstance
   have : Group.FG φ.range := inferInstance
-  have : Finite φ.range := CommGroup.finite_of_fg_torsion _ (by
+  have : Finite φ.range := CommGroup.finite_of_fg_isMulTorsion _ (by
     rintro ⟨_, a, rfl⟩
     exact isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, Subtype.ext (h _)⟩)
   exact Set.Finite.subset (Set.toFinite (φ.range : Set M)) (by rintro _ ⟨a, rfl⟩; exact ⟨Multiplicative.ofAdd a, rfl⟩)

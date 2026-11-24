@@ -5,44 +5,6 @@ public import Formalism.HermitianCurvature.StatementMA
 public import Formalism.HermitianCurvature.StatementTop
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdmissibleRecOfAdmissibleWord
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHat
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGaugeCut
 
 @[expose] public section
@@ -196,7 +158,7 @@ theorem word_tied {X : Q.ActualOps P.k P.r z z' π π'} {μ : Measure (Mt P.k P.
       rwa [Matrix.conjTranspose_apply] at this
     rw [h1, h2]
     exact one b a
-  have hrec := admissible_rec_of_admissible _ S _ L st w hw
+  have hrec := _root_.Formalism.FourierDecayAlt.P.Fr2.admissible_rec_of_admissible_word _ S _ L st w hw
   have hfr := (ofWord_rel (tiedRel_invClosed τ) hF hSL hMs hst hMst hq hinv hQQ w hrec).2
   have hsite : ∀ l, (intertwiningRelation τ).Site (P5.site L l) (MA.siteA P (MA.DQ P) l) := fun l => by
     refine ⟨?_, ?_, ?_⟩

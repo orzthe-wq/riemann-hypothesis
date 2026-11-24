@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactlySupportedBanachModel
 
 @[expose] public section
 
@@ -82,13 +83,7 @@ theorem hpk_mulVec (x : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     · intro h'; exact absurd (Finset.mem_univ _) h'
 
 theorem hpk_symm' : (Hpk k r)ᵀ = Hpk k r := by
-  apply GlobalTheory.DualFRep.gram_transpose <;> assumption
-
-theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
-  ext i j
-  rw [conjTranspose_apply, ← transpose_apply (Hpk k r) j i, hpk_symm']
-  unfold Hpk
-  split_ifs <;> simp
+  apply GlobalTheory.DualFRep.gram_transpose
 
 theorem herm_eq (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x y = ∑ i, star (y i) * (Hpk k r *ᵥ x) i := rfl
@@ -119,11 +114,6 @@ theorem herm_zero_left (y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) 0 y = 
 theorem herm_zero_right (x : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) x 0 = 0 := by
   simp [herm]
 
-theorem herm_swap (x y : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) x y = star (herm (Hpk k r) y x) := by
-  simp only [herm]
-  rw [star_dotProduct, star_mulVec, hpk_conjT, dotProduct_mulVec]
-
 theorem herm_skew {ξ : B.Mat k r} (hξ : B.inLie k r ξ) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (ξ *ᵥ x) y = -herm (Hpk k r) x (ξ *ᵥ y) := by
   have h : ξᴴ * Hpk k r = -(Hpk k r * ξ) := eq_neg_of_add_eq_zero_left hξ
@@ -136,7 +126,7 @@ theorem trace_xuv (ξ : B.Mat k r) (u v : Fin (2 * r + k + 1) → ℂ) :
       Matrix.trace (ξ * vecMulVec a (star (Hpk k r *ᵥ b))) = herm (Hpk k r) (ξ *ᵥ a) b := by
     intro a b
     have hb : star (Hpk k r *ᵥ b) = star b ᵥ* Hpk k r := by
-      rw [star_mulVec, hpk_conjT]
+      rw [star_mulVec, _root_.Formalism.FourierDecayAlt.P.Ux1.hpk_herm]
     rw [hb, herm, dotProduct_mulVec]
     simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, vecMulVec_apply, dotProduct, mulVec]
     refine Finset.sum_congr rfl (fun i _ => ?_)

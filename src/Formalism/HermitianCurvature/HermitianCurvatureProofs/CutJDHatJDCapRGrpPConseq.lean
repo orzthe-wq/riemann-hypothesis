@@ -385,7 +385,7 @@ theorem jDRConseq_of (hP : JDRPComm) (hC : JDRCont) : JDRConseq := by
     have hsmooth : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun c' => Φ c' x) {c' | c' ∈ OmX r ∧ x ∈ Dc c'} :=
       fun c' hc' => (cq_contDiffAt hFam.1 hc' hx.1).contDiffWithinAt
     exact hC (Wq →L[ℂ] Wp) r Y _ hOx (fun c' hc' => hc'.1) (fun c' => Φ c' x) hsmooth c ⟨hc, hx.2⟩ b
-  simp only [Pi.neg_apply, Pi.add_apply]
+  simp only [Pi.add_apply]
   rw [hsw 0, hsw 1]
 
 end main

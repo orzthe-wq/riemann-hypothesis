@@ -99,11 +99,11 @@ theorem bdet_frameEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     | inl r' =>
       show inclR (F := F) (E := E) (AF F)
         (∑ k, Matrix.fromRows (1 : Matrix (Fin n) (Fin n) E) 1 (Sum.inl r') k * t₀.1 k j) = _
-      simp [diagCols, Matrix.mul_apply, Matrix.one_apply, Fintype.sum_sum_type]
+      simp [diagCols, Matrix.mul_apply, Matrix.one_apply]
     | inr r' =>
       show inclR (F := F) (E := E) (AF F)
         (∑ k, Matrix.fromRows (1 : Matrix (Fin n) (Fin n) E) 1 (Sum.inr r') k * t₀.1 k j) = _
-      simp [diagCols, Matrix.mul_apply, Matrix.one_apply, Fintype.sum_sum_type]
+      simp [diagCols, Matrix.mul_apply, Matrix.one_apply]
   rw [GlobalTheory.CompanionTheory.RgEisLevi.bdet_inl Set.univ _ (t₀A⁻¹ * t * t₀A) hent, GlobalTheory.CompanionTheory.RgEis.bdet_univ,
     map_mul, map_mul, mul_comm, ← mul_assoc, map_inv, mul_inv_cancel, one_mul]
 

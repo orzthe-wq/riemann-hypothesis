@@ -1,33 +1,7 @@
 module
 
 public import Formalism.HermitianCurvature.StatementJ
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Analysis.Matrix.PosDef
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -40,9 +14,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -65,9 +36,7 @@ end psd
 
 theorem ones_psd {α : Type} (F : Finset α) : TB.PSDOn F (fun _ _ : α => (1 : ℂ)) := by
   unfold TB.PSDOn
-  have := Matrix.posSemidef_vecMulVec_self_star (fun _ : F => (1 : ℂ))
-  convert this using 1
-  ext x y; simp [Matrix.vecMulVec]
+  simpa [Matrix.vecMulVec] using Matrix.posSemidef_vecMulVec_self_star (fun _ : F => (1 : ℂ))
 
 theorem zero_psd {α : Type} (F : Finset α) : TB.PSDOn F (fun _ _ : α => (0 : ℂ)) := by
   unfold TB.PSDOn; exact Matrix.PosSemidef.zero
@@ -135,55 +104,37 @@ variable {α : Type}
 theorem quadM (F : Finset α) (k : α → α → ℂ) (a : α → ℂ) :
     star (fun x : F => a x) ⬝ᵥ (Matrix.of fun x y : F => k x y) *ᵥ (fun x : F => a x) =
       ∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y := by
-  simp only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]
-  rw [← Finset.sum_coe_sort F (fun x => ∑ y ∈ F, conj (a x) * k x y * a y)]
-  apply Finset.sum_congr rfl; intro x _
-  rw [← Finset.sum_coe_sort F (fun y => conj (a x) * k x y * a y)]
-  apply Finset.sum_congr rfl; intro y _
-  simp only [RCLike.star_def]; ring
+  simp only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply,
+    Complex.star_def, Finset.mul_sum, ← mul_assoc]
+  rw [← Finset.sum_coe_sort F]
+  exact Finset.sum_congr rfl fun _ _ => by rw [← Finset.sum_coe_sort F]
 
 theorem conj_quad (F : Finset α) (k : α → α → ℂ) (hh : ∀ x ∈ F, ∀ y ∈ F, k y x = conj (k x y)) (a : α → ℂ) :
     conj (∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y) = ∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y := by
-
-  rw [map_sum, Finset.sum_comm]
-
-  simp only [map_sum]
-  rw [Finset.sum_comm]
-  conv_rhs => rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl; intro x hx
-  apply Finset.sum_congr rfl; intro y hy
-  rw [map_mul, map_mul, Complex.conj_conj, ← hh y hy x hx]; ring
+  have hH : (Matrix.of fun i j : F => k i j).IsHermitian :=
+    Matrix.IsHermitian.ext fun i j => (hh j j.2 i i.2).symm
+  rw [← quadM, Complex.conj_eq_iff_im]
+  exact hH.im_star_dotProduct_mulVec_self (fun x : F => a x)
 
 theorem tb_iff_ta (F : Finset α) (k : α → α → ℂ) : TB.PSDOn F k ↔ TA.PSDOn F k := by
   classical
-  unfold TB.PSDOn TA.PSDOn
+  let M : Matrix F F ℂ := Matrix.of fun i j : F => k i j
+  change M.PosSemidef ↔ _
+  unfold TA.PSDOn
   rw [Matrix.posSemidef_iff_dotProduct_mulVec]
   constructor
   · rintro ⟨hH, hp⟩
-    refine ⟨?_, ?_⟩
-    · intro x hx y hy
-      have := congrFun (congrFun hH ⟨y, hy⟩) ⟨x, hx⟩
-      simp only [Matrix.conjTranspose_apply, Matrix.of_apply, RCLike.star_def] at this
-      exact this.symm
-    · intro a
-      have := hp (fun x : F => a x)
-      rw [quadM] at this
-      exact (Complex.le_def.1 this).1
+    refine ⟨fun x hx y hy => (hH.apply ⟨y, hy⟩ ⟨x, hx⟩).symm, fun a => ?_⟩
+    simpa only [M, quadM, Complex.zero_re] using (Complex.le_def.mp (hp (fun i : F => a i))).1
   · rintro ⟨hh, hp⟩
-    refine ⟨?_, ?_⟩
-    · ext x y
-      simp only [Matrix.conjTranspose_apply, Matrix.of_apply, RCLike.star_def]
-      exact (hh y y.2 x x.2).symm
-    · intro x
-      let a : α → ℂ := fun z => if h : z ∈ F then x ⟨z, h⟩ else 0
-      have hx : x = fun z : F => a z := by
-        ext z; simp [a]
-      rw [hx, quadM]
-      rw [Complex.le_def]
-      refine ⟨hp a, ?_⟩
-      have := conj_quad F k hh a
-      rw [Complex.conj_eq_iff_im] at this
-      simpa using this.symm
+    have hH : M.IsHermitian := Matrix.IsHermitian.ext fun i j => (hh j j.2 i i.2).symm
+    refine ⟨hH, fun x => Complex.le_def.mpr ⟨?_, ?_⟩⟩
+    · let a : α → ℂ := fun i => if h : i ∈ F then x ⟨i, h⟩ else 0
+      have hx : (fun i : F => a i) = x := funext fun i => dite_eq_left i.2
+      have hr := hp a
+      rw [← quadM, hx] at hr
+      exact hr
+    · simpa using (hH.im_star_dotProduct_mulVec_self x).symm
 
 theorem quad1 [DecidableEq α] (F : Finset α) (k : α → α → ℂ) (x : α) (hx : x ∈ F) :
     ∑ u ∈ F, ∑ v ∈ F, (if u = x then (1 : ℂ) else 0) * conj (if v = x then (1 : ℂ) else 0) * k u v = k x x := by
@@ -267,38 +218,27 @@ theorem psd_mono {F G : Finset α} (h : F ⊆ G) {k : α → α → ℂ} (hk : T
 
 theorem psd_diag {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x : α} (hx : x ∈ F) :
     (k x x).im = 0 ∧ 0 ≤ (k x x).re := by
-  classical
-  have h2 := (psdOn_iff_isPSD F k).1 hk (fun u => if u = x then 1 else 0)
-  have h1 := quad1 F k x hx
-  beta_reduce at h2
-  rw [h1] at h2
-  exact h2
+  have hd := Complex.le_def.mp (Matrix.PosSemidef.diag_nonneg hk (i := ⟨x, hx⟩))
+  exact ⟨by simpa using hd.2.symm, by simpa using hd.1⟩
 
 theorem psd_off {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x y : α} (hx : x ∈ F) (hy : y ∈ F) :
     ‖k x y‖ ≤ (k x x).re + (k y y).re := by
   classical
-  obtain ⟨ix, rx⟩ := psd_diag hk hx
-  obtain ⟨iy, ry⟩ := psd_diag hk hy
-  have hn := Complex.norm_le_abs_re_add_abs_im (k x y)
-  by_cases hxy : x = y
-  · subst hxy
-    rw [ix, abs_zero, add_zero, abs_of_nonneg rx] at hn
-    linarith
-  · have hherm : k y x = conj (k x y) := ((tb_iff_ta F k).1 hk).1 x hx y hy
-    have q := fun c : ℂ => ((psdOn_iff_isPSD F k).1 hk (fun u => if u = x then 1 else if u = y then c else 0)).2
-    have e := fun c : ℂ => quad2 F k x y hx hy hxy c
-    have q1 := q 1
-    have q2 := q (-1)
-    have q3 := q Complex.I
-    have q4 := q (-Complex.I)
-    beta_reduce at q1 q2 q3 q4
-    rw [e, hherm] at q1 q2 q3 q4
-    simp at q1 q2 q3 q4
-    have a1 : |(k x y).re| ≤ ((k x x).re + (k y y).re) / 2 := by
-      rw [abs_le]; constructor <;> linarith
-    have a2 : |(k x y).im| ≤ ((k x x).re + (k y y).re) / 2 := by
-      rw [abs_le]; constructor <;> linarith
-    linarith
+  let M : Matrix F F ℂ := Matrix.of fun i j : F => k i j
+  have hM : M.PosSemidef := hk
+  let u : F → ℂ := Pi.single ⟨x, hx⟩ 1
+  let v : F → ℂ := Pi.single ⟨y, hy⟩ 1
+  have hpair (i j : F) : (M *ᵥ Pi.single j 1) ⬝ᵥ star (Pi.single i 1) = k i j := by
+    simp [M, Pi.star_single]
+  let instGroup : SeminormedAddCommGroup (F → ℂ) := M.toSeminormedAddCommGroup hM
+  let instInner : InnerProductSpace ℂ (F → ℂ) := M.toInnerProductSpace hM
+  let nu := @norm _ instGroup.toNorm u
+  let nv := @norm _ instGroup.toNorm v
+  have hcs : ‖(M *ᵥ v) ⬝ᵥ star u‖ ≤ nu * nv := norm_inner_le_norm (𝕜 := ℂ) u v
+  have hxx : nu ^ 2 = ((M *ᵥ u) ⬝ᵥ star u).re := norm_sq_eq_re_inner (𝕜 := ℂ) u
+  have hyy : nv ^ 2 = ((M *ᵥ v) ⬝ᵥ star v).re := norm_sq_eq_re_inner (𝕜 := ℂ) v
+  simp only [u, v, hpair] at hcs hxx hyy
+  nlinarith [sq_nonneg (nu - nv), norm_nonneg (k x y)]
 
 theorem closed_and {X : Type} [TopologicalSpace X] {p q : X → Prop} (hp : IsClosed {x | p x})
     (hq : IsClosed {x | q x}) : IsClosed {x | p x ∧ q x} := hp.inter hq
@@ -490,13 +430,11 @@ theorem t_OutsideDomination : OutsideDomination := by
   congr 1
   by_cases h : t ∈ ⨅ p, L p
   · rw [if_pos h]
-    have h' : ∀ p, t ∈ L p := AddSubgroup.mem_iInf.1 h
-    exact Finset.prod_eq_one fun p _ => if_pos (h' p)
+    exact Finset.prod_eq_one fun p _ => if_pos (AddSubgroup.mem_iInf.1 h p)
   · rw [if_neg h]
-    have : ∃ p, t ∉ L p := by
-      by_contra hc
-      exact h (AddSubgroup.mem_iInf.2 fun p => by_contra fun hp => hc ⟨p, hp⟩)
-    obtain ⟨p, hp⟩ := this
+    rw [AddSubgroup.mem_iInf] at h
+    push Not at h
+    obtain ⟨p, hp⟩ := h
     exact Finset.prod_eq_zero (Finset.mem_univ p) (if_neg hp)
 
 theorem t_PhaseOk : PhaseOk := by
@@ -524,13 +462,5 @@ end Formalism.FourierDecayAlt.P.Jx8
 namespace Formalism.FourierDecayAlt.P
 
 theorem scaling_bound : Formalism.FourierDecayAlt.J.ScaleOk := Jx8.t_ScaleOk Jx8.t_DiagScale
-
-theorem phaseOk_statement : Formalism.FourierDecayAlt.J.PhaseOk := Jx8.t_PhaseOk
-
-theorem outside_systems_bound : Formalism.FourierDecayAlt.J.OutsideSysOk := Jx8.t_OutsideSysOk
-
-theorem outside_domination : Formalism.FourierDecayAlt.J.OutsideDomination := Jx8.t_OutsideDomination
-
-theorem uniform_majorant_on : Formalism.FourierDecayAlt.J.UniformMajorantOn := Jx8.t_UniformMajorantOn
 
 end Formalism.FourierDecayAlt.P

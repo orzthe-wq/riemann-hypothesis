@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.Uniformised
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKerStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUniqueStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHolPeriods
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagFormTwoSmulAndKer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairingComplexValueUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -298,7 +300,7 @@ theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Comm
       have hw := hweil n (f n a) (f n a')
         (Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF (f n a) (f n a') : ℂ) / n)) (Complex.exp_ne_zero _))
         hn rfl
-      have hu := GlobalTheory.T.weilPairing_complex_value_unique (Sp ℂ) o.A D.g o.ab h _ hL (𝟙 _) n _ _ _ _ hiso hw
+      have hu := _root_.GlobalTheory.WeilComplexUnique.weilIs_unitOn_unique_complex (Sp ℂ) o.A D.g o.ab h _ hL (𝟙 _) n _ _ _ _ hiso hw
       have hu' := congrArg (fun u : ℂˣ => (u : ℂ)) hu
       simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0] at hu'
       rw [(hν n hn hnp).2, ← Complex.exp_int_mul] at hu'
@@ -313,7 +315,7 @@ theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Comm
       rw [hpl]
       exact hd
   ·
-    obtain ⟨E₁, hE, hcrit⟩ := GlobalTheory.T.diag_form_two_smul_and_ker_alt o.A D.g o.ab h o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample e D'.La P D'.EF
+    obtain ⟨E₁, hE, hcrit⟩ := _root_.GlobalTheory.SymBirig.diag_form_two_smul_and_ker o.A D.g o.ab h o.P o.isLB o.rig₁ o.rig₂ o.symm o.ample e D'.La P D'.EF
       hexp hinj hker hweil
     obtain ⟨ee, hee, hkerP⟩ := o.kerP
     have hE₁ : ∀ x, E₁ x = 0 → x = 0 := fun x hx => D'.nondeg x fun y => by
@@ -328,7 +330,7 @@ theorem unifAt_cls : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [Comm
     obtain ⟨w, hw⟩ := (unifCls_unit_iff e P hker hinj hk _).1 hpow'
     refine ⟨w, LinearMap.ext fun y => ?_⟩
     have h1 := congrArg (fun x => E₁ x y) hw
-    simp only [map_nsmul, LinearMap.smul_apply, ha, smul_eq_mul, nsmul_eq_mul] at h1
+    simp only [map_nsmul, LinearMap.smul_apply, ha, nsmul_eq_mul] at h1
     have hk0 : (k : ℤ) ≠ 0 := by exact_mod_cast hk.ne'
     apply mul_left_cancel₀ hk0
     simp only [LinearMap.smul_apply, nsmul_eq_mul]

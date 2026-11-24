@@ -1,8 +1,11 @@
 module
 
 public import Formalism.HermitianCurvature.BesselNonvanishingReduction
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFrameConjUnitaryBlockEqUnitaryComplementStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsHighestWeightIrreducibleUnitaryRepUStatement
+public import Formalism.FormalDegreeBessel.StatementG
+public import Formalism.PeriodIntegrals.IsLowUnitH
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFrameConjUnitaryBlockEqUnitaryComplement
+public import Formalism.PeriodIntegrals.UpqRep
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsHighestWeightIrreducibleUnitaryRepU
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HighestWeightUniqueness.UnitaryOfBlockWMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -64,14 +67,14 @@ theorem besType_continuous_blockW (k r : ℕ) : Continuous (PI.UpqRep.blockW k r
 
 theorem besType_hcParam : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → Q.IsType k r z π u → ∃ u₀, PI.UpqRep.IsHCTypeW k r z u₀ π := by
   intro k r Wp _ _ _ z π u hz hT hπ
-  obtain ⟨g, hg, hin, honto⟩ := GlobalTheory.T.exists_frame_conj_unitaryBlock_eq_unitaryComplement k r z hz hT
+  obtain ⟨g, hg, hin, honto⟩ := _root_.GlobalTheory.BesselFrame.frame_exists k r z hz hT
   obtain ⟨hnt, ⟨h1, hmul⟩, hcont, hnorm, hirr, -⟩ := hπ
   have hgg : g * g⁻¹ = 1 := PI.HwUniqW.mul_inv_UH hg.1
   have hgg' : g⁻¹ * g = 1 := PI.HwUniqW.inv_mul_UH' hg.1
   have hc : Continuous (fun x : Matrix (Fin k) (Fin k) ℂ => g * PI.UpqRep.blockW k r x * g⁻¹) :=
     (continuous_const.matrix_mul (besType_continuous_blockW k r)).matrix_mul continuous_const
   haveI := hnt
-  obtain ⟨u₀, hu₀⟩ := GlobalTheory.T.exists_highestWeight_irreducible_unitaryRep_U k Wp (fun x => π (g * PI.UpqRep.blockW k r x * g⁻¹))
+  obtain ⟨u₀, hu₀⟩ := _root_.GlobalTheory.UnitaryHighestWeight.exists_isHCTypeU k Wp (fun x => π (g * PI.UpqRep.blockW k r x * g⁻¹))
     (by
       refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
       · show π (g * PI.UpqRep.blockW k r 1 * g⁻¹) = 1

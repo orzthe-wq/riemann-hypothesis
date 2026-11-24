@@ -60,6 +60,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjugateEmbApply
 
 @[expose] public section
 
@@ -86,9 +87,7 @@ def cjO {R : Ranks} (H : Host R) : 𝓞 H.E →+* 𝓞 H.E := RingOfIntegers.map
 
 theorem cjO_coe {R : Ranks} (H : Host R) (x : 𝓞 H.E) : (cjO H x : H.E) = H.conj x := rfl
 
-theorem conj_conj {R : Ranks} (H : Host R) (x : H.E) : H.conj (H.conj x) = x := by
-  letI := H.cmStar
-  rw [← bridge_star_holds R H, ← bridge_star_holds R H, star_star]
+alias conj_conj := _root_.Formalism.MainNotions.UnusedSlot33.HK.conj_conj
 
 theorem exists_orient {R : Ranks} (H : Host R) {p : ℕ} (hp : p.Prime) {a : 𝓞 H.E} (hK : (a : H.E) ∈ H.K)
     (hn : (a : H.E) * H.conj a = p) (𝔭 : HeightOneSpectrum (𝓞 H.K)) (h𝔭 : (p : 𝓞 H.K) ∈ 𝔭.asIdeal) :
@@ -165,11 +164,6 @@ theorem root_mem {K : Type} [Field K] (σ : K →+* ℂ) {n : ℕ} (hn : n ≠ 0
   obtain ⟨i, -, hi⟩ := (Complex.isPrimitiveRoot_exp n hn).eq_pow_of_pow_eq_one hz
   exact ⟨x ^ i, by rw [map_pow, hx, hi]⟩
 
-theorem isAlgebraic_exp (n : ℕ) : IsAlgebraic ℚ (Complex.exp (2 * Real.pi * Complex.I / n)) := by
-  rcases Nat.eq_zero_or_pos n with rfl | h
-  · simpa using isAlgebraic_one
-  · exact ((Complex.isPrimitiveRoot_exp n h.ne').isIntegral h).tower_top.isAlgebraic
-
 def Holds {E K : Type} [Field E] [NumberField E] [Field K] (σ : K →+* ℂ) (n : ℕ) (ξ : HChar E) : Prop :=
   (∀ a, ((ξ.1 a : ℂˣ) : ℂ) ∈ σ.range) ∧ ∀ P, ¬ ξ.UnrAt P →
     (∃ s : K, s ^ 2 = (Ideal.absNorm P.asIdeal : K)) ∧ ∃ ζ : K, IsPrimitiveRoot ζ (Ideal.absNorm P.asIdeal ^ n)
@@ -186,10 +180,10 @@ theorem exists_holds_one {E : Type} [Field E] [NumberField E] (n : ℕ) (ξ : HC
   let A := (UnrAe.finite_ramified ξ).toFinset.image fun P => Ideal.absNorm P.asIdeal
   refine ⟨insert (e N) (A.image r ∪ A.image fun q => e (q ^ n)), fun z hz => ?_, fun _ K _ σ hS => ⟨fun a => ?_, fun P hP => ?_⟩⟩
   · rcases Finset.mem_insert.1 hz with rfl | hz
-    · exact isAlgebraic_exp _
+    · exact _root_.GlobalTheory.Mem.BaseExt.isAlgebraic_exp _
     rcases Finset.mem_union.1 hz with h | h <;> obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 h
     · exact IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_nat _)
-    · exact isAlgebraic_exp _
+    · exact _root_.GlobalTheory.Mem.BaseExt.isAlgebraic_exp _
   · refine root_mem σ hN.ne' (hS _ (Finset.mem_insert_self _ _)) ?_
     have h1 : ξ.1 a ^ N = 1 := congrArg (fun χ : HChar E => χ.1 a) hO
     rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]

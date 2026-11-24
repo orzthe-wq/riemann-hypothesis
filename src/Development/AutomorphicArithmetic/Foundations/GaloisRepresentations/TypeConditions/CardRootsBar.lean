@@ -106,10 +106,6 @@ theorem om_pow {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : P
     | succ m ih => rw [pow_succ, pow_succ, P.tameInertiaChar_mul_root k w _ _ (pow_ne_zero _ hx) hx γ hγ, ih]
   rw [← h2, h, h1]
 
-theorem card_rootsBar {p : ℕ} [Fact p.Prime] (a : (ZMod p)[X]) : Multiset.card (Formalism.CyclotomicNorms.rootsBar a) = a.natDegree := by
-  unfold Formalism.CyclotomicNorms.rootsBar
-  rw [← (IsAlgClosed.splits _).natDegree_eq_card_roots, natDegree_map]
-
 theorem nc_of_roots {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (w : PlE D.host) (hw : w ∈ placesOver D.host.E (D.host.g k))
     (y : D.naut.LP w) (hm : D.naut.mono0 y) (hdeg : (D.naut.items₂ k w y).natDegree = D.naut.lpDim y)
     (hle : D.naut.lpDim y ≤ D.R.nV)
@@ -123,7 +119,7 @@ theorem nc_of_roots {D : D7} (P : PairedCharacterCondition.Pend D) (k : Fin 2) (
   refine ⟨fun σ hσ hwild => ?_, hm, fun γ hγ z hz => ?_⟩
   · rw [P.inertiaCharpoly_eigenvalues k w hw _ hdeg σ hσ,
       Multiset.map_congr rfl (fun x hx => by rw [P.om_wild k w hw x (hnz x hx) σ hwild, C_1]),
-      Multiset.map_const', Multiset.prod_replicate, card_rootsBar, hdeg]
+      Multiset.map_const', Multiset.prod_replicate, _root_.GlobalTheory.TameLabels.card_rootsBar, hdeg]
   · rw [P.inertiaCharpoly_eigenvalues k w hw _ hdeg γ hγ.1, thr_split (D.host.g_prime k) hw (D.nd.g_split k) (DiscreteGroups.sglob.DzType.big_of_le_nV D k hle)] at hz
     set M := Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w y) with hM
     have e : (M.map fun x => X - C (P.om k w x γ)).prod = ((M.map fun x => P.om k w x γ).map fun c => X - C c).prod := by

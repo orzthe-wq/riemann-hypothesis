@@ -61,21 +61,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Number
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem sza_finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
-  have hb := (factEmb D.R D.host).1
-  have h1 : Nat.card (D.R.GG) = Nat.card (D.host.E →+* ℂ) := Nat.card_congr (Equiv.ofBijective _ hb)
   have h2 : Nat.card (D.host.E →+* ℂ) = Module.finrank ℚ D.host.E := by
-    rw [Nat.card_eq_fintype_card]; exact NumberField.Embeddings.card D.host.E ℂ
-  have h4 : Nat.card (D.R.GG) = 4 * D.R.ord := D.R.natCard_GG
-  rw [← h2, ← h1, h4]
+    rw [Nat.card_eq_fintype_card]
+    exact NumberField.Embeddings.card D.host.E ℂ
+  rw [← h2, ← Nat.card_congr (Equiv.ofBijective _ (factEmb D.R D.host).1), D.R.natCard_GG]
   simp only [Ranks.f, Ranks.n]
   ring
 
 theorem sza_fDeg_host (D : D7) : Formalism.HermitianLatticesTheory.fDeg D.host.E = D.R.f := by
-  have : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1
   have h1 := NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := D.host.E)
   have h2 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E
-  have h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0 := by
-    rw [NumberField.nrRealPlaces_eq_zero_iff]; infer_instance
+  have h3 : NumberField.InfinitePlace.nrRealPlaces D.host.E = 0 := NumberField.nrRealPlaces_eq_zero_iff.mpr D.sp.cm.cmUnram.1
   have h4 := sza_finrank_host D
   unfold Formalism.HermitianLatticesTheory.fDeg
   omega
@@ -86,9 +82,8 @@ theorem sza_vInv_host (D : D7) : Formalism.HermitianLatticesTheory.vInv D.host.E
 
 theorem sza_v_pos (D : D7) : 0 < D.host.v := by
   unfold Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE
-  have h : ((NumberField.discr D.host.E : ℤ) : ℝ) ≠ 0 := by
-    exact_mod_cast NumberField.discr_ne_zero (K := D.host.E)
-  exact half_pos (Real.rpow_pos_of_pos (abs_pos.mpr h) _)
+  exact half_pos (Real.rpow_pos_of_pos
+    (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero (K := D.host.E))) _)
 
 theorem sza_card_Tau (D : D7) : Fintype.card D.what₂.Tau = D.R.f := by
   rw [← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]
@@ -121,8 +116,7 @@ def szaData (D : D7) (u : D.what₂.Word) : Formalism.FourierDecayAlt.Sz.SizeDat
   du := (D.duS u : ℝ)
 
 theorem szaData_f (D : D7) (u : D.what₂.Word) : (szaData D u).f = D.R.f := by
-  show Fintype.card D.what₂.Tau = D.R.f
-  exact sza_card_Tau D
+  simpa only [szaData, Formalism.FourierDecayAlt.Sz.SizeData.f] using sza_card_Tau D
 theorem szaData_n (D : D7) (u : D.what₂.Word) : (szaData D u).n = D.R.r := by
   have h := sza_m_eq D
   show D.R.k + (2 * D.R.rS + 2) - 1 = D.R.r
@@ -147,12 +141,9 @@ theorem sza_u_anti (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : StrictAn
 
 theorem sza_vand_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < vand (uS D u τ) := by
   unfold Formalism.MainNotions.S.vand
-  apply Finset.prod_pos
-  intro a _
-  apply Finset.prod_pos
-  intro b hb
-  have hab : a < b := (Finset.mem_filter.mp hb).2
-  exact sub_pos.mpr (sza_u_anti D u τ hab)
+  exact Finset.prod_pos fun a _ =>
+    Finset.prod_pos fun b hb =>
+      sub_pos.mpr (sza_u_anti D u τ (Finset.mem_filter.mp hb).2)
 
 theorem szaData_ok (D : D7) (u : D.what₂.Word) : (szaData D u).Ok := by
   refine ⟨?_, sza_v_pos D, ?_, (D.host.g_prime 0).two_le, (D.host.g_prime 1).two_le,
@@ -177,8 +168,7 @@ theorem szaData_LBound (D : D7) (u : D.what₂.Word) : (szaData D u).LBound := b
 theorem szaData_MassRatios (D : D7) (u : D.what₂.Word) (hM : LocalBesselAndTopKernel.FamilySchurFormalDegree D) : (szaData D u).MassRatios := by
   intro M hk _
   have hk' : D.R.k < M := hk
-  have h3 := D.R.m_add_three_le_k
-  have h := hM M (by omega) (Fin M → D.host.E) (Fin (M - 1) → D.host.E)
+  have h := hM M (by have := D.R.m_add_three_le_k; omega) (Fin M → D.host.E) (Fin (M - 1) → D.host.E)
     (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E M) (Formalism.HermitianLatticesTheory.massTelescope_form D.host.E (M - 1))
     (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E M) (Formalism.HermitianLatticesTheory.massTelescope_lat D.host.E (M - 1))
     (Formalism.HermitianLatticesTheory.massTelescope_symm D.host.E M) (Formalism.HermitianLatticesTheory.massTelescope_symm D.host.E (M - 1))
@@ -191,8 +181,7 @@ theorem szaData_MassRatios (D : D7) (u : D.what₂.Word) (hM : LocalBesselAndTop
   rw [sza_vInv_host, sza_fDeg_host, szaData_f]
   show _ = (((M - 1).factorial : ℝ) * (D.host.v / Real.pi) ^ M) ^ D.R.f *
       ((2 * D.host.v) ^ D.R.f) ^ (-(1 / 2 : ℝ)) * Formalism.HermitianLatticesTheory.lValEta D.host.E M * szaMass D (M - 1)
-  have hp : (0 : ℝ) ≤ (2 * D.host.v) ^ D.R.f := by have := sza_v_pos D; positivity
-  rw [Real.rpow_neg hp, ← Real.sqrt_eq_rpow]
+  rw [Real.rpow_neg (by have := sza_v_pos D; positivity), ← Real.sqrt_eq_rpow]
   ring
 
 def SzaSpl (D : D7) : Prop :=
@@ -201,15 +190,13 @@ def SzaSpl (D : D7) : Prop :=
 
 theorem sza_prod_Icc (g : ℕ → ℝ) (k : ℕ) : ∏ i ∈ Icc 1 k, g i = ∏ j ∈ range k, g (j + 1) := by
   induction k with
-  | zero => simp [Finset.Icc_eq_empty]
+  | zero => simp
   | succ n ih => rw [Finset.prod_Icc_succ_top (Nat.le_add_left 1 n), ih, Finset.prod_range_succ]
 
 theorem sza_glCard (k : ℕ) (q : ℝ) :
     Formalism.FourierDecayAlt.Sz.glCard k q = q ^ (k * (k - 1) / 2) * ∏ i ∈ Icc 1 k, (q ^ i - 1) := by
-  have e : ∏ i ∈ Icc 1 k, (q ^ i - 1) = ∏ j ∈ range k, (q ^ (j + 1) - 1) :=
-    sza_prod_Icc (fun i => q ^ i - 1) k
   unfold Formalism.FourierDecayAlt.Sz.glCard
-  rw [e, ← Finset.sum_range_id, ← Finset.prod_pow_eq_pow_sum,
+  rw [sza_prod_Icc (fun i => q ^ i - 1) k, ← Finset.sum_range_id, ← Finset.prod_pow_eq_pow_sum,
     ← Finset.prod_range_reflect (fun j => q ^ (j + 1) - 1) k, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun j hj => ?_
   have hj' : j < k := Finset.mem_range.mp hj
@@ -290,9 +277,8 @@ theorem sza_ka_pos (D : D7) : 0 < D.host.ka := by
 
 theorem sza_gg_pos (D : D7) : 0 < gg D := by
   unfold Formalism.MainNotions.S.gg
-  have h0 : (0 : ℝ) < (D.host.g 0 : ℝ) := by exact_mod_cast (D.host.g_prime 0).pos
-  have h1 : (0 : ℝ) < (D.host.g 1 : ℝ) := by exact_mod_cast (D.host.g_prime 1).pos
-  exact mul_pos h0 h1
+  exact mul_pos (by exact_mod_cast (D.host.g_prime 0).pos)
+    (by exact_mod_cast (D.host.g_prime 1).pos)
 
 theorem sza_tcritPow (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Tcrit D u τ ^ D.R.k = (szaData D u).TcritPow τ := by
@@ -308,10 +294,6 @@ theorem sza_tcritPow (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
   have hds : 0 ≤ D.dsig τ := by
     first
     | exact (D.dsig_pos τ).le
-    | exact D.dsig_nonneg τ
-    | exact (D.dsig_pos' τ).le
-    | exact (D.hdsig τ).le
-    | exact (D.dsig_spec τ).le
   have hVV : 0 ≤ VV D τ := by
     unfold Formalism.MainNotions.S.VV
     exact mul_nonneg hds (Finset.prod_nonneg fun i _ => by positivity)
@@ -339,7 +321,7 @@ theorem degree_ratio_product_formula (D : D7) (hM : LocalBesselAndTopKernel.Fami
   have hm2 := D.R.two_le_m
   have hA := Formalism.FourierDecayAlt.P.massRatioFormula D.what₂.Tau (szaData D u) (szaData_ok D u) (szaData_MassRatios D u hM)
     (szaData_ColumnCount D u hR hs)
-  have hE := Formalism.FourierDecayAlt.P.exponent_sizes D.what₂.Tau (szaData D u) (szaData_ok D u) (szaData_LBound D u)
+  have hE := _root_.Formalism.FourierDecayAlt.P.Sz2.eaSize D.what₂.Tau (szaData D u) (szaData_ok D u) (szaData_LBound D u)
     (show 2 ≤ D.R.k by omega) (hg 0) (hg 1)
   rw [szaData_Dstar D u hR hs] at hA
   have hP : ∏ w, ((szaData D u).TcritPow w / (((szaData D u).T : ℕ) : ℝ) ^ (szaData D u).k) =
@@ -374,8 +356,7 @@ theorem sza_spl_of_data {D : D7} {C0 : ℝ} (h : StandingNumericalData D C0) : S
 
 theorem sza_b_ge_one {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
   unfold Formalism.BasicNotions.Scale.b Formalism.BasicNotions.Scale.L
-  have hx : 0 < large₂.sc.x := lt_trans zero_lt_one large₂.sc.one_lt_alt
-  exact Real.one_le_exp (Real.rpow_pos_of_pos hx _).le
+  exact Real.one_le_exp (Real.rpow_pos_of_pos (lt_trans zero_lt_one large₂.sc.one_lt_alt) _).le
 
 theorem sza_g_ge {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) :
     ∀ i, 4 ≤ D.host.g i := by
@@ -420,9 +401,6 @@ theorem sza_tcrit_pos (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < T
   have hds : 0 < D.dsig τ := by
     first
     | exact D.dsig_pos τ
-    | exact D.hdsig τ
-    | exact D.dsig_pos' τ
-    | exact D.dsig_spec τ
   have hVV : 0 < VV D τ := by
     unfold Formalism.MainNotions.S.VV
     exact mul_pos hds (Finset.prod_pos fun i _ => by positivity)
@@ -566,8 +544,7 @@ theorem level_ratio_bound (D : D7) (C0 C1 : ℝ) (hD : StandingNumericalData D C
   exact hle
 
 theorem level_ratio_bound_mono {D : D7} {C2 C2' : ℝ} (h : LocalBesselAndTopKernel.kernel_index_full_lattice D C2) (hC : C2 ≤ C2') : LocalBesselAndTopKernel.kernel_index_full_lattice D C2' := by
-  intro u u'
-  exact (h u u').trans hC
+  exact fun u u' => (h u u').trans hC
 
 theorem family_level_ratio_bound {eps : ℝ} (Fm : FamP eps) (C0 Cg cb Cu cT CT C1 C2 : ℝ)
     (hC2 : C1 * (C0 * Real.exp 1) ≤ C2) (ha : LocalBesselAndTopKernel.FamilyBesselBoundFirstPart Fm C0 Cg cb Cu cT CT)
@@ -604,12 +581,10 @@ theorem sza_stMassL (D : D7) : UnitaryVolumeMass.stMassL D := by
   exact h
 
 theorem mass_two_bound_single_holds (D : D7) : LocalBesselAndTopKernel.GL5LogLValueBoundByZeta D := by
-  intro i hi
-  exact sza_stMassL D i (by omega)
+  exact fun i hi => sza_stMassL D i (by omega)
 
 theorem mass_two_bound_family_holds {eps : ℝ} (Fm : FamP eps) : LocalBesselAndTopKernel.BesselFormLine Fm := by
-  intro x i
-  exact mass_two_bound_single_holds _
+  exact fun x i => mass_two_bound_single_holds _
 
 end Formalism.MainNotions.BridgeLemma
 

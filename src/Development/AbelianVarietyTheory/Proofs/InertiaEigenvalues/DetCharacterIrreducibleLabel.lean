@@ -70,7 +70,7 @@ theorem _root_.GlobalTheory.GLq.LabelDet.isIrr_hom {G : Type} [Group G] [Fintype
     intro x
     have : _root_.GlobalTheory.GLp.Model.chRep φ x = (φ x : ℂ) • LinearMap.id := by
       ext; simp [_root_.GlobalTheory.GLp.Model.chRep_apply]
-    simp [FDRep.character, FDRep.of_ρ, this]
+    simp [FDRep.character, this]
   refine ⟨FDRep.of (_root_.GlobalTheory.GLp.Model.chRep φ), ?_, hchar⟩
   rw [FDRep.simple_iff_char_is_norm_one]
   simp [hchar, Nat.card_eq_fintype_card]

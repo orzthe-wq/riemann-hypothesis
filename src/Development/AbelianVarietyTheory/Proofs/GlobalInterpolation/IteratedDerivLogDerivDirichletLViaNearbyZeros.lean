@@ -270,7 +270,7 @@ lemma exists_entire : ∃ B : ℝ, 0 < B ∧ ∀ (q : ℕ) [NeZero q] (χ : Diri
     have h2 : (1 : ℝ) ≤ ‖z‖ + 2 := by linarith [norm_nonneg z]
     gcongr
     · linarith
-    all_goals first | assumption | norm_num
+    all_goals first | norm_num
 
 theorem main : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (σ t : ℝ) (k : ℕ), 1 < σ → σ ≤ 2 → (zerosDisc χ (2 + t * I) 3).Finite ∧ (∑ᶠ w ∈ zerosDisc χ (2 + t * I) 3, (ord χ w : ℝ)) ≤ C * Real.log (q * (|t| + 2)) ∧ ‖derSeries (fun n : ℕ => χ (n : ZMod q)) k (σ + t * I) - (if χ = 1 then 1 / ((σ : ℂ) + t * I - 1) ^ (k + 1) else 0) + ∑ᶠ w ∈ zerosDisc χ (2 + t * I) 3, (ord χ w : ℂ) / ((σ : ℂ) + t * I - w) ^ (k + 1)‖ ≤ C * Real.log (q * (|t| + 2)) / σ ^ k := by
   obtain ⟨C, hC, H⟩ := LWide.disc (2 / 3) (4 / 5) (by norm_num) (by norm_num) (by norm_num)

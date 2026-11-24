@@ -140,7 +140,7 @@ theorem asm_gInt_int (ph ρ : ℕ) (σ : Equiv.Perm (Fin ph)) (d : Fin ph → �
       Formalism.FourierDecayAlt.P.JCTx6.Pos.detM_Zv 0 t y.2.2
     have hD : U.DjU k (ph + (0 + 1)) ρ (U.gaXi (p := ph) (s := 0 + 1) k ρ σ d (y.1, y.2.1)
         (Matrix.of.symm (t • G.wMat (0 + 1) * G.upper y.2.2)) γ) = c₀ := by
-      rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice, hdet]
+      rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice, hdet]
     simp only [Formalism.FourierDecayAlt.P.JCTx6.gInt]
     rw [hD, hχD1 c₀ (by rw [dist_self]; positivity), one_smul]
   rw [e]; exact h1

@@ -119,7 +119,7 @@ theorem exists_point_of_perLev : Out.Laws → ∀ (h k : ℕ) (K : Type) [Field 
     rw [Units.val_zpow_eq_zpow_val, Units.val_mk0, ← Complex.exp_int_mul]
     congr 1
     ring
-  obtain ⟨c, e, he, hc, hw, hl⟩ := GlobalTheory.exists_siegPre_of_polAV hL GlobalTheory.Moduli.cube_of_isLB K ℂ σ h k ζ ze P lev hg hk'
+  obtain ⟨c, e, he, hc, hw, hl⟩ := GlobalTheory.exists_siegPre_of_polAV hL _root_.GlobalTheory.AbLaw.CubeAssembly.cube_gen K ℂ σ h k ζ ze P lev hg hk'
     hζ.symm hprim add tors weil
   have hd : Dense {x : Sp ℂ | (spMap σ x).asIdeal = ⊥} := by
     have : {x : Sp ℂ | (spMap σ x).asIdeal = ⊥} = Set.univ :=

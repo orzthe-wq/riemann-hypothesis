@@ -58,7 +58,7 @@ private theorem flow {S : Type*} [NormedAddCommGroup S] [NormedSpace ℝ S] [Com
     have he := (hasDerivAt_exp_smul_const (𝕂 := ℝ) D (1 - t)).comp_const_sub 1 t
     have h := he.clm_apply (hc t)
     convert h using 1
-    simp [ContinuousLinearMap.mul_apply]
+    simp
   have hconst := is_const_of_deriv_eq_zero
     (fun u => (hψ u).differentiableAt) (fun u => (hψ u).deriv) 1 0
   simpa using hconst

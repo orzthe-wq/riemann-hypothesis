@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℤ), n ≠ 0 → IsIsogeny (n • 𝟙 A) ∧ deg (n • 𝟙 A) = n.natAbs ^ (2 * A.dim) := by
-  first | exact @GlobalTheory.MulIsogeny.mul_isogeny | exact GlobalTheory.MulIsogeny.mul_isogeny | (intros; apply GlobalTheory.MulIsogeny.mul_isogeny <;> assumption)
+  first | exact @GlobalTheory.MulIsogeny.mul_isogeny

@@ -151,19 +151,19 @@ theorem isKer_zero_rank {n : ℕ} (hn : n = 0) [MeasurableSpace (G n)] (μ : Mea
   simp [PositivityTheory.RgBcC.act, zOp, gel]
 
 theorem ent_smul {n : ℕ} (M : KMod n) (c : ℂ) (A : M.V →L[ℂ] M.V) (i j : Ix M) : ent M (c • A) i j = c * ent M A i j := by
-  simp [ent, inner_smul_right]
+  simp [ent]
 
 theorem tens_update_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {Ma : Mods E a} {Mb : Mods E b}
     {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E) (c : ℂ) :
     tens (Function.update ka v (c • ka v)) kb ψ = c • tens ka kb ψ := by
   funext i j y
-  simp only [tens, entA, Pi.smul_apply, smul_eq_mul]
+  simp only [tens, entA]
   have e : ∀ w, ent (Ma w) (Function.update ka v (c • ka v) w (gInf w y.1).val) (i.1.1 w) (j.1.1 w) =
       (if w = v then c else 1) * ent (Ma w) (ka w (gInf w y.1).val) (i.1.1 w) (j.1.1 w) := by
     intro w
     by_cases h : w = v
     · subst h; simp [ent_smul]
-    · simp [Function.update_of_ne h, h]
+    · simp [h]
   simp only [e, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]
   simp only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]
   ring
@@ -172,13 +172,13 @@ theorem tens_update_smul_b {E : Type} [Field E] [NumberField E] [IsCMField E] {a
     {Mb : Mods E b} {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E)
     (c : ℂ) : tens ka (Function.update kb v (c • kb v)) ψ = c • tens ka kb ψ := by
   funext i j y
-  simp only [tens, entA, Pi.smul_apply, smul_eq_mul]
+  simp only [tens, entA]
   have e : ∀ w, ent (Mb w) (Function.update kb v (c • kb v) w (gInf w y.2).val) (i.1.2 w) (j.1.2 w) =
       (if w = v then c else 1) * ent (Mb w) (kb w (gInf w y.2).val) (i.1.2 w) (j.1.2 w) := by
     intro w
     by_cases h : w = v
     · subst h; simp [ent_smul]
-    · simp [Function.update_of_ne h, h]
+    · simp [h]
   simp only [e, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]
   simp only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]
   ring

@@ -577,13 +577,6 @@ theorem structureModuleStalkEquiv_germ (x : X) (hx : x ∈ U) (s : Γ(structureM
 theorem support_structureModule : support (structureModule X) = Set.univ :=
   Set.eq_univ_of_forall fun x ↦ (structureModuleStalkEquiv x).toEquiv.nontrivial
 
-theorem support_tilde {R : CommRingCat.{u}} (M : ModuleCat.{u} R) :
-    support (tilde M) = Module.support R M := by
-  refine Set.ext fun x : PrimeSpectrum.Top R ↦ ?_
-  have := x.isPrime
-  exact (IsLocalizedModule.iso x.asIdeal.primeCompl
-    (tilde.toStalk M x).hom).toEquiv.nontrivial_congr.symm
-
 end Support
 
 section Dimension
@@ -683,13 +676,6 @@ theorem suppDim_eq_iSup_closure [IsFiniteQC F] :
 theorem suppDim_structureModule : suppDim (structureModule X) = topologicalKrullDim X := by
   rw [suppDim, support_structureModule]
   exact (Homeomorph.Set.univ X).isHomeomorph.topologicalKrullDim_eq
-
-theorem suppDim_tilde {R : CommRingCat.{u}} (M : ModuleCat.{u} R) [Module.Finite R M] :
-    suppDim (tilde M) = Module.supportDim R M := by
-  rw [suppDim, support_tilde, Module.supportDim, Module.support_eq_zeroLocus,
-    Order.krullDim_eq_of_orderIso (PrimeSpectrum.zeroLocusEquivIrreducibleCloseds _),
-    Order.krullDim_orderDual]
-  rfl
 
 end Dimension
 

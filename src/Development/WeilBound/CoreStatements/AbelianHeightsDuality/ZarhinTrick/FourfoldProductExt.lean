@@ -60,8 +60,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 theorem g4lift_prj {X G : Over S} (c : Fin 4 → (X ⟶ G)) (i : Fin 4) : fourfoldProductLift c ≫ prj G i = c i := by
   fin_cases i <;> simp [fourfoldProductLift, prj]
 
-@[reassoc] theorem g4lift_prj' {X G : Over S} (c : Fin 4 → (X ⟶ G)) (i : Fin 4) : fourfoldProductLift c ≫ prj G i = c i :=
-  g4lift_prj c i
+@[reassoc] alias g4lift_prj' := _root_.PositivityTheory.PrwZar.g4lift_prj
 
 theorem fourfold_product_ext {X G : Over S} {f f' : X ⟶ G4 G} (h : ∀ i, f ≫ prj G i = f' ≫ prj G i) : f = f' := by
   have h0 := h 0

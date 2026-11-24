@@ -64,7 +64,7 @@ theorem eventually_unrAt (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) :
       (‖((χ (localIdele L v x) : ℂˣ) : ℂ) - 1‖ < 1 / 2 → UnrAt χ v) := fun v => by
     by_contra hc
     push Not at hc
-    refine (hc 1 (map_one _)).2 fun x hx => Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)
+    refine (hc 1 (map_one _)).2 fun x hx => Units.ext (_root_.GlobalTheory.IterationConvergence.main fun m => ?_)
     rw [← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]
     refine (hc _ ?_).1
     rw [Units.val_pow_eq_pow_val, map_pow, hx, one_pow]
@@ -97,7 +97,7 @@ theorem exists_level (χ : Ideles L →* ℂˣ) (hχ : Continuous χ) (v : Heigh
   have hx' : Valued.v (x : v.adicCompletion L) = 1 := by
     have := Valuation.map_one_add_of_lt _ hlt
     simpa using this
-  refine Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)
+  refine Units.ext (_root_.GlobalTheory.IterationConvergence.main fun m => ?_)
   rw [← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]
   apply hsub
   apply hγ

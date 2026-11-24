@@ -63,7 +63,7 @@ theorem analytic_pMat (keep : Ψ × Fin N → Prop) (s : Set (Fin e → ℂ)) (�
     AnalyticOnNhd ℂ (fun w => pMat keep (pL ε w) τ a b) s := by
   unfold pMat lowMat
   by_cases hc : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)
-  · simp only [hc, dite_true]
+  · simp only [hc]
     by_cases hs : Sep keep (⟨(τ, a, b), hc⟩ : LowIdx Ψ N j)
     · simp only [cExt, hs, dite_true, pL]
       exact analytic_coord _

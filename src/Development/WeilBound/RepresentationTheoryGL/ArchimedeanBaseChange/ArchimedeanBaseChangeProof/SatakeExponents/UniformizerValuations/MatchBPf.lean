@@ -63,39 +63,6 @@ section SlopeTestRemainingChoices
 theorem mb_finsum_mul {α : Type*} (c : ℂ) (g : α → ℂ) : ∑ᶠ i, c * g i = c * ∑ᶠ i, g i := by
   exact (mul_finsum g c).symm
 
-theorem mb_mem_rStab {H : Type} [Group H] (u : H → ℂ) (k : H) : k ∈ rStab u ↔ ∀ x, u (x * k) = u x := Iff.rfl
-
-theorem mb_avg_mul {H : Type} [Group H] (c : ℂ) (u : H → ℂ) : avg (fun x => c * u x) = c * avg u := by
-  by_cases hc : c = 0
-  · subst hc
-    simp [avg]
-  have hS : rStab (fun x => c * u x) = rStab u := by
-    ext k
-    simp only [mb_mem_rStab, mul_right_inj' hc]
-  unfold avg
-  rw [hS]
-  beta_reduce
-  rw [mb_finsum_mul]
-  ring
-
-theorem mb_twOrb_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (δ : G) (c : ℂ)
-    (f : G → ℂ) : twOrb θ K δ (fun x => c * f x) = c * twOrb θ K δ f := by
-  unfold twOrb
-  rw [← mb_finsum_mul]
-  refine finsum_congr fun q => ?_
-  simp only [mb_avg_mul]
-  ring
-
-theorem mb_clSum_mul {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgroup G) (S : Set G) (wt : G → ℂ)
-    (c : ℂ) (f : G → ℂ) : clSum θ K S wt (fun x => c * f x) = c * clSum θ K S wt f := by
-  unfold clSum
-  rw [← mb_finsum_mul]
-  refine finsum_congr fun x => ?_
-  by_cases h : x.rep ∈ S
-  · rw [if_pos h, if_pos h, mb_twOrb_mul]
-    ring
-  · rw [if_neg h, if_neg h, mul_zero]
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 theorem mb_match_smul {n a b : ℕ} {w : Pl E} {μ : (w.adicCompletion E)ˣ →* ℂˣ} {f : UL n w → ℂ}
@@ -104,7 +71,7 @@ theorem mb_match_smul {n a b : ℕ} {w : Pl E} {μ : (w.adicCompletion E)ˣ →*
   intro Q₁ Q₂ h1 h2 h3 h4 h5 h6 h7
   have e := h Q₁ Q₂ h1 h2 h3 h4 h5 h6 h7
   unfold stTw2 kapOrb at *
-  rw [mb_clSum_mul, mb_clSum_mul, e]
+  rw [_root_.GlobalTheory.BCT.StTwLevel.clSum_const_mul, _root_.GlobalTheory.BCT.StTwLevel.clSum_const_mul, e]
   ring
 
 theorem mb_hint_coset {H : Type} [Group H] (K L : Subgroup H) (hLK : L ≤ K) (g : H) (c : ℂ) :
@@ -114,7 +81,7 @@ theorem mb_hint_coset {H : Type} [Group H] (K L : Subgroup H) (hLK : L ≤ K) (g
     simp [hint]
   have hR : rStab (fun x : H => if g⁻¹ * x ∈ L then c else 0) = L := by
     ext k
-    rw [mb_mem_rStab]
+    rw [_root_.GlobalTheory.TwOrbConj.mem_rStab]
     constructor
     · intro hk
       by_contra hkL

@@ -93,7 +93,7 @@ theorem cT_cT (hs : ∀ a, s (s a) = a) {m p : Type} (M : Matrix m p A) : cT s (
 
 variable (s) in
 theorem cT_diagonal (d : Fin r → A) : cT s (diagonal d) = diagonal (fun i => s (d i)) := by
-  ext i j; by_cases h : i = j <;> simp [cT, diagonal_apply, h, eq_comm]
+  ext i j; by_cases h : i = j <;> simp [cT, h, eq_comm]
 
 theorem diag_diag (d e : Fin r → A) {m : Type} (M : Matrix (Fin r) m A) :
     diagonal d * (diagonal e * M) = diagonal (d * e) * M := by
@@ -150,7 +150,7 @@ end Frame
 
 theorem diagonal_add' (d e : Fin r → A) : diagonal (d + e) = diagonal d + diagonal e := (diagonal_add d e).symm
 theorem diagonal_sub' (d e : Fin r → A) : diagonal (d - e) = diagonal d - diagonal e := by
-  ext i j; by_cases h : i = j <;> simp [diagonal_apply, h]
+  ext i j; by_cases h : i = j <;> simp [h]
 theorem prX_add (d e : Fin r → A) : prX s J X Y (d + e) = prX s J X Y d + prX s J X Y e := by
   simp only [prX, diagonal_add', Matrix.mul_add, Matrix.add_mul]
 theorem prX_sub (d e : Fin r → A) : prX s J X Y (d - e) = prX s J X Y d - prX s J X Y e := by

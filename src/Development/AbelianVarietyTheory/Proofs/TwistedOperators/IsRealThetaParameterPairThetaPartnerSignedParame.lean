@@ -304,7 +304,7 @@ theorem thetaPar_partner : ∀ (t : ℕ) (b : Bool) (c c' : ℚ) (P : SPar) (N :
     unfold GapGt lamA'
     have hl : (block t).length = t := by simp [block]
     refine (GlobalTheory.Chain.ItPairCompare.cross_iff (l₁ := al ++ block t ++ de) (l₂ := ga ++ be) (by simp [hl] <;> omega)
-      (by simp <;> omega)
+      (by simp)
       (fun z => (((al.length + be.length + ga.length + de.length + t : ℕ) : ℝ) ^ 3) < |(z : ℝ)|)).2 ?_
     intro x hx y hy hs
     have h1 : (x.1 + c', x.2) ∈ partner t true c c' P := by rw [hP']; exact signed_zero_shift hx

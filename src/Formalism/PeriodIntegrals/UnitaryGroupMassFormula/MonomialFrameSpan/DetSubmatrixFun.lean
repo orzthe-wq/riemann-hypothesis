@@ -88,7 +88,6 @@ theorem det_submatrix_fun {R : Type*} [CommRing R] {p n : ℕ} (M : Matrix (Fin 
       ext a b
       simp [σ, hg]
     rw [e, Matrix.det_permute']
-    try norm_cast
   · left
     rw [Function.Injective] at hf
     push_neg at hf

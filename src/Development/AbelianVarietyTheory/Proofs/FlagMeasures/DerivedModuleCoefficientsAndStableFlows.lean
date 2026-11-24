@@ -323,7 +323,7 @@ theorem kStable_iff (hσ : IsURepOn (UJset ε) σ) (hD : IsDer ε σ V E) (W : S
 
 theorem diag_inK (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     inK ε (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) := by
-  apply GlobalTheory.KTypeHighest.inK_diag <;> assumption
+  apply GlobalTheory.KTypeHighest.inK_diag
 
 theorem exp_diag (θ : Fin n → ℝ) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) =

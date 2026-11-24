@@ -15,41 +15,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.PairAmpConstWd
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.RowsSumCPf
 public import Formalism.SharpRestriction.CuspSpanNormBounds.AbsoluteAmplitudeSecondOfSource
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -284,7 +249,7 @@ theorem rowFormAllP_of (hFC : FormulaC) (hVP : Formalism.L2.SG.VolPin.VolumeOddG
   intro D L T u u' X0 C Th Q i0 i0' νq Lsp ϖ κ hTies hH0 hne hSt hCT hg3 hdet hk hcong hi hPR hNu hRL hϖ
   have hWD : Formalism.L2.SG.WuDecay.WuDecay T.X := hCT.2.2.2.2.1
   have hAbs : Formalism.L2.SG.TermOp.AbsConvT (T.X.Fu u) (T.X.Fu u') T.Y.TR (T.Y.cs u) (T.Y.cs u') (T.Y.FN u) (T.Y.FN u') :=
-    Formalism.L2.SG.Pf.absConvC_outright D T.X T.Y u u'
+    _root_.Formalism.L2.SG.Closed.AbsConvC_outright D T.X T.Y u u'
       (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD)
       (Formalism.L2.SG.Closed.FoldOKC_outright D T.X T.Y u' (Formalism.L2.SG.Closed.level_subgroup_properties T.X) hWD)
       (Formalism.L2.SG.Pf.fundExistsC_holds D T.X T.Y u u')
@@ -299,7 +264,7 @@ theorem rowFormAllP_of (hFC : FormulaC) (hVP : Formalism.L2.SG.VolPin.VolumeOddG
   exact Formalism.L2.SG.Pf.rowFormC_of_leaves3 T.X T.hb T.Y u u' X0 T.ψ _ C Th Q i0 i0' νq κ _ hRL hi hPR hNu hk hAbs
     (fun i => ⟨hg3 i, gUnramAll D u u' hSt i⟩) (Formalism.L2.SG.Pf.LiftedPhaseAgreement.phaseTieC_holds T.X T.Y u u' κ hP) hVP hP
     (Formalism.L2.SG.Pf.normRepExists_of (Formalism.L2.SG.Pf.NormRepX.norm_representative_holds D u u' hP)
-      (Formalism.L2.SG.Closed.TermFun_holds D u u') (T.Y.rowsOK u))
+      (_root_.term_function_const D u u') (T.Y.rowsOK u))
     (hV C' Cl h1 h2 D L T u u' i0 i0' νq hTies hne hSt hCT hi hNu hPR hH0)
     hN hLT hV0 hc0 (hFC D T u u' Lsp hLT hSt hcong).1 (tprod_alpD_pos D hk u u')
 

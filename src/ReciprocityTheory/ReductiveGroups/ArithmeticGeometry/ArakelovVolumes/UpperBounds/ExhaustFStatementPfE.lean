@@ -67,7 +67,7 @@ noncomputable section
 theorem levi_logNormSq_zero {n : ℕ} (h : V n → ℂ) (hh : ContDiff ℂ ∞ h) (v0 : V n)
     (hne : h v0 ≠ 0) (ξ : Fin n → ℂ) :
     leviV n (fun y => ((Real.log (Complex.normSq (h y)) : ℝ) : ℂ)) v0 ξ = 0 := by
-  have hl := ReciprocityTheory.L2DbarEstimates.H.leviLogNormSq n 1 (fun _ => h) v0 ξ
+  have hl := ReciprocityTheory.L2DbarEstimates.leviLogNormSq n 1 (fun _ => h) v0 ξ
     (fun _ => hh.contDiffAt.of_le two_le_infty) (by intro h'; exact hne (congrFun h' 0))
   have e1 : (fun y => ((Real.log (sqNorm (fun i : Fin 1 => (fun _ => h) i y)) : ℝ) : ℂ)) =
       fun y => ((Real.log (Complex.normSq (h y)) : ℝ) : ℂ) := by
@@ -95,7 +95,7 @@ theorem leviT_nonneg {n : ℕ} (v0 : V n) (ξ : Fin n → ℂ) :
     intro h
     have := congrFun h 0
     simp [g] at this
-  have h := ReciprocityTheory.L2DbarEstimates.H.leviLogNormSq n (n + 1) g v0 ξ hc hne
+  have h := ReciprocityTheory.L2DbarEstimates.leviLogNormSq n (n + 1) g v0 ξ hc hne
   have e1 : (fun y => ((Real.log (sqNorm (fun i => g i y)) : ℝ) : ℂ)) =
       fun y => ((Real.log (1 + ‖y‖ ^ 2) : ℝ) : ℂ) := by
     funext y

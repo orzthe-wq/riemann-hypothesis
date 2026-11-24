@@ -146,7 +146,7 @@ theorem nd_Sc_le (hS : Formalism.MainNotions.SizesAt L) : 4 * L.Sc ≤ L.sc.a :=
   have hb'a : 2 * L.sc.b' ≤ L.sc.a := by
     unfold Scale.b'
     rw [mul_div_assoc', div_le_iff₀ (by linarith)]
-    nlinarith [mul_le_mul_of_nonneg_left hX ha]
+    linarith [mul_le_mul_of_nonneg_left hX ha]
   linarith [mul_le_mul_of_nonneg_left hL hw0, mul_le_mul_of_nonneg_right hm (add_nonneg hSc.le heta)]
 
 theorem nd_bT_le (hS : Formalism.MainNotions.SizesAt L) (t : D.host.TT) : (L.bT t : ℝ) ≤ 5 / 4 * L.sc.a := by
@@ -189,21 +189,26 @@ theorem nd_bT_le (hS : Formalism.MainNotions.SizesAt L) (t : D.host.TT) : (L.bT 
   have hE : 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / (D.R.k : ℝ) ≤
       2 * L.sc.b' := by
     rw [div_le_iff₀ hk0]
-    nlinarith [mul_le_mul_of_nonneg_left hkey (mul_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) hd0) hb'),
-      mul_le_mul_of_nonneg_right hd1 (mul_nonneg (mul_nonneg (by norm_num : (0 : ℝ) ≤ 2) hb') hk0.le)]
+    calc 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b'
+        = (2 * L.sc.delta1 * L.sc.b') * ((D.R.n : ℝ) * L.sc.x ^ L.sc.eps * L.LaG) := by ring
+      _ ≤ (2 * L.sc.delta1 * L.sc.b') * (D.R.k : ℝ) :=
+          mul_le_mul_of_nonneg_left hkey (by positivity)
+      _ = L.sc.delta1 * (2 * L.sc.b' * (D.R.k : ℝ)) := by ring
+      _ ≤ 1 * (2 * L.sc.b' * (D.R.k : ℝ)) :=
+          mul_le_mul_of_nonneg_right hd1 (by positivity)
+      _ = 2 * L.sc.b' * (D.R.k : ℝ) := one_mul _
   have ha : 0 ≤ L.sc.a := by
     unfold Scale.a Scale.b
     exact mul_nonneg hx0.le (Real.exp_pos _).le
   have hX : 12 / 5 ≤ L.sc.X' := by
     unfold Scale.X'
     have h1' : (1 : ℝ) ≤ L.sc.x ^ (L.sc.eps / 3) := Real.one_le_rpow hx (by linarith)
-    first
-    | nlinarith [Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ L.sc.x ^ (L.sc.eps / 3) by linarith)]
-    | (have h2' := Real.exp_le_exp.mpr h1'; have h3' := Real.exp_one_gt_d9; linarith)
+    have h2' : (1 : ℝ) ≤ (L.sc.x ^ (L.sc.eps / 3)) ^ 2 := one_le_pow₀ h1'
+    linarith [Real.quadratic_le_exp_of_nonneg (show (0 : ℝ) ≤ L.sc.x ^ (L.sc.eps / 3) by linarith)]
   have hb'a : 3 * L.sc.b' ≤ 5 / 4 * L.sc.a := by
     unfold Scale.b'
     rw [mul_div_assoc', div_le_iff₀ (by linarith)]
-    nlinarith [mul_le_mul_of_nonneg_left hX ha]
+    linarith [mul_le_mul_of_nonneg_left hX (show 0 ≤ 5 / 4 * L.sc.a by linarith)]
   linarith
 
 theorem nd_aT_le (t : D.host.TT) : (L.aT t : ℝ) ≤ 2 * L.sc.a := by
@@ -236,11 +241,14 @@ theorem nd_N_le (hS : Formalism.MainNotions.SizesAt L) : (D.R.N D.R.m : ℝ) ≤
   have hNn : D.R.N D.R.m ≤ D.R.t ^ 3 * D.R.f * D.R.k ^ 3 := by
     have e1 : D.R.m * (D.R.t + 1) ≤ D.R.k * (D.R.t + 1) := Nat.mul_le_mul_right _ (by omega)
     have e2 : D.R.k * (D.R.t + 2) ≤ D.R.k * (3 * D.R.t) := Nat.mul_le_mul_left _ (by omega)
-    have e3 : 3 ≤ D.R.f * D.R.k ^ 2 := by nlinarith
+    have e3 : 3 ≤ D.R.f * D.R.k ^ 2 :=
+      calc 3 ≤ 2 * 5 ^ 2 := by norm_num
+        _ ≤ D.R.f * D.R.k ^ 2 := Nat.mul_le_mul hf (Nat.pow_le_pow_left hk 2)
     have e4 : D.R.t * 3 ≤ D.R.t ^ 3 * (D.R.f * D.R.k ^ 2) :=
       Nat.mul_le_mul (Nat.le_self_pow (by norm_num) _) e3
     unfold Ranks.N
-    calc D.R.k + D.R.m * (D.R.t + 1) ≤ D.R.k * (D.R.t + 2) := by nlinarith [e1]
+    calc D.R.k + D.R.m * (D.R.t + 1) ≤ D.R.k + D.R.k * (D.R.t + 1) := Nat.add_le_add_left e1 _
+      _ = D.R.k * (D.R.t + 2) := by ring
       _ ≤ D.R.k * (3 * D.R.t) := e2
       _ = D.R.k * (D.R.t * 3) := by ring
       _ ≤ D.R.k * (D.R.t ^ 3 * (D.R.f * D.R.k ^ 2)) := Nat.mul_le_mul_left _ e4
@@ -273,7 +281,7 @@ theorem nd_fill_le (X : Formalism.MainNotions.G.Inst D L) (hS : Formalism.MainNo
     have h2 : (0 : ℝ) ≤ (D.R.t : ℝ) := by positivity
     have h3 : (0 : ℝ) ≤ (D.R.k : ℝ) := by positivity
     apply div_nonneg _ (by norm_num)
-    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 2 * (j : ℝ) - 1) (by linarith : (0 : ℝ) ≤ (D.R.t : ℝ) + 1)]
+    linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 2 * (j : ℝ) - 1) (by linarith : (0 : ℝ) ≤ (D.R.t : ℝ) + 1)]
   unfold Formalism.MainNotions.G.fillG Formalism.MainNotions.G.fill
   dsimp only
   split_ifs with hc
@@ -317,7 +325,11 @@ theorem nd_size : nd_NeedSize := by
         unfold Formalism.MainNotions.G.aL
         rw [dite_eq_left (hTT.1 hsT)]
         exact nd_aT_le _
-      nlinarith
+      have h5 : 3 * L.sc.a ≤ (2 * L.sc.a) ^ 2 :=
+        calc 3 * L.sc.a ≤ 4 * L.sc.a := by linarith
+          _ ≤ 4 * L.sc.a * L.sc.a := le_mul_of_one_le_right (by linarith) ha
+          _ = (2 * L.sc.a) ^ 2 := by ring
+      linarith
     · unfold al
       rw [if_neg hsT]
       push_cast
@@ -349,8 +361,11 @@ theorem nd_size : nd_NeedSize := by
         (((Y.Fl u w hg).c : ℝ) + ((Y.Fl u w hg).w (Y.vOf u w hg t0) j s : ℝ)) ≤ L.sc.a * (5 * L.sc.a) :=
       mul_le_mul hN (by linarith) hw0 (by linarith)
     have h9 : L.sc.a * (5 * L.sc.a) ≤ (2 * L.sc.a) ^ 4 := by
-      have : 1 ≤ L.sc.a ^ 2 := by nlinarith
-      nlinarith [sq_nonneg (L.sc.a ^ 2)]
+      have ha2 : 1 ≤ L.sc.a ^ 2 := one_le_pow₀ ha
+      calc L.sc.a * (5 * L.sc.a) = 5 * L.sc.a ^ 2 := by ring
+        _ ≤ 16 * L.sc.a ^ 2 := by linarith [sq_nonneg L.sc.a]
+        _ ≤ 16 * L.sc.a ^ 2 * L.sc.a ^ 2 := le_mul_of_one_le_right (by positivity) ha2
+        _ = (2 * L.sc.a) ^ 4 := by ring
     linarith
 
 end Formalism.MainNotions.FormalGroupSystem.Pf

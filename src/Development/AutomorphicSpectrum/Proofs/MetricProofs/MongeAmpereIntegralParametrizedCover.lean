@@ -1,11 +1,13 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegralStatement
+public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -28,7 +30,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,10 +42,99 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition
 import GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegral, Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereIntegralParametrizedCover
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegral =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegral", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt\npublic import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LintegralImageEqLintegralNormSqDetMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\nimport GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
+open scoped ComplexOrder
+
+namespace GlobalTheory.CompanionTheory.Ar.PB
+
+private theorem maDens_congr_of_hessC_eq {D : ℕ} {f g : Fin D → (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
+    (h : ∀ k, f k =ᶠ[𝓝 z] g k) : ReciprocityTheory.AnForm.maDens f z = ReciprocityTheory.AnForm.maDens g z := by
+  unfold ReciprocityTheory.AnForm.maDens
+  rw [show (fun k => ReciprocityTheory.AnForm.hessC (f k) z) = (fun k => ReciprocityTheory.AnForm.hessC (g k) z) from
+    funext fun k => _root_.ReciprocityTheory.AnForm.A.hessC_congr' (h k)]
+
+theorem paramDens_eq_normSq_mul_locDens {e : ℕ} {X : Type} [TopologicalSpace X]
+    (A : FinHolAtlas e X) {V : Set (Fin e → ℂ)} {Φ : (Fin e → ℂ) → X} (P : Fin e → LocPot X)
+    (j : Fin A.n) (hΦ : IsParam A V Φ) {z : Fin e → ℂ} (hzV : z ∈ V)
+    (hz : Φ z ∈ (A.chart j).source) (hc : ∀ i, IsTwiceDifferentiableAt A (P i) (Φ z)) :
+    paramDens P Φ z = Complex.normSq (ReciprocityTheory.AnForm.A.jacC (A.chart j ∘ Φ) z).det *
+      locDens A P j ((A.chart j ∘ Φ) z) := by
+  have hcont : ContinuousAt Φ z := hΦ.2.1.continuousAt (hΦ.1.mem_nhds hzV)
+  have hev : ∀ᶠ z' in 𝓝 z, Φ z' ∈ (A.chart j).source :=
+    hcont.preimage_mem_nhds ((A.chart j).open_source.mem_nhds hz)
+  have han : AnalyticAt ℂ (A.chart j ∘ Φ) z := hΦ.2.2.2 j z ⟨hzV, hz⟩
+  have hinv : (A.chart j).symm ((A.chart j ∘ Φ) z) = Φ z := (A.chart j).left_inv hz
+  have key := ReciprocityTheory.AnForm.A.maDens_comp (fun k => (P k).φ (Φ z) ∘ (A.chart j).symm)
+    (A.chart j ∘ Φ) z han (fun k => hc k j hz)
+  have h1 : paramDens P Φ z = ReciprocityTheory.AnForm.maDens
+      (fun k => ((P k).φ (Φ z) ∘ (A.chart j).symm) ∘ (A.chart j ∘ Φ)) z := by
+    unfold paramDens
+    apply maDens_congr_of_hessC_eq
+    intro k
+    filter_upwards [hev] with z' hz'
+    simp only [Function.comp_apply, (A.chart j).left_inv hz']
+  have h2 : locDens A P j ((A.chart j ∘ Φ) z) = ReciprocityTheory.AnForm.maDens
+      (fun k => (P k).φ (Φ z) ∘ (A.chart j).symm) ((A.chart j ∘ Φ) z) := by
+    unfold ReciprocityTheory.AnForm.M.locDens
+    rw [hinv]
+    rfl
+  rw [h1, key, h2, mul_comm]
+
+theorem param_chart_changeOfVariables : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (V B : Set (Fin e → ℂ)) (Φ : (Fin e → ℂ) → X) (P : Fin e → LocPot X) (g : X → ℝ) (j : Fin A.n), IsParam A V Φ → MeasurableSet B → B ⊆ V → (∀ z ∈ B, Φ z ∈ (A.chart j).source) → (∀ z ∈ B, ∀ i, IsTwiceDifferentiableAt A (P i) (Φ z)) → MeasurableSet ((A.chart j ∘ Φ) '' B) ∧ (IntegrableOn (fun y => g ((A.chart j).symm y) * locDens A P j y) ((A.chart j ∘ Φ) '' B) ↔ IntegrableOn (fun z => g (Φ z) * paramDens P Φ z) B) ∧ ∫ y in (A.chart j ∘ Φ) '' B, g ((A.chart j).symm y) * locDens A P j y = ∫ z in B, g (Φ z) * paramDens P Φ z := by
+  intro e X _ _ _ A V B Φ P g j hΦ hB hBV hsrc hc2
+  have han : ∀ z ∈ B, AnalyticAt ℂ (A.chart j ∘ Φ) z := fun z hz => hΦ.2.2.2 j z ⟨hBV hz, hsrc z hz⟩
+  have hτd : ∀ z ∈ B, HasFDerivWithinAt (A.chart j ∘ Φ)
+      ((fderiv ℂ (A.chart j ∘ Φ) z).restrictScalars ℝ) B z := fun z hz =>
+    ((han z hz).differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt
+  have hinj : Set.InjOn (A.chart j ∘ Φ) B := by
+    intro x hx y hy hxy
+    apply hΦ.2.2.1 (hBV hx) (hBV hy)
+    have h := congrArg (A.chart j).symm hxy
+    simpa only [Function.comp_apply, (A.chart j).left_inv (hsrc x hx),
+      (A.chart j).left_inv (hsrc y hy)] using h
+  have hdet : ∀ z ∈ B, |((fderiv ℂ (A.chart j ∘ Φ) z).restrictScalars ℝ).det| =
+      Complex.normSq (ReciprocityTheory.AnForm.A.jacC (A.chart j ∘ Φ) z).det := by
+    intro z hz
+    rw [← ((han z hz).differentiableAt.hasFDerivAt.restrictScalars ℝ).fderiv,
+      ReciprocityTheory.AnForm.A.det_fderiv_real_eq_normSq _ _ (han z hz).differentiableAt]
+    exact abs_of_nonneg (Complex.normSq_nonneg _)
+  have hpt : Set.EqOn (fun z => |((fderiv ℂ (A.chart j ∘ Φ) z).restrictScalars ℝ).det| •
+      (g ((A.chart j).symm ((A.chart j ∘ Φ) z)) * locDens A P j ((A.chart j ∘ Φ) z)))
+      (fun z => g (Φ z) * paramDens P Φ z) B := by
+    intro z hz
+    simp only
+    rw [hdet z hz, smul_eq_mul,
+      paramDens_eq_normSq_mul_locDens A P j hΦ (hBV hz) (hsrc z hz) (hc2 z hz)]
+    have hl : (A.chart j).symm ((A.chart j ∘ Φ) z) = Φ z := (A.chart j).left_inv (hsrc z hz)
+    rw [hl]
+    ring
+  refine ⟨measurable_image_of_fderivWithin hB hτd hinj, ?_, ?_⟩
+  · rw [integrableOn_image_iff_integrableOn_abs_det_fderiv_smul volume hB hτd hinj]
+    exact integrableOn_congr_fun hpt hB
+  · rw [integral_image_eq_integral_abs_det_fderiv_smul volume hB hτd hinj]
+    exact setIntegral_congr_fun hB hpt
+
+end GlobalTheory.CompanionTheory.Ar.PB
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegral =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereIntegralParametrizedCover =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereIntegralParametrizedCover", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt\npublic import Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereChartDensityIntegral\npublic import ReciprocityTheory.AnalyticForms.PotentialTheory.Partition\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport GroundTheory.HeightsAndTheta.Heights.Antisymmetric.Statements\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights
@@ -121,7 +211,7 @@ theorem chartTerm_hasSum (A : FinHolAtlas e X) (V B : ℕ → Set (Fin e → ℂ
         exact ⟨h1, h2⟩
     rw [hEq]
     exact (hB n).1.inter hO.measurableSet
-  have key := fun n => GlobalTheory.T.monge_ampere_chart_density_integral e X A (V n) (B n ∩ Φ n ⁻¹' (A.chart j).source) (Φ n) P
+  have key := fun n => _root_.GlobalTheory.CompanionTheory.Ar.PB.param_chart_changeOfVariables e X A (V n) (B n ∩ Φ n ⁻¹' (A.chart j).source) (Φ n) P
     (fun x => Q.χ j x * g x) j (hpar n) (hCm n) (fun z hz => (hB n).2 hz.1) (fun z hz => hz.2)
     (fun z hz => hC2 n z hz.1)
   have hsub : ∀ n, (A.chart j ∘ Φ n) '' (B n ∩ Φ n ⁻¹' (A.chart j).source) ⊆
@@ -210,3 +300,6 @@ theorem integrableOn_hasSum_paramCover : ∀ (e : ℕ) (X : Type) [TopologicalSp
 end
 
 end GlobalTheory.CompanionTheory.Ar.PB
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.MongeAmpereIntegralParametrizedCover =====

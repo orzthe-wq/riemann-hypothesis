@@ -83,9 +83,7 @@ theorem chi_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (hR : ResEta D χ n) (y :
     rw [← map_mul, hprod, hall η hη, hη.2.2.1, one_pow]
   exact eq_inv_of_mul_eq_one_right h1
 
-theorem isSplitIdem_conj {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
-  obtain ⟨h1, h2, v, ε, hε, h3⟩ := h
-  exact ⟨by rw [← map_mul, h1], by rw [cA_cA, mul_comm, h2], v, ε, hε, by rw [cA_cA, add_comm, h3]⟩
+alias isSplitIdem_conj := _root_.GlobalTheory.SplitScalar.isSplitIdem_conj
 
 theorem suppAt_conj {e : AE D} {V : HSp D} {g : GA D V} (h : SuppAt e V g) : SuppAt (cA D e) V g := by
   intro i j

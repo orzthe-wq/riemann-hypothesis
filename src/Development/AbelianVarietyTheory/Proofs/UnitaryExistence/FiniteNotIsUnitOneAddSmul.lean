@@ -209,9 +209,9 @@ theorem exists_unitary_approx {E : Type*} [Field E] [CharZero E] [StarRing E] {�
 
 theorem finite_not_isUnit_eval {K A : Type*} [Field K] [CommRing A] [IsArtinianRing A] (φ : K →+* A) (f : A[X])
     (hf : f.eval 0 = 1) : {x : K | ¬ IsUnit (f.eval (φ x))}.Finite := by
-  refine ((IsArtinianRing.setOf_isMaximal_finite A).biUnion
+  refine ((IsArtinianRing.setOfPred_isMaximal_finite A).biUnion
     (t := fun m => {x : K | f.eval (φ x) ∈ m}) fun m hm => ?_).subset fun x hx => ?_
-  · haveI : m.IsMaximal := hm
+  · have : m.IsMaximal := hm
     have h0 : f.map (Ideal.Quotient.mk m) ≠ 0 := fun h => by
       have := congrArg (eval (Ideal.Quotient.mk m 0)) h
       rw [eval_map_apply, hf, map_one, eval_zero] at this
@@ -279,7 +279,7 @@ variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
 theorem exists_inv_one_add {p : ℕ} (hp : (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal) (z : LocAlg v)
     (hz : z ∈ locOrder v) : ∃ w ∈ locOrder v, (1 + p • z) * w = 1 := by
-  haveI : Algebra.IsIntegral (v.adicCompletionIntegers (maximalRealSubfield E)) (locOrder v) :=
+  have : Algebra.IsIntegral (v.adicCompletionIntegers (maximalRealSubfield E)) (locOrder v) :=
     ⟨fun x => (isIntegral_algHom_iff (locOrder v).val Subtype.val_injective).1 (isIntegral_of_mem_locOrder v x.2)⟩
   have : IsUnit (1 + p • (⟨z, hz⟩ : locOrder v)) := by
     by_contra h
@@ -299,7 +299,7 @@ theorem exists_inv_one_add {p : ℕ} (hp : (p : 𝓞 (maximalRealSubfield E)) �
 theorem exists_norm_one_isUnit {p : ℕ} (hp0 : p ≠ 0) (hp : (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal)
     (h : Matrix (Fin n) (Fin n) (LocAlg v)) :
     ∃ ζ ∈ locOrder v, locConj v ζ * ζ = 1 ∧ IsUnit (1 + ζ • h) := by
-  haveI : IsArtinianRing (LocAlg v) := IsArtinianRing.of_finite (v.adicCompletion (maximalRealSubfield E)) _
+  have : IsArtinianRing (LocAlg v) := IsArtinianRing.of_finite (v.adicCompletion (maximalRealSubfield E)) _
   obtain ⟨θ, h0, hθ⟩ := exists_imaginary_integer E
   have hc : ∀ k : ℤ, IsCMField.complexConj E (1 + p * (k * θ : E)) = 1 - p * (k * θ) := fun k => by
     rw [map_add (f := _), map_one, map_mul, map_mul, map_natCast, map_intCast, show IsCMField.complexConj E θ = -θ from hθ]
@@ -363,7 +363,7 @@ theorem exists_unitary_near {p : ℕ} (hp : p ≠ 0)
       (p : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal}.Finite := by
     simpa only [Ideal.dvd_span_singleton] using Ideal.finite_factors
       (I := Ideal.span {(p : 𝓞 (maximalRealSubfield E))}) (by simpa using hp)
-  letI := fun v : hT.toFinset => locStar v.1
+  let := fun v : hT.toFinset => locStar v.1
   have hv : ∀ v : hT.toFinset, (p : 𝓞 (maximalRealSubfield E)) ∈ v.1.asIdeal := fun v => hT.mem_toFinset.1 v.2
   choose ζ hζ hζ1 hζu using fun v : hT.toFinset => exists_norm_one_isUnit v.1 hp (hv v) (h v.1)
   obtain ⟨γ, hγ, hγ'⟩ := exists_unitary_approx (A := fun v : hT.toFinset => LocAlg v.1) (fun v => locEmb v.1)
@@ -401,7 +401,7 @@ theorem exists_nsmul_mem {p : ℕ} (hp : p.Prime) (L : Submodule (𝓞 E) (Fin n
   push Not at hk
   let J : Ideal (𝓞 E) := L.comap (LinearMap.toSpanSingleton (𝓞 E) _ x)
   let I : Ideal (𝓞 (maximalRealSubfield E)) := J.comap (algebraMap _ _)
-  haveI : (Ideal.span {(p : ℤ)}).IsPrime :=
+  have : (Ideal.span {(p : ℤ)}).IsPrime :=
     (Ideal.span_singleton_prime (by simpa using hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)
   obtain ⟨Q, hIQ, hQ, hQp⟩ := Ideal.exists_ideal_over_prime_of_isIntegral (Ideal.span {(p : ℤ)}) I fun k hkI => by
     rw [Ideal.mem_span_singleton, Int.natCast_dvd]

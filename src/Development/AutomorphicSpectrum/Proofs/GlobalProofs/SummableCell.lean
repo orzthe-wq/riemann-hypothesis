@@ -107,7 +107,7 @@ theorem cell_inj {n : ℕ} {w u u' : G D n} (hw : mat w = blk4 0 1 (-1) 0) {b b'
     rw [← mat_mul, inv_mul_cancel_right]
   rw [hp, mat_cell hw hu, mat_cell hw hu', submatrix_fromBlocks_mul] at e
   obtain ⟨-, -, h3, h4⟩ := blockMatrixTwoByTwoFin_injective e
-  simp only [mul_zero, mul_neg, mul_one, zero_mul, add_zero, zero_add, neg_inj] at h3 h4
+  simp only [mul_zero, mul_neg, mul_one, zero_add, neg_inj] at h3 h4
   rw [h3] at h4
   simpa using h4
 

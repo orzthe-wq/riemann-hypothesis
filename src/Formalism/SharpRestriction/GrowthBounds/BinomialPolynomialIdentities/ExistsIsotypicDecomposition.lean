@@ -170,8 +170,8 @@ def externalProductJointData : JointData F (MvPolynomial (Fin N × Fin (r + K)) 
     | .inl _ => Dominant
     | .inr _ => Dominant
   le_refl := fun s => match s with
-    | .inl _ => fun a => dominance_refl a
-    | .inr _ => fun a => dominance_refl a
+    | .inl _ => fun a => _root_.Formalism.MainNotions.LemmaBAlt.domLE_refl a
+    | .inr _ => fun a => _root_.Formalism.MainNotions.LemmaBAlt.domLE_refl a
   le_trans := fun s => match s with
     | .inl _ => fun _ _ _ h1 h2 => dominance_trans h1 h2
     | .inr _ => fun _ _ _ h1 h2 => dominance_trans h1 h2

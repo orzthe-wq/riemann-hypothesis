@@ -70,8 +70,7 @@ theorem ftLoc_eq (ε : Fin m → Bool) (s : ℝ) (f : (Fin m → Fin n → ℂ) 
       Matrix.of_apply, Complex.re_sum]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_
-    simp only [Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq,
-      Finset.mem_univ, if_true]
+    simp only [Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
     rw [sgn_eq, mul_comm (star (u a j)) _, mul_assoc, Complex.re_ofReal_mul]
     rfl
   rw [key]
@@ -79,8 +78,7 @@ theorem ftLoc_eq (ε : Fin m → Bool) (s : ℝ) (f : (Fin m → Fin n → ℂ) 
 theorem gramX_diag (ε : Fin m → Bool) (u : Fin m → Fin n → ℂ) (j : Fin n) :
     gramX ε u j j = ∑ a, ((sigR ε a : ℝ) : ℂ) * ((‖u a j‖ ^ 2 : ℝ) : ℂ) := by
 
-  simp only [gramX, Qp, Qb, evX, map_sub, map_sum, map_mul, MvPolynomial.eval_X, if_true,
-  Bool.false_eq_true, if_false, Finset.sum_filter]
+  simp only [gramX, Qp, Qb, evX, map_sub, map_sum, Finset.sum_filter]
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun a _ => ?_
   by_cases h : ε a <;> simp [h, sigR, Complex.conj_mul']

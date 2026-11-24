@@ -59,9 +59,9 @@ theorem _root_.GlobalTheory.isProjOver_of_isProper_of_isImmersion {A : Type} [Co
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver at hx
   obtain ⟨N, i, hi, -, rfl⟩ := hx
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver
-  haveI : IsProper (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str A N
-  haveI : IsProper ((e ≫ i) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := by rw [Category.assoc]; infer_instance
-  haveI : IsProper (e ≫ i) := IsProper.of_comp (e ≫ i) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N)
+  have : IsProper (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str A N
+  have : IsProper ((e ≫ i) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N) := by rw [Category.assoc]; infer_instance
+  have : IsProper (e ≫ i) := IsProper.of_comp (e ≫ i) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str A N)
   exact ⟨N, e ≫ i, .of_isPreimmersion _ (e ≫ i).isClosedMap.isClosed_range, by simp⟩
 
 open AlgebraicGeometry CategoryTheory Limits in
@@ -86,8 +86,8 @@ private theorem isImmersion_pullback_lift_of_isPullback {X Y Z W P : Scheme.{0}}
   set Γ : W ⟶ pullback s t := pullback.lift y (𝟙 W) (by rw [hy, Category.id_comp]) with hΓdef
   have hΓs : Γ ≫ pullback.snd s t = 𝟙 W := pullback.lift_snd _ _ _
   have hΓf : Γ ≫ pullback.fst s t = y := pullback.lift_fst _ _ _
-  haveI : IsImmersion (Γ ≫ pullback.snd s t) := by rw [hΓs]; infer_instance
-  haveI : IsImmersion Γ := IsImmersion.of_comp Γ (pullback.snd s t)
+  have : IsImmersion (Γ ≫ pullback.snd s t) := by rw [hΓs]; infer_instance
+  have : IsImmersion Γ := IsImmersion.of_comp Γ (pullback.snd s t)
   set e : P ⟶ pullback (f ≫ s) t := pullback.lift (f := f ≫ s) (g := t) φ b
     (by rw [← hy, ← Category.assoc, h.w, Category.assoc]) with hedef
   have hef : e ≫ pullback.fst (f ≫ s) t = φ := pullback.lift_fst _ _ _
@@ -119,14 +119,14 @@ theorem _root_.GlobalTheory.isProjOver_of_isPullback_of_isProper_of_isQProjOver 
     unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap
     simp only [j, CommRingCat.ofHom_hom]
     exact (Spec.map_preimage _).symm
-  haveI := isImmersion_pullback_lift_of_isPullback G.hom s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) y hj φ B.hom hpb
-  haveI : IsProper B.hom := MorphismProperty.of_isPullback (P := @IsProper) hpb hG
+  have := isImmersion_pullback_lift_of_isPullback G.hom s (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) y hj φ B.hom hpb
+  have : IsProper B.hom := MorphismProperty.of_isPullback (P := @IsProper) hpb hG
   have hqQ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver (pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) :=
     (_root_.GlobalTheory.isQProjOver_baseChange_and_finite_restrict R A j _ _).1 hq
   have he : pullback.lift (f := G.hom ≫ s) (g := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) φ B.hom
       (by rw [← hj, ← Category.assoc, hpb.w, Category.assoc]) ≫
         pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) = B.hom := pullback.lift_snd _ _ _
-  haveI : IsProper (pullback.lift (f := G.hom ≫ s) (g := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) φ B.hom
+  have : IsProper (pullback.lift (f := G.hom ≫ s) (g := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j) φ B.hom
       (by rw [← hj, ← Category.assoc, hpb.w, Category.assoc]) ≫
         pullback.snd (G.hom ≫ s) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap j)) := by rw [he]; infer_instance
   rw [← he]

@@ -184,11 +184,9 @@ theorem lattice_projective {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → 
   have : Module.FinitePresentation (𝓞 D.host.E) Λ := Module.finitePresentation_of_finite _ _
   exact Module.Flat.projective_of_finitePresentation
 
-theorem gram_conj (V : HSp D) : V.gramᴴ = V.gram := Matrix.ext fun i j => V.herm.eq _ _
-
 theorem form_swap (S : HSp D) (x y : Fin S.rank → D.host.E) :
     ∑ i, ∑ j, star (x i) * S.gram i j * y j = star ((fun a => star (y a)) ⬝ᵥ (S.gram *ᵥ x)) := by
-  have hg : ∀ k b, star (S.gram k b) = S.gram b k := fun k b => congrFun (congrFun (gram_conj S) b) k
+  have hg : ∀ k b, star (S.gram k b) = S.gram b k := fun k b => congrFun (congrFun (_root_.Formalism.IndefR.Fin.LevelGroupLemmas.Lat.gram_herm_E S) b) k
   simp only [dotProduct, mulVec, star_sum, star_mul', star_star, hg, Finset.mul_sum]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
@@ -346,16 +344,13 @@ theorem natCast_mul_idem_div {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE
 theorem gram_map_conj (V : HSp D) : ((V.gram.map (eToEAf D)).map (sR D))ᵀ = V.gram.map (eToEAf D) := by
   ext i j
   simp only [transpose_apply, map_apply, sR_eTo]
-  exact congrArg _ (congrFun (congrFun (gram_conj V) i) j)
+  exact congrArg _ (congrFun (congrFun (_root_.Formalism.IndefR.Fin.LevelGroupLemmas.Lat.gram_herm_E V) i) j)
 
 theorem gramInv_map_conj (V : HSp D) : ((V.gram⁻¹.map (eToEAf D)).map (sR D))ᵀ = V.gram⁻¹.map (eToEAf D) := by
-  have h : (V.gram⁻¹)ᴴ = V.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, gram_conj]
+  have h : (V.gram⁻¹)ᴴ = V.gram⁻¹ := by rw [Matrix.conjTranspose_nonsing_inv, _root_.Formalism.IndefR.Fin.LevelGroupLemmas.Lat.gram_herm_E]
   ext i j
   simp only [transpose_apply, map_apply, sR_eTo]
   exact congrArg _ (congrFun (congrFun h i) j)
-
-theorem sR_sR (x : EAf D) : sR D (sR D x) = x := by
-  rw [← toEAf_liftE x, ← toEAf_cA, ← toEAf_cA, cA_cA]
 
 theorem mulVec_mem_hatL {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin m → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {β : GL (Fin m) (EAf D)} {β' : GL (Fin n) (EAf D)}
@@ -421,7 +416,7 @@ theorem mem_latO_of_adj_int : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 
     have h := congrArg (fun X => Matrix.map X (toEAf D)) (gramInv_mul S)
     simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h
     exact h
-  have key := sum_rank_one (sR D) sR_sR _ _ _ (gramInv_map_conj S) (gram_map_conj T) hGi M
+  have key := sum_rank_one (sR D) _root_.Formalism.IndefR.Fin.LevelGroupLemmas.Lat.sR_sR _ _ _ (gramInv_map_conj S) (gram_map_conj T) hGi M
     (fun k i => eToEAf D (g k i)) (fun k a => eToEAf D (s k a)) hb' _ _ hM
   have hdec : t = ∑ k, genE (S := S) (T := T)
       (eToEAf D (n : D.host.E) * ((1 : D.host.E) ⊗ₜ[D.host.F] (1 : Af D.host.F))) (fun i => eToEAf D (g k i))

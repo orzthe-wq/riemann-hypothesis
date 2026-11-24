@@ -9,51 +9,7 @@ public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -90,7 +46,7 @@ private theorem redA_uniq_lemma (P : Pl E) {a : E ⊗[F] Formalism.L2.Herm.Af F}
     rw [hc, hc', ← Formalism.L2.DIV.resS_oToS (F := F) P s', ← Formalism.L2.DIV.resS_oToS (F := F) P s, ← map_mul, ← map_mul]
     congr 1
     apply Subtype.ext
-    simp only [MulMemClass.coe_mul, Subtype.coe_mk, ← iA_coe]
+    simp only [MulMemClass.coe_mul, ← iA_coe]
     ring
   have hs0 : (Ideal.Quotient.mk P.asIdeal s : kP P) ≠ 0 := fun h => hs (Ideal.Quotient.eq_zero_iff_mem.1 h)
   have hs0' : (Ideal.Quotient.mk P.asIdeal s' : kP P) ≠ 0 := fun h => hs' (Ideal.Quotient.eq_zero_iff_mem.1 h)
@@ -158,7 +114,7 @@ theorem redA_sum {ι : Type} [Fintype ι] (P : Pl E) {s : 𝓞 E} (hs : s ∉ P.
   rw [Finset.mul_sum, Finset.sum_congr rfl fun j _ => e1 j, ← map_sum]
   congr 1
   apply Subtype.ext
-  simp only [AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, Subtype.coe_mk]
+  simp only [AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul]
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => by ring
 
@@ -596,7 +552,7 @@ theorem redA_coe (P : Pl E) (r : 𝓞 E) : redA P (iA F E (algebraMap (𝓞 E) E
   rw [map_one, one_mul, ← Formalism.L2.DIV.resS_oToS (F := F) P r]
   congr 1
   apply Subtype.ext
-  simp only [Subtype.coe_mk, map_one, one_mul, ← iA_coe]
+  simp only [map_one, one_mul, ← iA_coe]
 
 theorem redN_surj (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (P : Pl E) (c : Fin n → kP P) :
     ∃ v ∈ Formalism.UG.CS.globLat x (stdLat E n), ∀ i, redA P (pullV x v i) = c i := by
@@ -904,7 +860,7 @@ theorem globLat_unimodular {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (h
   ext z
   refine Iff.trans ?_ ((e z).trans SetLike.mem_coe)
   simp only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply,
-    LinearMap.coe_restrictScalars, Submodule.mem_one, Formalism.BasicNotions.dualSet, Set.mem_setOf_eq, hform_one,
+    Submodule.mem_one, Formalism.BasicNotions.dualSet, Set.mem_setOf_eq, hform_one,
     RingHom.mem_range]
 
 end Ok
@@ -937,7 +893,7 @@ theorem redA_smul (P : Pl E) {a : E ⊗[F] Formalism.L2.Herm.Af F} {s : 𝓞 E} 
     ← Formalism.L2.DIV.resS_oToS (F := F) P c, ← map_mul]
   congr 1
   apply Subtype.ext
-  simp only [MulMemClass.coe_mul, Subtype.coe_mk, ← iA_coe]
+  simp only [MulMemClass.coe_mul, ← iA_coe]
   ring
 
 variable {n : ℕ}
@@ -1045,7 +1001,7 @@ theorem redA_int (P : Pl E) {a : E ⊗[F] Formalism.L2.Herm.Af F} (ha : a ∈ Fo
   rw [map_one, one_mul]
   congr 1
   apply Subtype.ext
-  simp only [Subtype.coe_mk, map_one, one_mul]
+  simp only [map_one, one_mul]
 
 theorem mem_idS_of_resS {P : Pl E} {t : Formalism.L2.Herm.intAf F E} (h : resS F P t = 0) : t ∈ Formalism.L2.DIV.idS F P.asIdeal := by
   have h' : (RingEquiv.ofBijective (Formalism.L2.DIV.cmpS F P.asIdeal)
@@ -1262,7 +1218,7 @@ theorem exists_GL_lastRow [NeZero n] (l : Fin n → κ) (hl : l ≠ 0) :
     have hxk : x k = 0 := by
       have h1 := congrFun hx (lastIdx n)
       rw [hrow] at h1
-      simp only [M, Matrix.of_apply, eq_self_iff_true, if_true, Pi.zero_apply] at h1
+      simp only [M, Matrix.of_apply, if_true, Pi.zero_apply] at h1
       rw [Finset.sum_eq_single k (fun j _ hj => by rw [h0 j hj, mul_zero])
         (fun h => absurd (Finset.mem_univ k) h)] at h1
       exact (mul_eq_zero.1 h1).resolve_left hk

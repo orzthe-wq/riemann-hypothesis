@@ -93,6 +93,4 @@ theorem genMap_of (h : twSec) : LateralTheory.EtaleFoundations.EtaleTateTwistGen
 
 end LateralTheory.EtaleFoundations.TwMulGenMap
 
-theorem LateralTheory.EtaleFoundations.etale_tate_twist_multiplication_generator_map_of_section_description (h : LateralTheory.EtaleFoundations.TwMulGenMap.twSec) :
-    LateralTheory.EtaleFoundations.EtaleTateTwistGeneratorCompatibleMapExists :=
-  LateralTheory.EtaleFoundations.TwMulGenMap.genMap_of h
+alias LateralTheory.EtaleFoundations.etale_tate_twist_multiplication_generator_map_of_section_description := _root_.LateralTheory.EtaleFoundations.TwMulGenMap.genMap_of

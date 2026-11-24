@@ -102,9 +102,6 @@ theorem psi_injective : Function.Injective (psi ρM ρW φ hφ) := by
   have h2 : φ.symm (f.1 g) = ρM g m - m := by
     first
     | exact (congrFun hm g).symm
-    | exact hm g
-    | exact (hm g).symm
-    | exact congrFun hm g
   rw [← hφ, ← map_sub, ← h2, LinearEquiv.apply_symm_apply]
 
 theorem lc_mem_range {x : H1z ρM} (hx : x ∈ lcH1 ρM) : ∃ y, psi ρM ρW φ hφ y = x := by
@@ -177,8 +174,6 @@ theorem unr_tie {I Dg : Subgroup G} (y : ReciprocityTheory.Gal.H1 ρW)
     have h1 := congrFun hm ⟨((g : Dg) : G), g.2⟩
     first
     | exact h1.symm
-    | (simp [Formalism.NG.coD0] at h1; exact h1.symm)
-    | (simp [Formalism.NG.coD0] at h1; rw [← h1]; rfl)
   show f.1 ((g : Dg) : G) = ρW ((g : Dg) : G) (φ m) - φ m
   rw [← hφ, ← map_sub, ← hg', LinearEquiv.apply_symm_apply]
 
@@ -298,7 +293,6 @@ theorem psi_res (Dg : Subgroup G) (x : ReciprocityTheory.Gal.H1 ρW) :
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   first
   | rfl
-  | (simp only [ReciprocityTheory.Gal.resH1, Formalism.NG.resH1, Submodule.mapQ_apply, psi_mk]; rfl)
 
 end ResCompat
 
@@ -335,7 +329,6 @@ theorem bkAt_of_loc
   subst e
   apply h n hmem hw
   first
-  | (rw [psi_res]; exact hx)
   | (erw [psi_res]; exact hx)
 
 end RecLoc
@@ -354,8 +347,6 @@ theorem length_semilinear {R S N M : Type} [CommRing R] [CommRing S] [AddCommGro
     Module.length R N = Module.length S M := by
   first
   | (unfold Module.length; congr 1; exact Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap f))
-  | (simp only [Module.length, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap f)])
-  | (unfold Module.length; exact Order.height_orderIso (Submodule.orderIsoMapComap f) ⊤)
 
 def quotSL {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) [RingHomInvPair (e : R →+* S) (e.symm : S →+* R)]
     [RingHomInvPair (e.symm : S →+* R) (e : R →+* S)] (x : R) :

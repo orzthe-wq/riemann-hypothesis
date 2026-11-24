@@ -238,7 +238,7 @@ theorem indep_of_linearIndependent_DdRE {G : Type} [Group G] {Qp K₀ K : Type} 
     induction y using TensorProduct.induction_on with
     | zero => simp
     | add y₁ y₂ h₁ h₂ => rw [map_add (f := _), map_add (f := _), h₁, h₂]
-    | tmul v f => simp [sm_tmul_tmul, mulVdR]
+    | tmul v f => simp [mulVdR]
   have hleft : ∀ (a : LL) (f : F) (y : V ⊗[Qp] F),
       sm Qp F LL V (a ⊗ₜ[Qp] f) y = a • sm Qp F LL V ((1 : LL) ⊗ₜ[Qp] f) y := by
     intro a f y
@@ -335,7 +335,7 @@ theorem indep_of_linearIndependent_DdRE {G : Type} [Group G] {Qp K₀ K : Type} 
     induction y using TensorProduct.induction_on with
     | zero => simp
     | add x y hx hy => simp only [map_add (f := _), smul_add, hx, hy]
-    | tmul v f' => simp [sm_tmul_tmul, TensorProduct.smul_tmul', smul_eq_mul]
+    | tmul v f' => simp [TensorProduct.smul_tmul', smul_eq_mul]
   have hcomb : ∑ p, b p.1 p.2 • w p = 0 := by
     have h2 := congrArg (TensorProduct.comm Qp V F) hrel
     rw [map_zero] at h2

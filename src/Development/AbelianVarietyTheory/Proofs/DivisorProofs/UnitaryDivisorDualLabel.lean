@@ -43,6 +43,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawaA
 
 @[expose] public section
 
@@ -90,17 +91,12 @@ theorem mul_antiJ (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : (A * antiJ L n)
     rw [eq_iff_iff, eq_comm, Fin.rev_eq_iff]
   simp [Matrix.mul_apply, antiJ_apply, this]
 
-theorem antiJ_sq : antiJ L n * antiJ L n = 1 := by
-  ext i j
-  rw [antiJ_mul, antiJ_apply, Fin.rev_rev, Matrix.one_apply]
-  simp [eq_comm]
-
 theorem dual_mul (σ : L →+* L) (A B : Matrix (Fin n) (Fin n) L) (h : A * B = 1) :
     antiJ L n * cT σ B * antiJ L n * (antiJ L n * cT σ A * antiJ L n) = 1 := by
   calc _ = antiJ L n * cT σ B * (antiJ L n * antiJ L n) * cT σ A * antiJ L n := by simp only [Matrix.mul_assoc]
     _ = antiJ L n * cT σ (A * B) * antiJ L n := by
-      rw [antiJ_sq, Matrix.mul_one, cT_mul]; simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [h, cT_one, Matrix.mul_one, antiJ_sq]
+      rw [_root_.Formalism.UG.P.fIwasawa_antiJ_mul_antiJ, Matrix.mul_one, cT_mul]; simp only [Matrix.mul_assoc]
+    _ = 1 := by rw [h, cT_one, Matrix.mul_one, _root_.Formalism.UG.P.fIwasawa_antiJ_mul_antiJ]
 
 theorem getD_dualLab (d : List ℤ) (hd : d.length = n) (i : Fin n) :
     (dualLab d).getD i 0 = -(d.getD i.rev 0) := by
@@ -167,14 +163,14 @@ theorem hasDiv_dualLab : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplic
       _ = 1 := by rw [Units.mul_inv, Matrix.mul_one, hDD, Matrix.mul_one, Units.mul_inv]
   have h1 := dual_mul σ _ _ hinv
   have h2 : antiJ L n * cT σ (g : Matrix (Fin n) (Fin n) L) * antiJ L n * (g : Matrix (Fin n) (Fin n) L) = 1 := by
-    rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ _), hg', antiJ_sq]
+    rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ _), hg', _root_.Formalism.UG.P.fIwasawa_antiJ_mul_antiJ]
   have h3 : (g : Matrix (Fin n) (Fin n) L) = antiJ L n * cT σ (((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *
       Matrix.diagonal (fun i : Fin n => ϖ ^ (-d.getD i 0)) * ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) *
       antiJ L n := by
     conv_rhs => rw [← Matrix.mul_one (_ * antiJ L n), ← h2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
   rw [h3, ea, eb, eD, cT_mul, cT_mul]
   have hJ : ∀ X : Matrix (Fin n) (Fin n) L, antiJ L n * (antiJ L n * X) = X := fun X => by
-    rw [← Matrix.mul_assoc, antiJ_sq, Matrix.one_mul]
+    rw [← Matrix.mul_assoc, _root_.Formalism.UG.P.fIwasawa_antiJ_mul_antiJ, Matrix.one_mul]
   simp only [Matrix.mul_assoc, hJ]
 
 end GlobalTheory.DualDivU

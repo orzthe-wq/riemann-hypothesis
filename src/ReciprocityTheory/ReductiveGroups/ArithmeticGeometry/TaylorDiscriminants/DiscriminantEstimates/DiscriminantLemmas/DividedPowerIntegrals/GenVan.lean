@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.DividedPowerIntegrals.GenPow
 
 @[expose] public section
 
@@ -104,10 +105,6 @@ end
 
 section
 variable {K I J : Type} [CommRing K] [Fintype I] [Fintype J]
-
-theorem gdelta_apply (κ : I → J → K) (R : MvPolynomial (I ⊕ J) K) :
-    gdelta κ R = ∑ i, ∑ j, κ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) R) := by
-  simp [gdelta, LinearMap.sum_apply]
 
 theorem gdelta_mem_lowDeg_inl (κ : I → J → K) {t : ℕ} {R : MvPolynomial (I ⊕ J) K}
     (h : R ∈ lowDeg (Sum.inl : I → I ⊕ J) (t + 1)) :

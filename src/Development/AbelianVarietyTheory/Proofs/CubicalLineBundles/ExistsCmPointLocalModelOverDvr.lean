@@ -47,10 +47,6 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
-private theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
-
 private theorem sab_comp_exists {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S₁ S₂ : Scheme.{0}}
     {t : SAB H S} {t₁ : SAB H S₁} {t₂ : SAB H S₂} {f₁ : S₁ ⟶ S} {g : S₂ ⟶ S₁} (n : SABMap t₂ t₁ g)
     (m₁ : SABMap t₁ t f₁) (f₂ : S₂ ⟶ S) (h : f₂ = g ≫ f₁) : ∃ m : SABMap t₂ t f₂, m.φ = n.φ ≫ m₁.φ := by
@@ -78,17 +74,17 @@ theorem locMod_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     obtain ⟨m1, h1⟩ := sab_comp_exists n' z.Φ.m _ rfl
     obtain ⟨k, hk⟩ := sab_comp_exists n' z.m' _ rfl
     obtain ⟨m2, h2⟩ := sab_cancel_exists n k (spMap (algebraMap T.V T.Fr))
-      (by rw [← spectrumMap_comp, ← spectrumMap_comp, hρ])
+      (by rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, hρ])
     exact ⟨⟨ρ, hρ, G, t', n, n', m1, m2, h1, h2.trans hk⟩⟩
   · obtain ⟨G, n, -⟩ := (pat_pullback E H _ _ ψ M.G).1
     obtain ⟨t', n', -⟩ := (pat_pullback E H _ _ i M.t').1
-    obtain ⟨N, hN⟩ := sab_comp_exists n M.n _ (spectrumMap_comp M.ρ ψ)
-    obtain ⟨N', hN'⟩ := sab_comp_exists n' M.n' _ (spectrumMap_comp iK i)
+    obtain ⟨N, hN⟩ := sab_comp_exists n M.n _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp M.ρ ψ)
+    obtain ⟨N', hN'⟩ := sab_comp_exists n' M.n' _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp iK i)
     obtain ⟨m1, h1⟩ := sab_comp_exists n' M.m1 (spMap (i.comp iK) ≫ z.x)
-      (by rw [spectrumMap_comp, Category.assoc])
+      (by rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc])
     obtain ⟨k, hk⟩ := sab_comp_exists n' M.m2 _ rfl
     obtain ⟨m2, h2⟩ := sab_cancel_exists n k (spMap (algebraMap T'.V T'.Fr))
-      (by rw [← spectrumMap_comp, ← spectrumMap_comp, hψ])
+      (by rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, hψ])
     refine ⟨⟨ψ.comp M.ρ, ?_, G, t', N, N', m1, m2, ?_, ?_⟩, n, n', h1, h2.trans hk⟩
     · rw [← RingHom.comp_assoc, hψ, RingHom.comp_assoc, M.hρ, RingHom.comp_assoc]
     · rw [h1, hN', M.h1, Category.assoc]

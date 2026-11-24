@@ -1,5 +1,6 @@
 module
 
+public import Formalism.FockPairing
 public import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -53,8 +54,8 @@ namespace Formalism.L2.G.Model.TS
 
 open Formalism.GradedWeylDivisibility
 
-def fockR {σ R : Type*} [CommRing R] (f g : MvPolynomial σ R) : R :=
-  ∑ m ∈ f.support, f.coeff m * g.coeff m * ((∏ k ∈ m.support, (m k).factorial : ℕ) : R)
+abbrev fockR {σ R : Type*} [CommRing R] (f g : MvPolynomial σ R) : R :=
+  FockPairing.pair f g
 
 def toK (O K : Type*) [CommRing O] [CommRing K] [Algebra O K] {σ : Type*} : MvPolynomial σ O →ₗ[O] MvPolynomial σ K :=
   (mapAlgHom (Algebra.ofId O K)).toLinearMap

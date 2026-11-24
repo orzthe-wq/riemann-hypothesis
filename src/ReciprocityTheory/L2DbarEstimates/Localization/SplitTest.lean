@@ -2,51 +2,7 @@ module
 
 public import ReciprocityTheory.L2DbarEstimates.Localization.UnweightBackStatement
 public import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.MeasurableSetImageOfIsLocalHomeomorph
 public import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.TsupportDbSubset
@@ -155,8 +111,6 @@ theorem splitT_hcs {X : Type*} [Zero X] (u : M → X) (S : Fin n → Set M)
 theorem splitT_cont (f : M → V n) (h : ∀ j, Continuous fun x => f x j) : Continuous f := by
   first
   | exact (PiLp.continuous_toLp 2 _).comp (continuous_pi h)
-  | exact (EuclideanSpace.equiv (Fin n) ℂ).symm.continuous.comp (continuous_pi h)
-  | exact continuous_induced_rng.2 (continuous_pi h)
 
 theorem splitT_weakS (F G : M → V n) (hFG : F =ᵐ[vol n z] G) (σ : M → Fin n → Fin n → ℂ)
     (h : IsWeakS n z F σ) : IsWeakS n z G σ := by
@@ -206,7 +160,6 @@ private theorem smooth_exp_ofReal_of_smooth {M : Type*} [TopologicalSpace M] (n 
   intro e he
   have hg : ContDiff ℝ ∞ (fun w : ℂ => ((Real.exp w.re : ℝ) : ℂ)) := by
     first
-    | fun_prop
     | exact Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp Complex.reCLM.contDiff)
   refine (hg.comp_contDiffOn (hu e he)).congr fun p _ => ?_
   simp [Function.comp]
@@ -296,7 +249,6 @@ theorem splitTest (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
       refine splitT_hcs _ (fun _ : Fin n => tsupport g) (fun _ => hg.2) fun x hx => ?_
       first
       | exact PiLp.ext fun j => hoffg g hg.2 j x (hx j)
-      | (ext j; exact hoffg g hg.2 j x (hx j))
     have hDg : MemLp (dbarF n z g) 2 (wvol n z ph₂) := hDc.memLp_of_hasCompactSupport hDs
     have hW := hWS z hz (dbarF n z g) fun j => Smooth.ck n z 1 _ (Smooth.db n z j g hg.1)
     have hsbar : sbar n z (dbarF n z g) = 0 := funext fun x => hSD z hz g (Smooth.ck n z 2 g hg.1) x
@@ -323,10 +275,7 @@ theorem splitTest (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
           rw [map_mul, Complex.conj_conj]
           show ⟪db n z j g x, f x j⟫_ℂ = _
           first
-          | rfl
           | (simp only [RCLike.inner_apply]; ring)
-          | (simp only [RCLike.inner_apply])
-          | (simp [mul_comm])
       _ = conj (∫ x, (∑ j, db n z j g x * conj (f x j)) * (Real.exp (-ph₂ x) : ℂ) ∂vol n z) :=
           integral_conj
       _ = conj (∫ x, g x * conj (tstar n z ph₁ ph₂ f x) * (Real.exp (-ph₁ x) : ℂ) ∂vol n z) := by

@@ -4,7 +4,7 @@ public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSe
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.RLFock
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.RLActs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantAddChar
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.EvIHalfTrace
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.RLLieD
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
@@ -52,6 +52,9 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharSymplecticLocalLatticeEqOne
 
 @[expose] public section
 
@@ -64,15 +67,6 @@ namespace PositivityTheory.RL.Up
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
-theorem trace_emb (a : F) : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (mixedEmbedding F a) =
-    (Algebra.trace ℚ F a : ℚ) := by
-  classical
-  rw [Algebra.trace_eq_matrix_trace (mixedEmbedding.latticeBasis F), Algebra.trace_eq_matrix_trace (integralBasis F), Matrix.trace,
-    Matrix.trace, Rat.cast_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Matrix.diag_apply, Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul,
-    mixedEmbedding.latticeBasis_apply, ← map_mul, mixedEmbedding.latticeBasis_repr_apply]
-
 theorem trace_nondeg (l : κ → mixedEmbedding.mixedSpace F)
     (h : ∀ y, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (l ⬝ᵥ y) = 0) : l = 0 := by
   funext i
@@ -80,7 +74,7 @@ theorem trace_nondeg (l : κ → mixedEmbedding.mixedSpace F)
   have := h (Pi.single i (mixedEmbedding F ((integralBasis F).traceDual j)))
   rw [dotProduct_single, ← (mixedEmbedding.latticeBasis F).sum_repr (l i)] at this
 
-  simp only [Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, mixedEmbedding.latticeBasis_apply, ← map_mul, trace_emb,
+  simp only [Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, mixedEmbedding.latticeBasis_apply, ← map_mul, _root_.GlobalTheory.LatVacArith.trace_mixedEmbedding,
   Module.Basis.trace_mul_traceDual] at this
   simpa [apply_ite] using this
 
@@ -267,7 +261,7 @@ theorem schur2 {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (T : Module.End ℂ ((
         by_contra h
         push Not at h
         exact hi (af_ext fun v => (h v).trans (map_zero _).symm)
-      obtain ⟨y, hy⟩ := DFunLike.ne_iff.1 (GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v)
+      obtain ⟨y, hy⟩ := DFunLike.ne_iff.1 (Tw.PsiNontriv.psiV_ne_one ψ hψ v)
       refine ⟨_, ⟨⟨i, v, y / evalV F v (u i)⟩, rfl⟩, ?_⟩
       show GlobalTheory.VacAny.psiV ψ v _ ≠ 1
       rwa [mul_div_cancel₀ _ hv]

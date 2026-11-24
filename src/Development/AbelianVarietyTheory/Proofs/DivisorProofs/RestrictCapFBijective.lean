@@ -208,8 +208,7 @@ theorem toCech_lc {n : ℕ} (cc : Fin n → R) (f : Fin n → CatCoh.C1 (capF s 
   funext i j
   have hle : U i ⊓ U j ≤ cap U (NE.pair i j) := (cap_pair U i j).ge
 
-  simp only [toCech_apply, Finset.sum_apply, Pi.smul_apply, map_sum, cv_smul, GlobalTheory.KS.rsT_sum, GlobalTheory.KS.rsT_mul,
-  GlobalTheory.KS.rsT_constFn s hle, mul_sub, Finset.sum_sub_distrib]
+  simp only [toCech_apply, Finset.sum_apply, Pi.smul_apply, map_sum, GlobalTheory.KS.rsT_sum, mul_sub, Finset.sum_sub_distrib]
   refine congrArg₂ _ (Finset.sum_congr rfl fun a _ => ?_) (Finset.sum_congr rfl fun a _ => ?_) <;>
     rw [cv_smul, GlobalTheory.KS.rsT_mul, GlobalTheory.KS.rsT_constFn s hle]
 

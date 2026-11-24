@@ -95,9 +95,7 @@ private theorem isY_af {m : ℕ} {s : GL (Fin n) (Af E)} (h : ∀ w, IsY m (cmp 
   ⟨af_ext fun w => by rw [map_one]; exact (h w i hi).1,
     fun j hj => af_ext fun w => by rw [map_zero]; exact (h w i hi).2 j hj⟩
 
-private theorem pFin_finGL (k : GL (Fin n) (Af E)) : GeneralLinearGroup.map (pFin E) (finGL E n k) = k := by
-  rw [finGL, GlobalTheory.CuspRep.map_cornerGL_of_hom _ _ (RingHom.id _) fun x => rfl]
-  rfl
+private alias pFin_finGL := _root_.GlobalTheory.CuspRep.pFin_finGL
 
 variable [IsTotallyReal E]
 

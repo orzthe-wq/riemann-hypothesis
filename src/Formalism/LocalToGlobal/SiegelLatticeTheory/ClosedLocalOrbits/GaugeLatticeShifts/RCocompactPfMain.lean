@@ -147,17 +147,16 @@ private theorem rcm_mv_mul_lemma (a b : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) 
 theorem rcm_mv_inv_rat {x : X.B.I.Ginf} {M : GL (Fin X.B.I.n) X.B.I.E}
     (hx : ∀ v, uMat (x v) = (X.B.I.P v)⁻¹ * (M : Matrix _ _ _).map (X.B.I.φ v) * X.B.I.P v) (v : InfinitePlace X.B.I.F) :
     Mv X v x⁻¹ = (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) := by
-  have h1 : Mv X v (1 : X.B.I.Ginf) = 1 := by
+  have hA : Mv X v x⁻¹ * Mv X v x = 1 := by
+    rw [← rcm_mv_mul_lemma, inv_mul_cancel]
     unfold Mv
     show Bv' X v * 1 * Bv X v = 1
     rw [Matrix.mul_one, Bv'_mul_Bv]
-  have hA : Mv X v x⁻¹ * Mv X v x = 1 := by
-    rw [← rcm_mv_mul_lemma, inv_mul_cancel, h1]
   rw [rcm_mv_rat X hx v] at hA
-  have hC : (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) * (Gr X (M : Matrix _ _ _)).map (X.B.I.φ v) = 1 := by
-    rw [← Matrix.map_mul, rcm_gr_inv_mul]
+  have hC' : (Gr X (M : Matrix _ _ _)).map (X.B.I.φ v) *
+      (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) = 1 := by
+    rw [← Matrix.map_mul, rcm_gr_mul_inv]
     simp
-  have hC' := mul_eq_one_comm.mp hC
   calc Mv X v x⁻¹ = Mv X v x⁻¹ * ((Gr X (M : Matrix _ _ _)).map (X.B.I.φ v) *
         (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v)) := by rw [hC', Matrix.mul_one]
     _ = (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) := by rw [← Matrix.mul_assoc, hA, Matrix.one_mul]
@@ -175,9 +174,7 @@ theorem rcm_rset_iff (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') {M : GL
       InPat (lvk X) 1 ((Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) * Mv X v r *
         (Gr X (M : Matrix _ _ _)).map (X.B.I.φ v) - 1) := by
   show (r ∈ X.NinfU u ∧ t.pt.1⁻¹ * r * t.pt.1 ∈ X.NinfU u') ↔ _
-  rw [rcm_ninf_iff, rcm_ninf_iff]
-  simp only [rcm_mv_conj hx r]
-  exact ⟨fun h v => ⟨h.1 v, h.2 v⟩, fun h => ⟨fun v => (h v).1, fun v => (h v).2⟩⟩
+  simp only [rcm_ninf_iff, rcm_mv_conj hx r, forall_and]
 
 private theorem rcm_inPat_mul_lemma {A B : Matrix (Kap X) (Kap X) ℂ} (hA : InPat (lvk X) 1 (A - 1))
     (hB : InPat (lvk X) 1 (B - 1)) : InPat (lvk X) 1 (A * B - 1) := by
@@ -258,9 +255,8 @@ theorem rcm_cay_mem_rset (t : GTerm X u u' (X.Fu u) (X.Fu u') what₂ rows') {M 
     (N : ℕ) (s : X.B.I.Ginf) (hs : ∀ v, Mv X v s = Formalism.L2.SG.Pf.Unip.cay N (Z v)) : s ∈ Rset t := by
   rw [rcm_rset_iff t hx]
   intro v
-  have hGG : (Gr X (M : Matrix _ _ _)).map (X.B.I.φ v) * (Gr X (↑M⁻¹ : Matrix _ _ _)).map (X.B.I.φ v) = 1 := by
-    rw [← Matrix.map_mul, rcm_gr_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]
-  rw [hs v, conj_cay hGG]
+  rw [hs v, conj_cay (by
+    rw [← Matrix.map_mul, rcm_gr_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)])]
   exact ⟨cay_sub_one N (hZ v), cay_sub_one N (hZc v)⟩
 
 end Asm2

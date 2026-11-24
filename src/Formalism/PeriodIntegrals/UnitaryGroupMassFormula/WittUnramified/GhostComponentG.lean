@@ -233,15 +233,9 @@ private theorem map_frobenius' (f : W →+* Qq) (w : WittVector p W) :
     intro P
     first
       | exact DFunLike.congr_fun (MvPolynomial.comp_aeval (f := w.coeff) f.toIntAlgHom) P
-      | exact DFunLike.congr_fun (MvPolynomial.comp_aeval w.coeff f.toIntAlgHom) P
-      | (induction P using MvPolynomial.induction_on with
-          | C a => simp [MvPolynomial.aeval_C, algebraMap_int_eq, eq_intCast, map_intCast]
-          | add P Q hP hQ => simp only [map_add (f := _), hP, hQ]
-          | mul_X P i hP => simp only [map_mul, hP, MvPolynomial.aeval_X])
   ext n
   rw [WittVector.map_coeff, WittVector.coeff_frobenius, WittVector.coeff_frobenius, key]
   congr 1
-  try (funext i; exact (WittVector.map_coeff f w i).symm)
 
 theorem sHom_frob (hinj : Function.Injective (algebraMap W Qq)) (x : W) :
     sHom p Qq F hF hinj (F x) = frobenius (sHom p Qq F hF hinj x) := by

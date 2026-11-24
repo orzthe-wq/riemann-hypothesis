@@ -79,7 +79,7 @@ theorem exists_pow_joint : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω
 
   have hfixζ : ∀ τ ∈ ReciprocityTheory.Gal.Ine (F := E) A, τ ζ = ζ := by
     intro τ hτ
-    refine GlobalTheory.TameCharDet.eq_of_pow_eq_one_of_val_lt A L hLA ?_ hζn (hτ.2 ζ hvζ.le)
+    refine _root_.GlobalTheory.RootValuationOne.main A L hLA ?_ hζn (hτ.2 ζ hvζ.le)
     rw [← map_pow, hζn, map_one]
 
   have hfixπ : ∀ τ : Formalism.ConjugateSelfDual.G E Ω, (∀ y : Ω, y ≠ 0 → A.valuation (τ y / y - 1) < 1) → τ π = π := by
@@ -87,7 +87,7 @@ theorem exists_pow_joint : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω
     have h1 : (τ π / π) ^ L = 1 := by
       rw [div_pow, ← map_pow, he, AlgEquiv.commutes, div_self]
       rw [← he]; exact pow_ne_zero _ hπ
-    have h2 := GlobalTheory.TameCharDet.eq_of_pow_eq_one_of_val_lt A L hLA h1 (one_pow L) (hτ π hπ)
+    have h2 := _root_.GlobalTheory.RootValuationOne.main A L hLA h1 (one_pow L) (hτ π hπ)
     rwa [div_eq_one_iff_eq hπ] at h2
 
   have hopenH : ∀ (H : Subgroup (Formalism.ConjugateSelfDual.G E Ω)), IsOpen (H : Set (Formalism.ConjugateSelfDual.G E Ω)) →

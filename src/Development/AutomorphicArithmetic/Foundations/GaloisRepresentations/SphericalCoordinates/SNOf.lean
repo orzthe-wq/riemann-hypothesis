@@ -63,10 +63,10 @@ theorem sN_of : SN := by
     rw [Matrix.sum_apply, Finset.sum_eq_single r]
     · by_cases h : r = s
       · subst h
-        simp [Matrix.single_apply]
-      · simp [Matrix.single_apply, Matrix.one_apply, h]
+        simp
+      · simp [h]
     · intro k _ hk
-      simp [Matrix.single_apply, hk]
+      simp [hk]
     · simp
   have hEE : ∀ i j j' k, ψ (Matrix.single i j 1) * ψ (Matrix.single j' k 1) =
       if j = j' then ψ (Matrix.single i k 1) else 0 := by

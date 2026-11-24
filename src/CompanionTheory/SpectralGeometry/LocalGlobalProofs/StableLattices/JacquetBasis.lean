@@ -2,45 +2,6 @@ module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.MatrixCoefficientDecay.InfinitesimalCharacterPaths.TensDecomp
 public import Mathlib.Analysis.Matrix.Spectrum
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -52,13 +13,6 @@ namespace GlobalTheory.CompanionTheory.GradEig
 
 variable {n : ℕ}
 
-theorem Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
 theorem trace_eq_zero {ε : Fin n → Bool} {A : Matrix (Fin n) (Fin n) ℂ} (h : IsGrad ε A) : A.trace = 0 := by
   obtain ⟨hG, hH, -, -⟩ := h
   have hG' : A.conjTranspose * Jm ε + Jm ε * A = 0 := hG
@@ -66,7 +20,7 @@ theorem trace_eq_zero {ε : Fin n → Bool} {A : Matrix (Fin n) (Fin n) ℂ} (h 
   have h1 : A * Jm ε = -(Jm ε * A) := eq_neg_of_add_eq_zero_left hG'
   have h2 : (A * Jm ε * Jm ε).trace = -(Jm ε * A * Jm ε).trace := by
     rw [h1, Matrix.neg_mul, Matrix.trace_neg]
-  rw [Matrix.mul_assoc A, Jm_mul_self, Matrix.mul_one, Matrix.trace_mul_cycle, Jm_mul_self,
+  rw [Matrix.mul_assoc A, _root_.Formalism.REAL.Jm_mul_self, Matrix.mul_one, Matrix.trace_mul_cycle, _root_.Formalism.REAL.Jm_mul_self,
     Matrix.one_mul] at h2
   linear_combination h2 / 2
 
@@ -125,13 +79,13 @@ theorem exists_gradBasis {ε : Fin n → Bool} {A : Matrix (Fin n) (Fin n) ℂ} 
   let c : Fin n → Fin 3 := fun x =>
     if hA.eigenvalues x = -1 then 0 else if hA.eigenvalues x = 0 then 1 else 2
   have hc0 : ∀ x, c x = 0 ↔ hA.eigenvalues x = -1 := by
-    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx] <;> decide
+    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx]
   have hc1 : ∀ x, c x = 1 ↔ hA.eigenvalues x = 0 := by
-    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx] <;> decide
+    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx]
   have hc2 : ∀ x, c x = 2 ↔ hA.eigenvalues x = 1 := by
-    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx] <;> decide
+    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx]
   have hval : ∀ x, (![-1, 0, 1] : Fin 3 → ℂ) (c x) = ((hA.eigenvalues x : ℝ) : ℂ) := by
-    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx] <;> rfl
+    intro x; rcases hcase x with hx | hx | hx <;> norm_num [c, hx]
   obtain ⟨j, hj⟩ : ∃ j, (Finset.univ.filter fun x => hA.eigenvalues x = -1).card = j := ⟨_, rfl⟩
   have hsumR : ∑ x, hA.eigenvalues x = 0 := by
     have h1 := hA.trace_eq_sum_eigenvalues

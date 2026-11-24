@@ -125,26 +125,6 @@ private theorem fin_facts {K : Type} [Field K] [NumberField K] {n : ℕ} {k : Ad
   · rw [MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact hk))]
   · exact (AdelicGLn.prodEquiv K n).apply_symm_apply _
 
-private theorem level_open {K : Type} [Field K] [NumberField K] {n : ℕ} {D : TypeDat K n}
-    {Kf : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hL : D.Level Kf) (hle : Kf ≤ AdelicGLn.integralFiniteGL K n) :
-    IsOpen (Kf : Set (AdelicGLn.FiniteAdelicGL K n)) := by
-  obtain ⟨O, hO, hU⟩ := D.isOpen
-  have : (Kf : Set (AdelicGLn.FiniteAdelicGL K n)) = (AdelicGLn.integralFiniteGL K n : Set _) ∩ finEmb K n ⁻¹' O := by
-    ext k
-    constructor
-    · intro hk
-      obtain ⟨h1, h2, h3⟩ := fin_facts (hle hk)
-      have := (hL.1 (MultiplicityOne.finProj K n k) (by rw [h1, h3])).2 (by rw [h1, h3]; exact hk)
-      rw [hU, h1] at this
-      exact ⟨hle hk, this.1⟩
-    · rintro ⟨hk, hk'⟩
-      obtain ⟨h1, h2, h3⟩ := fin_facts hk
-      have := (hL.1 (MultiplicityOne.finProj K n k) (by rw [h1, h3])).1 (by rw [hU, h1]; exact ⟨hk', h2⟩)
-      rw [h1, h3] at this
-      exact this
-  rw [this]
-  exact (AdelicGLn.isOpen_integralFiniteGL K n).inter (hO.preimage continuous_finEmb)
-
 private theorem fix_inv {K : Type} [Field K] [NumberField K] {n : ℕ} {D : TypeDat K n}
     {Kf : Subgroup (AdelicGLn.FiniteAdelicGL K n)} (hL : D.Level Kf) (hle : Kf ≤ AdelicGLn.integralFiniteGL K n)
     {f : G1 K n → ℂ} (hf : D.Fix f) {k : AdelicGLn.FiniteAdelicGL K n} (hk : k ∈ Kf) (g : G1 K n) :
@@ -165,7 +145,7 @@ theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cosAct :
         ∑ᶠ c ∈ {c : AdelicGLn.FiniteAdelicGL K (2 + 2) ⧸ Kf | ∃ k ∈ Kf, c = QuotientGroup.mk (k * h)},
           flat z (A.sec v) (x * MultiplicityOne.finProj K (2 + 2) c.out)) ∧ ∀ P, IsOrthogonalProjectionTwoLines A.J A'.J P → Y ∘L P = P ∘L Y := by
   intro K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' Kf hL hle h Y hY
-  have ho := level_open hL hle
+  have ho := _root_.UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.FinA.lev_open hL hle
   have hc : IsCompact (Kf : Set (AdelicGLn.FiniteAdelicGL K (2 + 2))) :=
     (AdelicGLn.isCompact_integralFiniteGL K (2 + 2)).of_isClosed_subset (Kf.isClosed_of_isOpen ho) hle
   have hfin := coset_fin Kf ho hc h

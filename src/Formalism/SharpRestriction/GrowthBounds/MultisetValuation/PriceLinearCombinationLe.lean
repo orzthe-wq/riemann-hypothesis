@@ -1,11 +1,9 @@
 module
 
-public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundSmallPrimes
+public import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem
 public import Formalism.LocalRingCardinality.ColumnWeightSpreadOffTop
-import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcCGNonneg
-import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcIotaInj
-public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe
-import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundLargePrimes
+public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundLargePrimes
+public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundSmallPrimes
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,6 +20,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,7 +41,97 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcCGNonneg
+import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcIotaInj
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe, Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceLinearCombinationLe
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem\npublic import Formalism.LocalRingCardinality.ColumnWeightSpreadOffTop\npublic import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundLargePrimes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.FormalGroupSystem.Pf
+
+open Formalism.BasicNotions Finset
+
+section Fl
+
+variable {p : ℕ} {G : Formalism.MainNotions.G.GAtP p} (Fl : Formalism.MainNotions.G.Fills G) (v : Fin G.P.nV)
+
+theorem ne_sum_le (s : Fin (G.P.n' v)) (r : ℕ) (hm : 2 ≤ G.P.m) (hb : s ∈ Fl.TT v → 0 ≤ Fl.b v s) :
+    ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (lamI (G.P.lam0 v) s a : ℝ) ≤
+      r * Fl.c + (if s ∈ Fl.TT v ∧ G.P.m + 1 ≤ r then (Fl.a v s : ℝ) else 0) := by
+  have h1 : ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (lamI (G.P.lam0 v) s a : ℝ) ≤
+      ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), ((Fl.c : ℝ) + (if s ∈ Fl.TT v ∧ a = 1 then (Fl.a v s : ℝ) else 0)) := by
+    apply Finset.sum_le_sum
+    intro a _
+    have := ne_lamI_le Fl v s a hm hb
+    by_cases hc : s ∈ Fl.TT v ∧ a = 1
+    · rw [if_pos hc] at this ⊢
+      exact_mod_cast this
+    · rw [if_neg hc] at this ⊢
+      exact_mod_cast this
+  rw [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul] at h1
+  have h2 : ((Icc (G.P.m + 2 - r) (G.P.m + 1)).card : ℝ) ≤ r := by
+    rw [Nat.card_Icc]
+    have : G.P.m + 1 + 1 - (G.P.m + 2 - r) ≤ r := by omega
+    exact_mod_cast this
+  have h3 := mul_le_mul_of_nonneg_right h2 (Nat.cast_nonneg Fl.c : (0 : ℝ) ≤ Fl.c)
+  have h4 : ∑ a ∈ Icc (G.P.m + 2 - r) (G.P.m + 1), (if s ∈ Fl.TT v ∧ a = 1 then (Fl.a v s : ℝ) else 0) =
+      (if s ∈ Fl.TT v ∧ G.P.m + 1 ≤ r then (Fl.a v s : ℝ) else 0) := by
+    by_cases hs : s ∈ Fl.TT v
+    · simp only [hs, true_and]
+      rw [Finset.sum_ite_eq' (Icc (G.P.m + 2 - r) (G.P.m + 1)) 1 (fun _ => (Fl.a v s : ℝ))]
+      have : (1 ∈ Icc (G.P.m + 2 - r) (G.P.m + 1)) ↔ G.P.m + 1 ≤ r := by
+        rw [Finset.mem_Icc]; omega
+      simp only [this]
+    · simp [hs]
+  rw [h4] at h1
+  linarith
+
+end Fl
+
+variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
+
+theorem ne_k_pos : (1 : ℝ) ≤ D.R.k := by
+  have h2 := D.R.m_add_three_le_k
+  have : 1 ≤ D.R.k := by omega
+  exact_mod_cast this
+
+theorem ne_bT_le (hS : Formalism.MainNotions.SizesAt L) (t) : (L.bT t : ℝ) ≤ 5 / 4 * L.sc.b' := by
+  have hx := L.sc.one_lt_alt
+  have hLa := hS.2.2.2.2.2.2.2.2.1
+  have hRho := hS.2.2.2.2.2.2.2.2.2.1
+  have hBot := hS.2.2.2.2.2.2.2.2.2.2.1 t
+  unfold Formalism.MainNotions.SizeRho at hRho
+  have hk := ne_k_pos (D := D)
+  have hLa0 : 0 ≤ L.LaG := le_trans (Real.rpow_nonneg L.sc.x_pos.le _) hLa.1
+  have h1 : 0 ≤ L.sc.x ^ Formalism.MainNotions.szTh L * Real.log L.sc.x * L.LaG / D.R.k :=
+    div_nonneg (mul_nonneg (mul_nonneg (Real.rpow_nonneg L.sc.x_pos.le _) (Real.log_nonneg hx.le)) hLa0) (by linarith)
+  have h2 : L.sc.x ^ (-2 : ℝ) ≤ 1 := Real.rpow_le_one_of_one_le_of_nonpos hx.le (by norm_num)
+  have h3 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k ≤ 1 / 4 := by
+    have : 4 * Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k =
+        4 * (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k) := by ring
+    linarith
+  have h4 : Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k =
+      (Formalism.MainNotions.szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k) * L.sc.b' := by ring
+  have h5 := mul_le_mul_of_nonneg_right h3 L.sc.b'_pos.le
+  linarith
+
+end Formalism.MainNotions.FormalGroupSystem.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceLinearCombinationLe =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceLinearCombinationLe", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundSmallPrimes\npublic import Formalism.LocalRingCardinality.ColumnWeightSpreadOffTop\nimport Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcCGNonneg\nimport Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NcIotaInj\npublic import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NeSumLe\nimport Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceBoundLargePrimes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -148,3 +237,7 @@ theorem numericalComparisonUniform_of_size (hS : nd_NeedSize) : Formalism.MainNo
   numerical_closed_of_threshold priceThreshold price_threshold_ge_nine (nc_need3_of priceThreshold hS ne_priceThreshold)
 
 end Formalism.MainNotions.FormalGroupSystem.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.PriceLinearCombinationLe =====

@@ -55,12 +55,8 @@ noncomputable section
 namespace GlobalTheory.VacMove
 variable {D : D7}
 
-theorem mt_mul₀ (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := rfl
-
-theorem mt_one₀ (V : HSp D) : mt V 1 = 1 := rfl
-
 theorem mt_mul_inv (V : HSp D) (g : GA D V) (y : Fin V.rank → AE D) : mt V g *ᵥ (mt V g⁻¹ *ᵥ y) = y := by
-  rw [Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]
+  rw [Matrix.mulVec_mulVec, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mulVec]
 
 theorem mulVec_mem_idAt {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) {P : Pl D → Prop} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ idAt D P) (i : Fin n) : (A *ᵥ y) i ∈ idAt D P := by
@@ -90,8 +86,7 @@ theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : Pl D → Pro
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
-theorem actO_eq (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
-    actO S T g h u = HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹) := rfl
+alias actO_eq := _root_.GlobalTheory.MixModel.actO_eq
 
 theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {P : Pl D → Prop} {g : GA D S} {h : GA D T}

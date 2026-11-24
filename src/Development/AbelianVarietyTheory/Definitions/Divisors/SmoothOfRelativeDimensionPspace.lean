@@ -112,7 +112,7 @@ abbrev projSys : LinSys k where
 namespace projSys
 
 theorem algebraΓ_eq : (projSys k M).algebraΓ = algebraSections k M ⊤ :=
-  Algebra.algebra_ext _ _ fun r => (LB.resG_self (X := PSpace k M) le_top _).symm
+  Algebra.algebra_ext _ _ fun _r => (LB.resG_self (X := PSpace k M) le_top _).symm
 
 theorem isVariety (hM : 1 ≤ M) : (projSys k M).IsVariety :=
   ⟨smoothOfRelativeDimension_pspace k M, ⟨M, 𝟙 _, inferInstance, Category.id_comp _⟩,

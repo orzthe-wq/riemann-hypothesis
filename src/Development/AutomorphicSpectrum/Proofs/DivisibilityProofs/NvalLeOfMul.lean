@@ -107,14 +107,7 @@ theorem adjoin_ratios {K V Ω : Type} [Field K] [AddCommGroup V] [Module K V] [F
     rw [this]
     exact F.div_mem (key v) (key v')
 
-theorem vV_pow {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
-    [IsFractionRing V K'] {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = (n : ℤ) * vV V x := by
-  induction n with
-  | zero => simp [vV]
-  | succ n ih =>
-    rw [pow_succ, vV_mul (pow_ne_zero _ hx) hx, ih]
-    push_cast
-    ring
+alias vV_pow := _root_.GlobalTheory.PlaceExtField.vV_pow
 
 theorem nval_le_of_mul {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
     [IsFractionRing V K'] (e : ℕ) {x y : K'} (hx : x ≠ 0) (hy : 0 ≤ vV V y) : nval V e x ≤ nval V e (y * x) := by

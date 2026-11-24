@@ -128,12 +128,12 @@ theorem jDRRadP_of_parts (hB : JDRBeta) (hT : JDRTop) (hA : JDRStepA) (hS : JDRS
   have h1 := hBσ (Wq →L[ℂ] Wp) z z' Y J hz c hc g hg
   have h2 := congrArg Neg.neg (hCh Wp Wq k r z z' π π' D Y hz hz' hD J hJ c hc g hg hx)
   clear hBσ hCh hB hT hA hS hC
-  simp only [Pi.neg_apply, neg_neg] at h2
+  simp only [neg_neg] at h2
   simp only [rhGrp, dMul, drbF, Pi.add_apply] at h2 ⊢
   rw [← h2]
   simp only [FN, Q.resG, h1]
-  simp only [smul_smul, smul_neg, neg_smul]
-  match_scalars <;> field_simp <;> ring
+  simp only [smul_smul, smul_neg]
+  match_scalars <;> field_simp
 
 end
 

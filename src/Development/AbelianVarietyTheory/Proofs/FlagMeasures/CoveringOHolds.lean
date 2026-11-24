@@ -46,7 +46,7 @@ import Mathlib.Topology.Sheaves.Init
 namespace GlobalTheory
 
 theorem coveringO_holds : Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO := by
-  apply Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.coveringO_of_transference
+  apply _root_.Formalism.HermitianLatticeCounting.P.coveringO_of_transference
   intro E _ _ _ Λ _ _ lam hlam hdual x
   exact transferenceCover_holds E Λ lam hlam hdual x
 

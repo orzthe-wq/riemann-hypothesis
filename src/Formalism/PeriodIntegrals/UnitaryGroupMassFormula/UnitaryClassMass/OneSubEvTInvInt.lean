@@ -142,12 +142,12 @@ theorem evT_eq_sum (T : Finset (HeightOneSpectrum (𝓞 F))) : evT (T : Set _) =
   by_cases hw : w ∈ T
   · rw [if_pos (by exact_mod_cast hw), Finset.sum_eq_single w]
     · simp
-    · intro b _ hb; simp [Pi.single_apply, Ne.symm hb]
+    · intro b _ hb; simp [Ne.symm hb]
     · intro h; exact absurd hw h
   · rw [if_neg (by exact_mod_cast hw)]
     refine (Finset.sum_eq_zero fun b hb => ?_).symm
     have : w ≠ b := fun h => hw (h ▸ hb)
-    simp [Pi.single_apply, this]
+    simp [this]
 
 theorem one_sub_evT_inv_int (T : Set (HeightOneSpectrum (𝓞 F))) (t : 𝓞 F)
     (ht : ∀ w : HeightOneSpectrum (𝓞 F), w ∉ T → t ∉ w.asIdeal) :

@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CoreArithmeticGroupContainsPrincipalCongruenceStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
+public import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
+public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CoreArithmeticGroupContainsPrincipalCongruence
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,6 +49,6 @@ namespace GlobalTheory.RunIn
 
 theorem gamAt_of_lawsCore : ∀ (D : D7) (T : Core D), LawsCore T → GamAt T := by
   intro D T h j hj σ hσ k γ h1 h2
-  exact GlobalTheory.T.coreArithmeticGroup_contains_principalCongruence D T h j hj σ hσ k γ h1 h2
+  exact _root_.GlobalTheory.PrincCore.hasPrinc_core D T h j hj σ hσ k γ h1 h2
 
 end GlobalTheory.RunIn

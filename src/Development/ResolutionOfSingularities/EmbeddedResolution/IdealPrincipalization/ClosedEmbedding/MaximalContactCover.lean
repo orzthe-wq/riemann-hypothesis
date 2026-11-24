@@ -193,7 +193,7 @@ def coverHypersurfaceIdeal {X X' : Scheme.{u}} {k : Type u} [Field k]
 structure MaximalContactCover {X X' : Scheme.{u}} {k : Type u} [Field k]
     (p : X' ⟶ Spec (CommRingCat.of k)) (τ : X ⟶ X') (I : X.IdealSheafData) (c : ℕ) :
     Type (u + 1) where
-  toCoverData : MaxContactReduction.FiniteOpenCoverWithIdeals (markedTripleOfIdeal k X' p (imageIdealSheaf τ I))
+  toCoverData : MaxContactReduction.FiniteOpenCoverWithIdeals (markedTripleOfIdeal k X' p (_root_.FunctorialResolution.Blowup.schemeImageIdeal τ I))
   covers : iSup toCoverData.opens = ⊤
   isAffine : ∀ i : toCoverData.idx, IsAffineOpen (toCoverData.opens i)
   hasChart : ∀ i : toCoverData.idx, ∃ n : ℕ,
@@ -411,10 +411,10 @@ instance instIsClosedImmersionStarFactor (C : MaximalContactCover p τ I c) [IsC
   C.isClosedImmersion_pullbackFiberToHypersurface
 
 def comapImageIdealSheaf (C : MaximalContactCover p τ I c) : C.toCoverData.disjointUnion.IdealSheafData :=
-  (imageIdealSheaf τ I).comap C.projection
+  (_root_.FunctorialResolution.Blowup.schemeImageIdeal τ I).comap C.projection
 
 theorem comapImageIdealSheaf_eq (C : MaximalContactCover p τ I c) :
-    C.comapImageIdealSheaf = (imageIdealSheaf τ I).comap C.projection := rfl
+    C.comapImageIdealSheaf = (_root_.FunctorialResolution.Blowup.schemeImageIdeal τ I).comap C.projection := rfl
 
 def idealOnHypersurface (C : MaximalContactCover p τ I c) :
     C.toCoverData.iInfImageIdeal.subscheme.IdealSheafData :=
@@ -444,7 +444,7 @@ private theorem iInfImageIdeal_le_comap_ker (C : MaximalContactCover p τ I c) [
 
 theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
-    C.comapImageIdealSheaf = imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι C.idealOnHypersurface := by
+    C.comapImageIdealSheaf = _root_.FunctorialResolution.Blowup.schemeImageIdeal C.toCoverData.iInfImageIdeal.subschemeι C.idealOnHypersurface := by
   have hG : Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι = C.toCoverData.iInfImageIdeal := by
     simp
   have hle : Scheme.Hom.ker C.toCoverData.iInfImageIdeal.subschemeι ≤ C.comapImageIdealSheaf := by
@@ -457,26 +457,26 @@ theorem comapImageIdealSheaf_eq_imageIdealSheaf_idealOnHypersurface (C : Maximal
 
 theorem idealOnHypersurface_eq_imageIdealSheaf (C : MaximalContactCover p τ I c)
     [IsClosedImmersion τ] :
-    C.idealOnHypersurface = imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) := by
+    C.idealOnHypersurface = _root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) := by
   have hqc : AlgebraicGeometry.QuasiCompact τ := inferInstance
   have hflat : AlgebraicGeometry.Flat C.projection :=
     MaxContactReduction.FiniteOpenCoverWithIdeals.flat_disjointUnionMap C.toCoverData
-  have h1 : (imageIdealSheaf τ I).comap C.projection
-      = imageIdealSheaf C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase) :=
+  have h1 : (_root_.FunctorialResolution.Blowup.schemeImageIdeal τ I).comap C.projection
+      = _root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase) :=
     comap_map_eq_map_comap_of_isPullback C.isPullback_pullbackFiber I
-  have h2 : imageIdealSheaf C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase)
-      = imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι
-          (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)) := by
+  have h2 : _root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToTotal (I.comap C.pullbackFiberToBase)
+      = _root_.FunctorialResolution.Blowup.schemeImageIdeal C.toCoverData.iInfImageIdeal.subschemeι
+          (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase)) := by
     have h := Scheme.IdealSheafData.map_comp (I.comap C.pullbackFiberToBase) C.pullbackFiberToHypersurface
       C.toCoverData.iInfImageIdeal.subschemeι
     rw [C.pullbackFiberToHypersurface_comp_subschemeι] at h
     exact h
-  have h3 : (imageIdealSheaf C.toCoverData.iInfImageIdeal.subschemeι
-        (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))).comap
+  have h3 : (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.toCoverData.iInfImageIdeal.subschemeι
+        (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))).comap
         C.toCoverData.iInfImageIdeal.subschemeι
-      = imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) :=
+      = _root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase) :=
     Blowup.comap_map_of_isClosedImmersion
-      C.toCoverData.iInfImageIdeal.subschemeι (imageIdealSheaf C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))
+      C.toCoverData.iInfImageIdeal.subschemeι (_root_.FunctorialResolution.Blowup.schemeImageIdeal C.pullbackFiberToHypersurface (I.comap C.pullbackFiberToBase))
   rw [C.idealOnHypersurface_eq_comap, C.comapImageIdealSheaf_eq, h1, h2, h3]
 
 end MaximalContactCover

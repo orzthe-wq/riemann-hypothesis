@@ -424,7 +424,6 @@ theorem topCells_of (hZ : ZjAffine) (hST : SizesTop) (hIT : IntTop) : TopCells :
     have hiq : ((i : ℕ) : WithTop ℕ∞) ≤ (q : WithTop ℕ∞) := by exact_mod_cast hi
     have heq := hTI.eq_iteratedFDeriv hiq Z
     rw [hPhi, ← heq]
-    beta_reduce
     have hI : Integrable (fun η : XiH p s σ => (‖iotaC p s‖ ^ i * K * |C i| * (1 + ‖Z‖) ^ (-(e i / (5 * ((p + s : ℕ) : ℝ))))) *
         wtH η ^ (-(e i / (5 * ((p + s : ℕ) : ℝ))))) (muXiH p s σ) :=
       (hIT p s σ _ (he i hi)).const_mul _
@@ -444,4 +443,4 @@ theorem topCells_of (hZ : ZjAffine) (hST : SizesTop) (hIT : IntTop) : TopCells :
 end Formalism.FourierDecayAlt.P.Ux13
 
 theorem Formalism.FourierDecayAlt.P.top_cells : Formalism.FourierDecayAlt.U.TopCells := by
-  exact Formalism.FourierDecayAlt.P.Ux13.topCells_of Formalism.FourierDecayAlt.P.level_z_affine Formalism.FourierDecayAlt.P.sizes_top_level Formalism.FourierDecayAlt.P.integrability_top_level
+  exact Formalism.FourierDecayAlt.P.Ux13.topCells_of _root_.Formalism.FourierDecayAlt.P.Ux4.ux_zjAffine Formalism.FourierDecayAlt.P.sizes_top_level _root_.Formalism.FourierDecayAlt.P.Ux6.intTop

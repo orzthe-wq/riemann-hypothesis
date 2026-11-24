@@ -116,9 +116,9 @@ theorem UpperTheory.V.Ws.sxContGr :
   intro Λ _ _ _ _ X _ _ _ _ R _ _ _ W hz _ Γ _
   obtain ⟨hmax, -⟩ := wPres_maximalIdeal_gr_zero_eq_sup_span_monomials Λ X R W hz
   have hfilt := part_filt Λ X R W hz
-  have hb : ∀ b : W.gr 0, algebraMap (W.gr 0) W.A b = (b : W.A) := fun b => by first | rfl | simp
+  have hb : ∀ b : W.gr 0, algebraMap (W.gr 0) W.A b = (b : W.A) := fun b => by first | rfl
   have ha : ∀ a : Λ, ((algebraMap Λ (W.gr 0) a : W.A) : R) = algebraMap Λ R a :=
-    fun a => by first | rfl | simp
+    fun a => by first | rfl
   refine ⟨fun j φ hφ hc => ?_, fun φ hc => ?_⟩
   · refine UpperTheory.V.Ws.sxContGr_cont W.A.val Subtype.val_injective (maximalIdeal R)
       ((maximalIdeal (W.gr 0)).map (algebraMap (W.gr 0) W.A))

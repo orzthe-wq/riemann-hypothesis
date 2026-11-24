@@ -3,7 +3,7 @@ module
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.LinearAlgebra.Basis.Defs
 public import Mathlib.LinearAlgebra.DFinsupp
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatOfForallComplexRingEquivFixedStatement
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatOfForallComplexRingEquivFixed
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -78,7 +78,7 @@ private theorem exists_rational_support_subset_of_galois_stable {V κ : Type} [A
   by_cases hfix : ∀ σ : ℂ ≃+* ℂ, ∀ k,
       σ (b.repr ((b.repr w k₀)⁻¹ • w) k) = b.repr ((b.repr w k₀)⁻¹ • w) k
   ·
-    refine ⟨_, hvW, ?_, fun k => GlobalTheory.T.exists_rat_of_forall_complex_ringEquiv_fixed _ (fun σ => hfix σ k), ?_⟩
+    refine ⟨_, hvW, ?_, fun k => _root_.GlobalTheory.ClassFin.exists_rat_of_forall_ringEquiv_fixed _ (fun σ => hfix σ k), ?_⟩
     · intro h0
       rw [h0, map_zero, Finsupp.zero_apply] at hv1
       exact zero_ne_one hv1
@@ -114,14 +114,6 @@ private theorem exists_rational_support_subset_of_galois_stable {V κ : Type} [A
     obtain ⟨u, huW, hu0, hurat, husub⟩ := ih _ hlt _ hdW hd0 rfl
     exact ⟨u, huW, hu0, hurat, husub.trans hsub⟩
 
-theorem exists_rational_support_subset {V κ : Type} [AddCommGroup V] [Module ℂ V]
-    (b : Module.Basis κ ℂ V) (W : Submodule ℂ V)
-    (hW : ∀ σ : ℂ ≃+* ℂ, ∀ w ∈ W, ∃ w' ∈ W, ∀ k, b.repr w' k = σ (b.repr w k)) (n : ℕ) :
-    ∀ w ∈ W, w ≠ 0 → (b.repr w).support.card = n →
-      ∃ u ∈ W, u ≠ 0 ∧ (∀ k, ∃ q : ℚ, b.repr u k = q) ∧
-        (b.repr u).support ⊆ (b.repr w).support :=
-  fun w hw hw0 hcard => exists_rational_support_subset_of_galois_stable b W hW n w hw hw0 hcard
-
 private theorem mem_span_rational_of_galois_stable_of_support_card {V κ : Type} [AddCommGroup V] [Module ℂ V]
     (b : Module.Basis κ ℂ V) (W : Submodule ℂ V)
     (hW : ∀ σ : ℂ ≃+* ℂ, ∀ w ∈ W, ∃ w' ∈ W, ∀ k, b.repr w' k = σ (b.repr w k)) :
@@ -134,7 +126,7 @@ private theorem mem_span_rational_of_galois_stable_of_support_card {V κ : Type}
   by_cases hw0 : w = 0
   · rw [hw0]; exact Submodule.zero_mem _
   obtain ⟨u, huW, hu0, hurat, husub⟩ :=
-    exists_rational_support_subset b W hW n w hw hw0 hcard
+    _root_.GlobalTheory.ClassFin.GaloisDescent.exists_rational_support_subset_of_galois_stable b W hW n w hw hw0 hcard
   have hru : b.repr u ≠ 0 := fun h => hu0 (b.repr.map_eq_zero_iff.mp h)
   obtain ⟨k, hk⟩ := Finsupp.support_nonempty_iff.mpr hru
   have huk : b.repr u k ≠ 0 := Finsupp.mem_support_iff.mp hk

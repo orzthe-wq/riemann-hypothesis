@@ -80,9 +80,7 @@ theorem exists_ann (P : M.Par) : ∃ ζ : ℂ, P.TT < Complex.normSq ζ := by
   rw [Complex.normSq_ofReal]
   nlinarith [abs_nonneg P.TT, le_abs_self P.TT]
 
-theorem hsVec_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
-  simpa using VLem.hsV_smul (Wp := Wp) (Wq := Wq) 0 0
+alias hsVec_zero := _root_.Formalism.FourierDecayAlt.P.CutMP.Gauge.VLem.hsV_zero
 
 section
 

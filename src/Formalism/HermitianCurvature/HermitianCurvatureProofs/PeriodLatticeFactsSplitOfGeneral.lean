@@ -208,18 +208,6 @@ theorem scaledIdealNorm : Formalism.FourierDecayAlt.S6.NormIdl := by
     congr 2 <;> (push_cast; ring)
   rw [this, Real.sqrt_sq (by positivity)]
 
-theorem twistedLatticeBetween : Formalism.FourierDecayAlt.S6.Between := by
-  intro E _ _ _ A B s hBA hB
-  refine ⟨fun t ht => ?_, fun t ht => ((mem_twLat E A B s t).1 ht).1⟩
-  rw [mem_twLat]
-  refine ⟨hBA ht, ?_⟩
-  have h1 : complexConj E t ∈ B := hB t ht
-  have h2 : (-1 : E) ^ s * complexConj E t ∈ B := by
-    rcases neg_one_pow_eq_or E s with h | h <;> rw [h]
-    · simpa using h1
-    · rw [neg_one_mul]; exact B.coeToSubmodule.neg_mem h1
-  exact B.coeToSubmodule.sub_mem ht h2
-
 theorem dualIdealEqLiftIdeal : Formalism.FourierDecayAlt.S6.IdealsMatch := by
   intro E _ _ _ g r i s
   refine ⟨?_, ?_, ?_⟩

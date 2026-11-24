@@ -88,7 +88,7 @@ theorem gram_mix (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Ma
   have a6 : f * f = f := by rw [hf]; linear_combination he + he' + 2 * h0
   rw [v1, v2]
   simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, he', h0, a1, a2, a3, a4, a5, a6,
-    zero_smul, add_zero, zero_add, h1, h2, h3, smul_add]
+    zero_smul, add_zero, zero_add, h1, h2, h3]
   rw [← add_smul, ← add_smul, show e + σ e + f = 1 by rw [hf]; ring, one_smul]
 
 theorem smul_mix_one {n : ℕ} {e δ : A} (he : e * e = e) (a b : GL (Fin n) A) (h : δ * e = δ) :

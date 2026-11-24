@@ -79,13 +79,13 @@ theorem fst_w (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B
     spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ (ovT R B M).hom = (ovB R B).hom := by
   show _ ≫ spMap _ = spMap _
   rw [← GlobalTheory.Cris.spMap_comp]
-  congr 1 <;> ext r <;> simp
+  congr 1
 
 theorem fst_inl (B M : Type) [CommRing B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] :
     spMap (TrivSqZeroExt.fstHom B B M).toRingHom ≫ spMap (TrivSqZeroExt.inlHom B M) = 𝟙 (Sp B) := by
   rw [← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_id]
-  congr 1 <;> ext r <;> simp
+  congr 1
 
 def eFst (B M : Type) [CommRing B] [Algebra R B] [AddCommGroup M] [Module B M]
     [Module Bᵐᵒᵖ M] [IsCentralScalar B M] : ovB R B ⟶ ovT R B M :=

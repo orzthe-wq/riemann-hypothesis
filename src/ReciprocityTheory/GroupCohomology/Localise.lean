@@ -1,50 +1,120 @@
 module
 
-public import ReciprocityTheory.GroupCohomology.TransgressionStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
+public import Mathlib.Algebra.Module.LocalizedModule.Basic
+public import ReciprocityTheory.GroupCohomology.IsTowerLim
 public import ReciprocityTheory.GroupCohomology.DEqZeroOfMemB
-public import ReciprocityTheory.GroupCohomology.LocaliseA
+public import ReciprocityTheory.GroupCohomology.TransgressionStatement
+import Mathlib.Order.CompletePartialOrder
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.GroupCohomology.LocaliseA, ReciprocityTheory.GroupCohomology.Localise
+
+-- ===== clump member: ReciprocityTheory.GroupCohomology.LocaliseA =====
+-- clump-header: {"m": "ReciprocityTheory.GroupCohomology.LocaliseA", "h": "module\n\npublic import Mathlib.Algebra.Module.LocalizedModule.Basic\npublic import ReciprocityTheory.GroupCohomology.IsTowerLim\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.GroupCohomology.DEqZeroOfMemB\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.Coh
+
+open Cx Function
+
+universe u
+
+section Alg
+
+variable {R : Type u} [CommRing R] {A B : Cx R}
+
+theorem cx_smul_d {n : ℕ} (t : R) (x : B.X n) : B.d n (t • x) = t • B.d n x := map_smul _ _ _
+
+theorem bij_H_of_bij (t : R) (ht : ∀ n, Bijective fun x : B.X n => t • x) (n : ℕ) :
+    Bijective (algebraMap R (Module.End R (B.H n)) t) := by
+  constructor
+  · rw [injective_iff_map_eq_zero]
+    intro c hc
+    induction c using H_ind with
+    | h x hx =>
+      rw [Module.algebraMap_end_apply, cls_smul, cls_eq_zero_iff] at hc
+      rw [cls_eq_zero_iff]
+      cases n with
+      | zero =>
+        have h0 : t • x = 0 := hc
+        exact (ht 0).1 (h0.trans (smul_zero t).symm)
+      | succ n =>
+        obtain ⟨y, hy⟩ := hc
+        obtain ⟨y', rfl⟩ := (ht n).2 y
+        refine ⟨y', (ht (n + 1)).1 ?_⟩
+        show t • B.d n y' = t • x
+        rw [← cx_smul_d, hy]
+  · intro c
+    induction c using H_ind with
+    | h x hx =>
+      obtain ⟨x', rfl⟩ := (ht n).2 x
+      have hx' : B.d n x' = 0 := (ht (n + 1)).1 (by
+        show t • B.d n x' = t • 0
+        rw [← cx_smul_d, smul_zero]; exact hx)
+      exact ⟨B.cls n x' hx', by rw [Module.algebraMap_end_apply, cls_smul]⟩
+
+theorem isLocalized_of_cx (j : Hom A B) (t : R) (hj : ∀ n, Injective (j.f n))
+    (ht : ∀ n, Bijective fun x : B.X n => t • x)
+    (hc : ∀ n (x : B.X n), ∃ (m : ℕ) (y : A.X n), j.f n y = t ^ m • x) (n : ℕ) :
+    IsLocalizedModule (Submonoid.powers t) (j.H n) := by
+  constructor
+  case map_units =>
+    rintro ⟨_, k, rfl⟩
+    show IsUnit (algebraMap R (Module.End R (B.H n)) (t ^ k))
+    rw [map_pow]
+    exact ((Module.End.isUnit_iff _).2 (bij_H_of_bij t ht n)).pow k
+  case surj =>
+    intro y
+    induction y using H_ind with
+    | h x hx =>
+      obtain ⟨m, a, ha⟩ := hc n x
+      have ha0 : A.d n a = 0 := (hj (n + 1)) (by
+        rw [j.comm, ha, cx_smul_d, hx, smul_zero, map_zero])
+      refine ⟨(A.cls n a ha0, ⟨t ^ m, m, rfl⟩), ?_⟩
+      show (t ^ m) • B.cls n x hx = j.H n (A.cls n a ha0)
+      rw [cls_smul, Hom.H_cls]
+      exact cls_congr _ _ ha.symm
+  case exists_of_eq =>
+    have key : ∀ z : A.H n, j.H n z = 0 → ∃ c : Submonoid.powers t, c • z = 0 := by
+      intro z hz
+      induction z using H_ind with
+      | h g hg =>
+        rw [Hom.H_cls, cls_eq_zero_iff] at hz
+        cases n with
+        | zero =>
+          have h0 : j.f 0 g = 0 := hz
+          refine ⟨1, ?_⟩
+          rw [one_smul, cls_eq_zero_iff]
+          exact (hj 0) (h0.trans (map_zero _).symm)
+        | succ n =>
+          obtain ⟨h, hh⟩ := hz
+          obtain ⟨m, k, hk⟩ := hc n h
+          refine ⟨⟨t ^ m, m, rfl⟩, ?_⟩
+          show (t ^ m) • A.cls (n + 1) g hg = 0
+          rw [cls_smul, cls_eq_zero_iff]
+          refine ⟨k, (hj (n + 1)) ?_⟩
+          rw [j.comm, hk, cx_smul_d, hh, map_smul]
+    intro x₁ x₂ h
+    obtain ⟨c, hc'⟩ := key (x₁ - x₂) (by rw [map_sub, h, sub_self])
+    exact ⟨c, by rw [smul_sub, sub_eq_zero] at hc'; exact hc'⟩
+
+end Alg
+
+section Trunc
+
+variable {R : Type u} [CommRing R] (A : Cx R) (L : Submodule R (A.H 1))
+
+end Trunc
+
+end ReciprocityTheory.Coh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.GroupCohomology.LocaliseA =====
+
+-- ===== clump member: ReciprocityTheory.GroupCohomology.Localise =====
+-- clump-header: {"m": "ReciprocityTheory.GroupCohomology.Localise", "h": "module\n\npublic import ReciprocityTheory.GroupCohomology.TransgressionStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.GroupCohomology.DEqZeroOfMemB\npublic import ReciprocityTheory.GroupCohomology.LocaliseA\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace ReciprocityTheory.Coh
@@ -144,3 +214,6 @@ theorem localise_holds : LocaliseStatement.{u} := by
     exact hy g
 
 end ReciprocityTheory.Coh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.GroupCohomology.Localise =====

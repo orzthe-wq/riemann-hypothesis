@@ -70,12 +70,7 @@ theorem prodSet_isClosed {N H : Set G} (hN : IsClosed N) (hH : IsCompact H) :
     IsClosed (prodSet N H) := by
   rw [prodSet_eq_mul]
   first
-    | exact hN.mul_isCompact hH
-    | exact IsClosed.mul_isCompact hN hH
     | exact hN.mul_right_of_isCompact hH
-    | exact IsClosed.mul_right_of_isCompact hN hH
-    | exact hN.mul_isCompact_right hH
-    | exact (hN.smul_left_of_isCompact hH)
 
 theorem prodSet_isGrp {N H : Set G} (hN : IsGrp N) (hH : IsGrp H)
     (hnorm : ∀ h ∈ H, ∀ m ∈ N, h * m * h⁻¹ ∈ N) : IsGrp (prodSet N H) := by
@@ -86,12 +81,10 @@ theorem prodSet_isGrp {N H : Set G} (hN : IsGrp N) (hH : IsGrp H)
     refine ⟨m * (h * m' * h⁻¹), nmul _ hm _ (hnorm h hh m' hm'), h * h', hmul _ hh _ hh', ?_⟩
     first
       | group
-      | simp [mul_assoc]
   · rintro _ ⟨m, hm, h, hh, rfl⟩
     refine ⟨h⁻¹ * m⁻¹ * h⁻¹⁻¹, hnorm _ (hinv _ hh) _ (ninv _ hm), h⁻¹, hinv _ hh, ?_⟩
     first
       | group
-      | simp [mul_assoc]
 end
 
 theorem locPack_of (hE : HaarExist) (hC : ConjInv) (hS : SMeas) (hB : Bruhat) (hW : LocWeil) :
@@ -110,7 +103,6 @@ theorem locPack_of (hE : HaarExist) (hC : ConjInv) (hS : SMeas) (hB : Bruhat) (h
   have hsf : SigmaFinite (mulMap μN μH) := by
     first
       | exact inferInstance
-      | exact MeasureTheory.sigmaFinite_of_isFiniteMeasureOnCompacts _
   exact hW G muG (mulMap μN μH) hsf hPinvol β hβm hβ F hF
 
 end QPK

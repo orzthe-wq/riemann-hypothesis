@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfAeFundamentalDomain
 
 @[expose] public section
 
@@ -61,7 +62,7 @@ theorem fmtC_one (V : HSp D) : fmtC V 1 = 1 := by rw [fmtC, mt_one', cM, Matrix.
 
 theorem trivAt_one (V : HSp D) (I : Ideal (𝓞 D.host.F)) : TrivAt V I 1 := by
   intro v _ ε _ i j
-  simp [mt_one']
+  simp [_root_.GlobalTheory.WeilVacMove.mt_one]
 
 theorem isMov_one {k : ℕ} (L : Lt D.host.E k) : IsMov 1 L L := by
   intro u

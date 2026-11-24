@@ -68,10 +68,6 @@ theorem comm_aa (haa : ∀ i j, an i * an j + an j * an i = 0) (l i j : ι) :
   have h : ∀ i j, an i * an j = -(an j * an i) := fun i j => eq_neg_of_add_eq_zero_left (haa i j)
   rw [mul_assoc, h i l, mul_neg, ← mul_assoc, h j l, neg_mul, neg_neg, mul_assoc]
 
-theorem self_neg {x : R} (h : x = -x) : x = 0 := by
-  have : (2 : ℂ) • x = 0 := by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h
-  rw [← one_smul ℂ x, ← inv_mul_cancel₀ (two_ne_zero' ℂ), mul_smul, this, smul_zero]
-
 theorem a_sq (hL : ∀ i j, L i * L j - L j * L i = ∑ k, c i j k • L k) (h1 : ∀ i j, Commute (L i) (an j))
     (haa : ∀ i j, an i * an j + an j * an i = 0) :
     (∑ i, L i * an i) * (∑ i, L i * an i) =
@@ -181,7 +177,7 @@ theorem b_sq (hanti : ∀ i j k, c i j k = -c j i k)
   simp only [smul_mul_smul_comm, ex, smul_add, smul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]
   have h3 : ∑ p : ι × ι × ι, ∑ q : ι × ι × ι,
       (t p * t q) • (cr p.2.2 * cr q.2.2 * ((an p.2.1 * an p.1) * (an q.2.1 * an q.1))) = 0 := by
-    apply self_neg
+    apply _root_.CompanionTheory.D.LK.self_neg
     conv_lhs => rw [Finset.sum_comm]
     simp only [← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_

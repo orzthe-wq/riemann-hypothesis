@@ -63,12 +63,6 @@ open Formalism.L2.NTheta (IsIdemAt)
 
 variable {D : D7}
 
-theorem place_eq {e : AE D} {P P' : Pl D.host.E} (h : IsIdemAt e P) (h' : IsIdemAt e P') : P = P' := by
-  refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
-  by_cases hx : x = 0
-  · rw [hx]; exact iff_of_true (zero_mem _) (zero_mem _)
-  · rw [h.2 x hx, h'.2 x hx]
-
 theorem finPart_mem {e : AE D} {P : Pl D.host.E} (he : IsIdemAt e P) : finPart D e ∈ intAE D := by
   by_contra hc
   have := (he.2 1 one_ne_zero).2 (by
@@ -102,12 +96,12 @@ theorem idem_mul_eq_zero {Q : Finset (Pl D.host.E)} (hS : SplitSet Q) {P : Pl D.
   have a1 : idemAt Q' * e = 0 := by
     rcases GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero he'.1 he.1 with h | h
     · rw [h] at he'
-      exact absurd (place_eq he he' ▸ hQ' : P ∈ (Q : Set (Pl D.host.E))) hoff.2.1
+      exact absurd (_root_.GlobalTheory.PlaceVec.isIdemAt_inj he he' ▸ hQ' : P ∈ (Q : Set (Pl D.host.E))) hoff.2.1
     · exact h
   have a2 : cA D (idemAt Q') * e = 0 := by
     rcases GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero he'.1 hc.1 with h | h
     · rw [h] at he'
-      have hPQ := place_eq hc he'
+      have hPQ := _root_.GlobalTheory.PlaceVec.isIdemAt_inj hc he'
       refine absurd ?_ (hoff.2.2 Q' hQ')
       rw [← hPQ]
       ext x

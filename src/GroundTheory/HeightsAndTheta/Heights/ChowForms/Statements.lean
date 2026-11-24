@@ -93,7 +93,7 @@ def IncIdealPrime.Statement : Prop :=
 def ChowFormMultiHomog.Statement : Prop :=
   ∀ (F : Type) [Field F] (n k : ℕ) (P : Ideal (MvPolynomial (Fin n) F))
     (f : MvPolynomial (Fin k × Fin n) F), IsProjPrime P → IsChowForm P k f →
-      ∃ δ, 1 ≤ δ ∧ IsMultiHomog δ f
+      ∃ δ, 1 ≤ δ ∧ Heights.IsMultiHomog δ f
 
 def ConeDimOfChowForm.Statement : Prop :=
   ∀ (F : Type) [Field F] (n k : ℕ) (P : Ideal (MvPolynomial (Fin n) F))

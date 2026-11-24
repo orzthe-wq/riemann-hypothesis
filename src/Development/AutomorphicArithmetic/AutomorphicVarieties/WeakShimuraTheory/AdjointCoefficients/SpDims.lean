@@ -157,8 +157,6 @@ private theorem up_zero (X : sp4 k) (hu : IsUp X.1) (h0 : X.1 0 0 = 0) (h1 : X.1
     first
     | exact hu _ _ (by decide)
     | exact e
-    | exact neg_eq_zero.mp e.symm
-    | skip
 
 private theorem bor1 : Module.finrank k (bor (1 : M4 k)) = 6 := by
   let f : bor (1 : M4 k) →ₗ[k] (Fin 6 → k) :=
@@ -208,7 +206,6 @@ private theorem tor2 : Module.finrank k (tor k) = 2 := by
       first
       | exact hd (by decide)
       | exact e
-      | exact neg_eq_zero.mp e.symm
   have hsurj : Function.Surjective f := by
     intro v
     refine ⟨⟨⟨!![v 0, 0, 0, 0; 0, v 1, 0, 0; 0, 0, -v 1, -0; 0, 0, 0, -v 0],

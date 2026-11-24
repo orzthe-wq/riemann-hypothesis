@@ -201,11 +201,7 @@ theorem φVB_inj (T : LocLat G Qp LL O) : Function.Injective (φVB PD (LL := LL)
   exact h hxy
 
 include W in
-theorem p_ne_zero : (PD.p : LL) ≠ 0 := by
-  intro h
-  have := W.v_l
-  rw [h, AddValuation.map_zero] at this
-  exact absurd this (by simp)
+alias p_ne_zero := _root_.Formalism.MainNotions.LiftingTheory.tr_pLL_ne
 
 
 include W in
@@ -261,11 +257,6 @@ theorem cmp_sum_letter (T : LocLat G Qp LL O) (i : ZMod n) {d : ℕ} (b : Fin d 
 theorem cmpD_of_mem (T : LocLat G Qp LL O) {x : W.DD T} (hx : x ∈ W.N T) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T x = W.cmp T ⟨x, hx⟩ := by
   unfold Formalism.MainNotions.ArcLiftingSetup.cmpD; rw [dite_eq_left hx]
-
-theorem letter_of_Nl (T : LocLat G Qp LL O) (i : ZMod n) {x : W.DD T} (hx : x ∈ W.Nl T i) :
-    (letE i : LetA O n) • x = x := by
-  obtain ⟨z, -, rfl⟩ := hx
-  simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, letE_mul_self]
 
 theorem cmp_mem_letter (T : LocLat G Qp LL O) (i : ZMod n) {x : W.DD T} (hx : x ∈ W.N T)
     (hxi : (letE i : LetA O n) • x = x) : W.cmp T ⟨x, hx⟩ ∈ DcrisL PD T.ρ (W.emb i) := by
@@ -342,7 +333,7 @@ theorem cmp_indepO (T : LocLat G Qp LL O) (h3 : Formalism.MainNotions.DeltaInvar
     (cc : Fin d → O) (h0 : ∑ k, algebraMap O LL (cc k) • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (b k) = 0) :
     ∀ k, cc k = 0 := by
   have hbN : ∀ k, b k ∈ W.N T := fun k => (hb.1 k).1.1
-  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => letter_of_Nl W T c' (hb.1 k).2
+  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 k).2
   set X : W.DD T := ∑ k, cc k • b k with hXdef
   have hXN : X ∈ W.N T := Submodule.sum_mem _ fun k _ => by
     rw [← algebraMap_smul (LetA O n) (cc k) (b k)]; exact (W.N T).smul_mem _ (hbN k)
@@ -426,7 +417,7 @@ theorem dcrisL_le_spanB [NeZero n] (T : LocLat G Qp LL O) (h3 : Formalism.MainNo
     DcrisL PD T.ρ (W.emb c') ≤
       Submodule.span LL (Set.range fun k => Formalism.MainNotions.ArcLiftingSetup.cmpD W T (b k)) := by
   have hbN : ∀ k, b k ∈ W.N T := fun k => (hb.1 k).1.1
-  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => letter_of_Nl W T c' (hb.1 k).2
+  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 k).2
   refine (dcrisL_le_span W T h3 c').trans (Submodule.span_le.2 ?_)
   rintro _ ⟨x, rfl⟩
   obtain ⟨⟨r, b', hb'Δ, hU, -⟩, -⟩ := hmod
@@ -474,7 +465,7 @@ theorem dcrisL_succ_le [NeZero n] (hs : W.s = 1) (T : LocLat G Qp LL O) (h3 : Fo
     | mem z hz =>
       obtain ⟨w, hw, rfl⟩ := hz
       have hwN : w ∈ W.N T := Formalism.MainNotions.UnusedSlot80.ArcC.Nl_le_N W T _ hw
-      have hwl : (letE (i + 1 - 1) : LetA O n) • w = w := letter_of_Nl W T _ hw
+      have hwl : (letE (i + 1 - 1) : LetA O n) • w = w := _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T _ hw
       have hφl : (letE (i + 1) : LetA O n) • W.φD T w = W.φD T w := by
         have := φD_pow_letter W T (i + 1 - 1) w hwl 1
         simpa using this
@@ -503,7 +494,7 @@ theorem dcrisL_succ_le [NeZero n] (hs : W.s = 1) (T : LocLat G Qp LL O) (h3 : Fo
   have hyN : (letE (i + 1) : LetA O n) • (x : W.DD T) ∈ W.N T := (W.N T).smul_mem _ x.2
   have hyl : (letE (i + 1) : LetA O n) • (x : W.DD T) ∈ W.Nl T (i + 1) :=
     ⟨x, x.2, by rw [LinearMap.smul_apply, LinearMap.id_apply]⟩
-  have hyl' := letter_of_Nl W T _ hyl
+  have hyl' := _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T _ hyl
   obtain ⟨-, hmem, hc⟩ := key _ (h5.2.1 (i + 1) _ hyl)
   have e : (⟨W.Q ^ k • (W.Q ^ (h (i + 1)) • ((letE (i + 1) : LetA O n) • (x : W.DD T))), hmem⟩ :
       ↥(W.N T)) = ⟨(W.Q ^ (k + h (i + 1))) • ((letE (i + 1) : LetA O n) • (x : W.DD T)),
@@ -546,7 +537,7 @@ theorem frame_basis [NeZero n] (hs : W.s = 1) (hV : ValRing (LL := LL) O v) (T :
       Submodule.span LL (Set.range fun k : Fin d => Formalism.MainNotions.ArcLiftingSetup.dv W T e b (Pi.single k 1)) =
         DcrisL PD T.ρ (W.emb (c' + (e : ZMod n))) := by
   have hbN : ∀ k, b k ∈ W.N T := fun k => (hb.1 k).1.1
-  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => letter_of_Nl W T c' (hb.1 k).2
+  have hbl : ∀ k, (letE c' : LetA O n) • b k = b k := fun k => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 k).2
   simp only [dv_single W T e b]
   have hcl : ∀ k, Formalism.MainNotions.ArcLiftingSetup.cmpD W T (b k) ∈ DcrisL PD T.ρ (W.emb c') := fun k => by
     rw [cmpD_of_mem W T (hbN k)]; exact cmp_mem_letter W T c' (hbN k) (hbl k)
@@ -806,7 +797,7 @@ theorem frame_inv_poly (hinj : Function.Injective (algebraMap O LL)) {d : ℕ}
     have h1 : (PowerSeries.constantCoeff : PowerSeries LL →+* LL).mapMatrix Hps = 1 := by
       ext i k
       simp only [RingHom.mapMatrix_apply, Matrix.map_apply, hHps, Matrix.of_apply,
-        PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.constantCoeff_mk, hsol0,
+        PowerSeries.constantCoeff_mk, hsol0,
         Matrix.one_apply, Pi.single_apply]
     rw [h1, Matrix.det_one]
     exact isUnit_one
@@ -865,8 +856,7 @@ theorem frame_inv_poly (hinj : Function.Injective (algebraMap O LL)) {d : ℕ}
   refine ⟨ρ, ?_⟩
   have h := congrArg (Polynomial.aeval Y) hρ
 
-  simp only [hQdef, map_sub, map_sum, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, HP, GP,
-  Polynomial.aeval_X] at h
+  simp only [hQdef, map_sub, map_sum, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, HP, GP] at h
   rw [← h]
   ring
 
@@ -886,7 +876,7 @@ theorem secOfP [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
   obtain ⟨yP, hyP, hyx⟩ := hx
   rw [one_smul] at hyx
   obtain ⟨β₀, hβ₀, hyβ⟩ := Pp_repr W T c' e b hb.1 yP hyP
-  have hbl : ∀ m, (letE c' : LetA O n) • b m = b m := fun m => letter_of_Nl W T c' (hb.1.1 m).2
+  have hbl : ∀ m, (letE c' : LetA O n) • b m = b m := fun m => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1.1 m).2
   have hφl : ∀ m, (letE (c' + (e : ZMod n)) : LetA O n) • ((W.φD T) ^ e) (b m) = ((W.φD T) ^ e) (b m) :=
     fun m => φD_pow_letter W T c' (b m) (hbl m) e
   let β : Fin d → LetA O n := fun m => letE (c' + (e : ZMod n)) * β₀ m

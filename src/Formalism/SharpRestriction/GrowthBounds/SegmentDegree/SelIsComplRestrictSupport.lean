@@ -52,11 +52,6 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G
 
-theorem sel_compl {R M : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [AddCommGroup M] [Module R M]
-    (N N' S : Submodule R M) (hNN' : IsCompl N N') [Module.Finite R N] (hS : S ≤ N)
-    (hsat : ∀ (a : R) (x : M), a ≠ 0 → a • x ∈ S → x ∈ S) : ∃ T : Submodule R M, IsCompl S T := by
-  exact Bl.ComplementLifts.goal1 N N' S hNN' hS hsat
-
 theorem sel_isCompl_restrictSupport (R : Type*) [CommRing R] {σ : Type*} (s : Set (σ →₀ ℕ)) :
     IsCompl (restrictSupport R s) (restrictSupport R sᶜ) := by
   constructor
@@ -180,7 +175,7 @@ theorem restSel : RestSel := by
   have hleN : Submodule.span O (Set.range v) ≤ restrictSupport O s :=
     Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hG _ (hvG i))
   refine ⟨Submodule.span O (Set.range v), hle, ?_, ⟨b, Module.Basis.span hliO, fun i => ?_⟩, ?_⟩
-  · exact sel_compl _ _ _ (sel_isCompl_restrictSupport O s) hleN (fun a x ha h => sel_sat v hli' a x ha h)
+  · exact _root_.Bl.ComplementLifts.goal1 _ _ _ (sel_isCompl_restrictSupport O s) hleN (fun a x ha h => sel_sat v hli' a x ha h)
   · rw [Module.Basis.span_apply]; exact hvG i
   · rw [finrank_span_eq_card hliO, ← hspan]
     have : Submodule.span (FF O) b = Submodule.span (FF O) (Set.range ((↑) : b → MvPolynomial σ (FF O))) := by

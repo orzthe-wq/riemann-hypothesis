@@ -1,16 +1,19 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Complex.Periodic
+public import Mathlib.Analysis.Complex.UpperHalfPlane.FunctionsBoundedAtInfty
+public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold
+public import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita
+public import Mathlib.NumberTheory.ModularForms.QExpansion
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
+public import Mathlib.Analysis.Complex.LocallyUniformLimit
 public import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
 public import Mathlib.NumberTheory.ModularForms.Basic
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowthStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -18,6 +21,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -26,6 +30,8 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,7 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,7 +54,187 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBound, Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowth, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeq
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBound", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Complex.Periodic\npublic import Mathlib.Analysis.Complex.UpperHalfPlane.FunctionsBoundedAtInfty\npublic import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold\npublic import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.ModularForms.QExpansion\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
+open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
+
+namespace GlobalTheory
+
+theorem qParam_add_period {M : ℝ} (hM : M ≠ 0) (z : ℂ) :
+    Function.Periodic.qParam M (z + M) = Function.Periodic.qParam M z := by
+  unfold Function.Periodic.qParam
+  have hM' : (M : ℂ) ≠ 0 := by exact_mod_cast hM
+  rw [show 2 * π * Complex.I * (z + M) / M = 2 * π * Complex.I * z / M + 2 * π * Complex.I by field_simp,
+    Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
+
+theorem isBoundedAtImInfty_of_periodic_of_polyBound :
+    ∀ (f : ℍ → ℂ) (h : ℕ) (C : ℝ) (A : ℕ), 0 < h → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f →
+      (∀ τ : ℍ, f ((h : ℝ) +ᵥ τ) = f τ) →
+      (∀ τ : ℍ, 1 ≤ τ.im → |τ.re| ≤ h → ‖f τ‖ ≤ C * τ.im ^ A) → IsBoundedAtImInfty f := by
+  intro f h C A hh hf hper hbd
+  set M : ℝ := (h : ℝ) with hMdef
+  have hM : 0 < M := by simp [hMdef, hh]
+  have hperF : Function.Periodic (f ∘ ofComplex) M := UpperHalfPlane.periodic_comp_ofComplex hper
+
+  have hbd' : ∀ τ : ℍ, 1 ≤ τ.im → ‖f τ‖ ≤ C * τ.im ^ A := by
+    intro τ hτ
+    set n : ℤ := ⌊τ.re / M⌋
+    have h1 : (n : ℝ) ≤ τ.re / M := Int.floor_le _
+    have h2 : τ.re / M < n + 1 := Int.lt_floor_add_one _
+    have hw : 0 < ((τ : ℂ) - n * M).im := by simpa using τ.im_pos
+    set σ : ℍ := ⟨(τ : ℂ) - n * M, hw⟩
+    have hσ : f σ = f τ := by
+      have := hperF.sub_int_mul_eq (x := (τ : ℂ)) n
+      simp only [Function.comp_apply, ofComplex_apply] at this
+      rw [← this, ofComplex_apply_of_im_pos hw]
+    have hσim : σ.im = τ.im := by
+      change ((τ : ℂ) - (n : ℂ) * (M : ℂ)).im = τ.im
+      simp
+    have hσre : σ.re = τ.re - n * M := by
+      change ((τ : ℂ) - (n : ℂ) * (M : ℂ)).re = τ.re - n * M
+      simp
+    have hre1 : n * M ≤ τ.re := by rwa [le_div_iff₀ hM] at h1
+    have hre2 : τ.re < (n + 1) * M := by rwa [div_lt_iff₀ hM] at h2
+    have habs : |σ.re| ≤ h := by
+      rw [hσre, abs_le]
+      constructor <;> nlinarith
+    rw [← hσ, ← hσim]
+    exact hbd σ (hσim ▸ hτ) habs
+
+  set g : ℍ → ℂ := fun τ ↦ f τ * Function.Periodic.qParam M τ with hg
+  have hnormg : ∀ τ : ℍ, ‖g τ‖ = ‖f τ‖ * Real.exp (-2 * π * τ.im / M) := by
+    intro τ
+    simp [hg, Function.Periodic.norm_qParam]
+  have hgdiff : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) g :=
+    hf.mul ((Function.Periodic.differentiable_qParam (h := M)).comp_mdifferentiable
+      UpperHalfPlane.mdifferentiable_coe)
+  have hgper : ∀ τ : ℍ, g (M +ᵥ τ) = g τ := by
+    intro τ
+    simp only [hg, hper, coe_vadd]
+    rw [add_comm, qParam_add_period hM.ne']
+  have hgzero : IsZeroAtImInfty g := by
+    set c : ℝ := 2 * π / M with hc
+    have hcpos : 0 < c := by positivity
+    have hT : Tendsto (fun y : ℝ ↦ C * (c⁻¹) ^ A * ((c * y) ^ A * Real.exp (-(c * y)))) atTop (𝓝 0) := by
+      simpa using ((Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero A).comp
+        (tendsto_id.const_mul_atTop hcpos)).const_mul (C * (c⁻¹) ^ A)
+    have heq : ∀ y : ℝ, C * (c⁻¹) ^ A * ((c * y) ^ A * Real.exp (-(c * y))) =
+        C * y ^ A * Real.exp (-2 * π * y / M) := by
+      intro y
+      have : -(c * y) = -2 * π * y / M := by rw [hc]; ring
+      rw [this, mul_pow, ← mul_assoc, ← mul_assoc, mul_assoc C, ← mul_pow, inv_mul_cancel₀ hcpos.ne',
+        one_pow, mul_one]
+    simp_rw [heq] at hT
+    have hT' : Tendsto (fun τ : ℍ ↦ C * τ.im ^ A * Real.exp (-2 * π * τ.im / M)) atImInfty (𝓝 0) :=
+      hT.comp tendsto_comap
+    refine squeeze_zero_norm' ?_ hT'
+    refine (atImInfty_mem _).2 ⟨1, fun τ hτ ↦ ?_⟩
+    rw [Set.mem_setOf_eq, hnormg]
+    exact mul_le_mul_of_nonneg_right (hbd' τ hτ) (Real.exp_pos _).le
+  have hgbdd : IsBoundedAtImInfty g := hgzero.boundedAtFilter
+  have hdecay := hgzero.exp_decay_atImInfty hM
+      (UpperHalfPlane.periodic_comp_ofComplex hgper) hgdiff hgbdd
+  obtain ⟨K, hK⟩ := hdecay.bound
+  obtain ⟨B, hB⟩ := (atImInfty_mem _).1 hK
+  refine isBoundedAtImInfty_iff.2 ⟨K, B, fun τ hτ ↦ ?_⟩
+  have h1 := hB τ hτ
+  simp only [Set.mem_setOf_eq, hnormg, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)] at h1
+  exact le_of_mul_le_mul_right h1 (Real.exp_pos _)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBound =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowth =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowth", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight\npublic import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.LocallyUniformLimit\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
+open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
+
+namespace GlobalTheory.EisM
+
+private lemma summable_poly_mul_geometric (C : ℝ) (A : ℕ) {r : ℝ} (hr0 : 0 < r) (hr1 : r < 1) :
+    Summable fun n : ℕ => C * ((n : ℝ) + 1) ^ A * r ^ n := by
+  have hr : ‖r‖ < 1 := by
+    rw [Real.norm_eq_abs, abs_of_pos hr0]
+    exact hr1
+  have h := (summable_nat_add_iff 1).mpr
+    (summable_pow_mul_geometric_of_norm_lt_one A hr : Summable fun m : ℕ => (m : ℝ) ^ A * r ^ m)
+  refine (h.mul_left (C * r⁻¹)).congr fun n => ?_
+  have hr' : r ≠ 0 := hr0.ne'
+  push_cast
+  rw [pow_succ]
+  field_simp
+
+private lemma qs_term_bound (a : ℕ → ℂ) (C : ℝ) (A : ℕ) (hC : ∀ n : ℕ, ‖a n‖ ≤ C * ((n : ℝ) + 1) ^ A)
+    (y0 : ℝ) (n : ℕ) (w : ℂ) (hw : y0 < w.im) :
+    ‖a n * cexp (2 * π * Complex.I * n * w)‖ ≤ C * ((n : ℝ) + 1) ^ A * Real.exp (-(2 * π * y0)) ^ n := by
+  rw [norm_mul, Complex.norm_exp]
+  have hre : (2 * π * Complex.I * n * w).re = -(2 * π * n * w.im) := by
+    simp [Complex.mul_re, Complex.mul_im]
+  rw [hre]
+  have hexp : Real.exp (-(2 * π * n * w.im)) ≤ Real.exp (-(2 * π * y0)) ^ n := by
+    rw [← Real.exp_nat_mul]
+    apply Real.exp_le_exp.2
+    have hp : (0:ℝ) ≤ 2 * π * n := by positivity
+    have := mul_le_mul_of_nonneg_left hw.le hp
+    nlinarith
+  exact mul_le_mul (hC n) hexp (Real.exp_pos _).le (le_trans (norm_nonneg _) (hC n))
+
+theorem qs_mdifferentiable : ∀ a : ℕ → ℂ, PolyB a → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (qs a) := by
+  rintro a ⟨C, A, hC⟩
+  rw [UpperHalfPlane.mdifferentiable_iff]
+  intro z hz
+  have hz' : 0 < z.im := hz
+  set y0 := z.im / 2 with hy0def
+  have hy0 : 0 < y0 := by positivity
+  set U : Set ℂ := {w | y0 < w.im} with hUdef
+  have hU : IsOpen U := isOpen_lt continuous_const Complex.continuous_im
+  have hzU : z ∈ U := by
+    show y0 < z.im
+    linarith
+  have hr0 : 0 < Real.exp (-(2 * π * y0)) := Real.exp_pos _
+  have hr1 : Real.exp (-(2 * π * y0)) < 1 := by
+    rw [Real.exp_lt_one_iff]
+    have := Real.pi_pos
+    nlinarith
+  have hD : DifferentiableOn ℂ (fun w : ℂ => ∑' n : ℕ, a n * cexp (2 * π * Complex.I * n * w)) U :=
+    Complex.differentiableOn_tsum_of_summable_norm (summable_poly_mul_geometric C A hr0 hr1)
+      (fun n => (by fun_prop : Differentiable ℂ fun w : ℂ => a n * cexp (2 * π * Complex.I * n * w)).differentiableOn)
+      hU (fun n w hw => qs_term_bound a C A hC y0 n w hw)
+  have hDz := (hD z hzU).differentiableAt (hU.mem_nhds hzU)
+  apply DifferentiableAt.differentiableWithinAt
+  apply hDz.congr_of_eventuallyEq
+  filter_upwards [hU.mem_nhds hzU] with w hw
+  have hw' : 0 < w.im := lt_trans hy0 hw
+  rw [Function.comp_apply, UpperHalfPlane.ofComplex_apply_of_im_pos hw']
+  rfl
+
+end GlobalTheory.EisM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowth =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeq =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeq", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.RepL\npublic import Mathlib.NumberTheory.ModularForms.Basic\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasModerateGrowthQExpansionOfCoeffPolynomialGrow\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Complex.UpperHalfPlane.FunctionsBoundedAtInfty\npublic import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold\npublic import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsBoundedAtImInftyOfPeriodicPolynomialBound\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableQExpansionOfCoeffPolynomialGrowth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
@@ -186,7 +371,7 @@ theorem GlobalTheory.EisM.modularForm_gammaOne_of_MF :
   intro k L N ε a hL hNL ha
   haveI : NeZero L := ⟨hL.ne'⟩
   have hinv : ∀ γ ∈ Gamma1 L, qs a ∣[(k : ℤ)] γ = qs a := fun γ hγ => slash_inv hNL ha.2 γ hγ
-  have hhol := GlobalTheory.T.mdifferentiable_qExpansion_of_coeffPolynomialGrowth a ha.1
+  have hhol := _root_.GlobalTheory.EisM.qs_mdifferentiable a ha.1
   refine ⟨{ toFun := qs a, slash_action_eq' := ?_, holo' := hhol, bdd_at_cusps' := ?_ }, rfl⟩
   · rintro _ ⟨A, (hA : A ∈ Gamma1 L), rfl⟩
     exact hinv A hA
@@ -194,7 +379,11 @@ theorem GlobalTheory.EisM.modularForm_gammaOne_of_MF :
     rw [Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z] at hc
     rw [OnePoint.isBoundedAt_iff_forall_SL2Z hc]
     intro γ _
-    obtain ⟨C, A, hC⟩ := growth (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth a ha.1) k L γ
+    obtain ⟨C, A, hC⟩ := growth (_root_.GlobalTheory.EisM.mod_qs_of_polyB a ha.1) k L γ
     have hs : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (qs a ∣[(k : ℤ)] γ) := by
       rw [ModularForm.SL_slash]; exact hhol.slash _ _
-    exact GlobalTheory.T.isBoundedAtImInfty_of_periodic_polynomial_bound _ L C A hL hs (periodic hinv γ) hC
+    exact _root_.GlobalTheory.isBoundedAtImInfty_of_periodic_of_polyBound _ L C A hL hs (periodic hinv γ) hC
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeq =====

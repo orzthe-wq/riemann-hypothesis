@@ -117,9 +117,6 @@ open scoped ComplexConjugate
 
 namespace GlobalTheory.PsCo.Pc1
 
-def Gap4 (r : ℕ) (lam : Fin r → ℤ) : Prop :=
-  ∀ i j : Fin r, (j : ℕ) = i + 1 → 100 * (r : ℤ) ^ 4 ≤ lam i - lam j
-
 def StShape : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (d : ℕ) (φ : Mat n → ℂ), φ ∈ ShapeM ε d →
     (fun g : UJ ε => φ (toM g)) ∈ CcMat (ujMat ε) ∧ IsBiFinite (KG ε) (fun g : UJ ε => φ (toM g)) ∧
@@ -155,7 +152,7 @@ def StTrAd : Prop :=
     ∀ φ ∈ AdSpanM ε, HasTrace (repOp π μ fun g => φ (toM g)) 0
 
 def StKData : Prop :=
-  ∀ (r : ℕ), Odd r → ∀ (ε : Fin r → Bool) (lam : Fin r → ℤ), Gap4 r lam →
+  ∀ (r : ℕ), Odd r → ∀ (ε : Fin r → Bool) (lam : Fin r → ℤ), _root_.GlobalTheory.PsCo.Pc.GapG r lam →
     ∀ (X : Type) [NormedAddCommGroup X] [InnerProductSpace ℂ X] (D : Matrix (Fin r) (Fin r) ℂ → (X →L[ℂ] X))
       (hD : IsDS ε (fun a => (lam a : ℝ)) D), haveI := hD.1
       ∃ (M : ℕ) (P : Poly r), P ∈ blockAlg ε ∧

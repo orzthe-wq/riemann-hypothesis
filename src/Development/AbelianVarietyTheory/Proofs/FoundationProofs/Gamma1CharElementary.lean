@@ -116,7 +116,7 @@ theorem gamma1_char_elementary : ∀ (k M : ℕ) (χ : DirichletCharacter ℂ M)
     (∀ f : ModularForm (Gamma1 M) (k : ℤ), HasChar k χ f → qs (coef f) = ⇑f ∧ MF k M (ch χ) (coef f)) ∧
     ∀ f : CuspForm (Gamma1 M) (k : ℤ), HasChar k χ f → qs (coef f) = ⇑f ∧ CF k M (ch χ) (coef f) := by
   intro k M χ hM
-  haveI : NeZero M := ⟨hM.ne'⟩
+  have : NeZero M := ⟨hM.ne'⟩
   refine ⟨fun f hf => mf_of_mfc χ f hf, fun f hf => ?_⟩
   obtain ⟨hq, hmf⟩ := mf_of_mfc χ f hf
   refine ⟨hq, hmf, ?_⟩
@@ -124,7 +124,7 @@ theorem gamma1_char_elementary : ∀ (k M : ℕ) (χ : DirichletCharacter ℂ M)
   refine ⟨C, fun τ => ?_⟩
   have h := hC τ
   rw [hq]
-  simp only [petersson, norm_mul, Complex.norm_conj, norm_zpow, Complex.norm_real,
+  simp only [petersson, norm_mul, Complex.norm_conj, Complex.norm_real,
     zpow_natCast, norm_pow, Real.norm_of_nonneg τ.im_pos.le] at h
   calc ‖f τ‖ ^ 2 * τ.im ^ k = ‖f τ‖ * ‖f τ‖ * τ.im ^ k := by ring
     _ ≤ C := h

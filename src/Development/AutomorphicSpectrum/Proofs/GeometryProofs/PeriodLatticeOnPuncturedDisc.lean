@@ -1,17 +1,22 @@
 module
 
-public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCountStatement
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.LinearAlgebra.FreeModule.Basic
+public import Mathlib.LinearAlgebra.Quotient.Defs
+public import Mathlib.RingTheory.Finiteness.Defs
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqNsmulOfForallDvdOfBijective
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsConstAddEquivOfRangeEq
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGermStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionTensorPullbackRingHomBijective
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
 public import GroundTheory.HeightsAndTheta.Heights.Regularisation.PLogCoverDescent
 public import GroundTheory.HeightsAndTheta.Heights.Regularisation.PosSemidefOfIntQuadNonneg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -27,7 +32,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -37,8 +41,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,11 +53,338 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Order.CompletePartialOrder
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionTensorPullbackRingHomBijective
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount, Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm, Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeOnPuncturedDisc
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount", "h": "module\n\npublic import Mathlib.LinearAlgebra.BilinearMap\npublic import Mathlib.LinearAlgebra.Dimension.Finrank\npublic import Mathlib.LinearAlgebra.FreeModule.Basic\npublic import Mathlib.LinearAlgebra.Quotient.Defs\npublic import Mathlib.RingTheory.Finiteness.Defs\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqNsmulOfForallDvdOfBijective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CompanionTheory.Ar.Flat
+
+theorem mem_of_forall_exists_sub_eq_nsmul (Λ : Type) [AddCommGroup Λ] [Module.Finite ℤ Λ]
+    (W : Submodule ℤ Λ) (hW : ∀ (k : ℤ) x, k ≠ 0 → k • x ∈ W → x ∈ W) (x : Λ)
+    (h : ∀ N : ℕ, 0 < N → ∃ w ∈ W, ∃ b : Λ, x - w = N • b) : x ∈ W := by
+  have htf : Module.IsTorsionFree ℤ (Λ ⧸ W) := by
+    refine Module.IsTorsionFree.of_smul_eq_zero fun r m hrm => ?_
+    obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective W m
+    by_cases hr : r = 0
+    · exact Or.inl hr
+    · right
+      rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hrm
+      exact (Submodule.Quotient.mk_eq_zero W).mpr (hW r y hr hrm)
+  have hfree : Module.Free ℤ (Λ ⧸ W) := Module.free_iff_isTorsionFree.mpr htf
+  let bs := Module.Free.chooseBasis ℤ (Λ ⧸ W)
+  rw [← Submodule.Quotient.mk_eq_zero W]
+  refine bs.repr.injective ?_
+  rw [map_zero]
+  ext i
+  rw [Finsupp.zero_apply]
+  obtain ⟨w, hw, b, hb⟩ := h ((bs.repr (Submodule.Quotient.mk x) i).natAbs + 1) (by omega)
+  generalize hn : (bs.repr (Submodule.Quotient.mk x) i).natAbs = n at hb
+  have hq : (Submodule.Quotient.mk x : Λ ⧸ W) = (n + 1) • Submodule.Quotient.mk b := by
+    rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← hb]
+    simpa using hw
+  have hc : bs.repr (Submodule.Quotient.mk x) i =
+      ((n + 1 : ℕ) : ℤ) * bs.repr (Submodule.Quotient.mk b) i := by
+    rw [hq, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]
+  have habs := congrArg Int.natAbs hc
+  rw [Int.natAbs_mul, Int.natAbs_natCast, hn] at habs
+  rcases Nat.eq_zero_or_pos (bs.repr (Submodule.Quotient.mk b) i).natAbs with ht | ht
+  · rw [ht, mul_zero] at habs
+    rw [habs] at hn
+    exact Int.natAbs_eq_zero.mp hn
+  · nlinarith
+
+theorem mem_of_forall_card_mul_eq_pow :
+    ∀ (Λ : Type) [AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ]
+      (B : LinearMap.BilinForm ℤ Λ), Function.Bijective B → (∀ x, B x x = 0) →
+      ∀ W : Submodule ℤ Λ, (∀ (k : ℤ) x, k ≠ 0 → k • x ∈ W → x ∈ W) →
+      (∀ N : ℕ, 0 < N →
+        ∃ T : Set (W ⧸ LinearMap.range ((N : ℤ) • (LinearMap.id : W →ₗ[ℤ] W))),
+          Nat.card (W ⧸ LinearMap.range ((N : ℤ) • (LinearMap.id : W →ₗ[ℤ] W))) * Nat.card T
+            = N ^ Module.finrank ℤ Λ ∧
+          ∀ x y : W, Submodule.Quotient.mk x ∈ T → (N : ℤ) ∣ B x y) →
+      ∀ x, (∀ y ∈ W, B x y = 0) → x ∈ W := by
+  intro Λ _ _ _ B hB halt W hW hT x hx
+  apply mem_of_forall_exists_sub_eq_nsmul Λ W hW x
+  intro N hN
+  obtain ⟨T, hcard, hTpair⟩ := hT N hN
+  let R : Λ → (W ⧸ LinearMap.range ((N : ℤ) • (LinearMap.id : W →ₗ[ℤ] W))) → Prop :=
+    fun a p => ∃ w : W, Submodule.Quotient.mk w = p ∧ ∃ b : Λ, a - w = N • b
+  have h1 : ∀ a b p, R a p → R (a + N • b) p := by
+    rintro a b p ⟨w, hw, b0, hb0⟩
+    refine ⟨w, hw, b0 + b, ?_⟩
+    rw [smul_add, ← hb0]
+    abel
+  have h2 : ∀ a p p', R a p → R a p' → p = p' := by
+    rintro a p p' ⟨w, rfl, b, hb⟩ ⟨w', rfl, b', hb'⟩
+    have hdiff : ((w : Λ) - w') = (N : ℤ) • (b' - b) := by
+      rw [natCast_zsmul, smul_sub, ← hb, ← hb']
+      abel
+    have hmem : b' - b ∈ W :=
+      hW (N : ℤ) (b' - b) (by exact_mod_cast hN.ne') (by rw [← hdiff]; exact W.sub_mem w.2 w'.2)
+    rw [Submodule.Quotient.eq]
+    refine ⟨⟨b' - b, hmem⟩, ?_⟩
+    apply Subtype.ext
+    exact hdiff.symm
+  have h3 : ∀ p, ∃ a, R a p := by
+    intro p
+    obtain ⟨w, rfl⟩ := Submodule.Quotient.mk_surjective _ p
+    exact ⟨w, w, rfl, 0, by simp⟩
+  have h4 : ∀ a p a' p', R a p → p ∈ T → R a' p' → (N : ℤ) ∣ B a a' := by
+    rintro a p a' p' ⟨w, rfl, b, hb⟩ hp ⟨w', -, b', hb'⟩
+    have ha : a = w + N • b := by rw [← hb]; abel
+    have ha' : a' = w' + N • b' := by rw [← hb']; abel
+    have hww := hTpair w w' hp
+    have hexp : B (↑w + N • b) (↑w' + N • b') = B w w' + N * (B w b' + B b w' + N * B b b') := by
+      simp only [map_add (f := _), LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]
+      ring
+    rw [ha, ha', hexp]
+    exact dvd_add hww (dvd_mul_right _ _)
+  have h5 : ∀ a' p', R a' p' → (N : ℤ) ∣ B x a' := by
+    rintro a' p' ⟨w', -, b', hb'⟩
+    have ha' : a' = w' + N • b' := by rw [← hb']; abel
+    rw [ha', map_add (f := _), map_nsmul, hx w' w'.2, zero_add]
+    exact ⟨B x b', nsmul_eq_mul _ _⟩
+  obtain ⟨p, w, -, b, hwb⟩ :=
+    GlobalTheory.exists_rel_of_forall_dvd_of_card_mul Λ B hB N hN _ T R h1 h2 h3 hcard h4 x h5
+  exact ⟨w, w.2, b, hwb⟩
+
+end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.FDeriv.Defs\npublic import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsConstAddEquivOfRangeEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Set
+
+namespace GlobalTheory.CompanionTheory.Ar.Flat
+
+def IsHolMarkingOn {n g : ℕ} {Λ : Type} [AddCommGroup Λ]
+    (Γ : (Fin n → ℂ) → AddSubgroup (Fin g → ℂ)) (Q : (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℝ)
+    (e : Λ → Λ → ℝ) (U : Set (Fin n → ℂ)) (P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))) : Prop :=
+  (∀ x, DifferentiableOn ℂ (fun b => P b x) U) ∧
+    ∀ b ∈ U, Function.Injective (P b) ∧ (P b).range = Γ b ∧ ∀ x y, Q b (P b x) (P b y) = e x y
+
+section
+variable {n g : ℕ} {Λ : Type} [AddCommGroup Λ] [Countable Λ]
+  {Γ : (Fin n → ℂ) → AddSubgroup (Fin g → ℂ)} {Q : (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℝ}
+  {e : Λ → Λ → ℝ}
+
+omit [Countable Λ] in
+theorem IsHolMarkingOn.mono {U V : Set (Fin n → ℂ)} {P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
+    (h : IsHolMarkingOn Γ Q e U P) (hVU : V ⊆ U) : IsHolMarkingOn Γ Q e V P :=
+  ⟨fun x => (h.1 x).mono hVU, fun b hb => h.2 b (hVU hb)⟩
+
+theorem IsHolMarkingOn.exists_twist {U V : Set (Fin n → ℂ)} (hU : IsOpen U) (hV : IsOpen V)
+    (hc : IsPreconnected (U ∩ V)) (hne : (U ∩ V).Nonempty)
+    {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
+    (h : IsHolMarkingOn Γ Q e U P) (h' : IsHolMarkingOn Γ Q e V P') :
+    ∃ R : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ)), IsHolMarkingOn Γ Q e V R ∧
+      ∀ b ∈ U ∩ V, R b = P b := by
+  obtain ⟨T, hT⟩ := exists_const_addEquiv_of_range_eq n g Λ Λ (U ∩ V) (hU.inter hV) hc hne P P'
+    (fun x => (h.1 x).mono inter_subset_left) (fun x => (h'.1 x).mono inter_subset_right)
+    (fun b hb => ⟨(h.2 b hb.1).1, (h'.2 b hb.2).1, by
+      rw [(h.2 b hb.1).2.1, (h'.2 b hb.2).2.1]⟩)
+  have hR : ∀ b ∈ U ∩ V, ∀ x, P' b (T.symm x) = P b x := fun b hb x => by
+    rw [hT b hb, T.apply_symm_apply]
+  refine ⟨fun b => (P' b).comp T.symm.toAddMonoidHom, ⟨fun x => h'.1 (T.symm x), ?_⟩, ?_⟩
+  · intro b hb
+    obtain ⟨hi, hr, hq⟩ := h'.2 b hb
+    refine ⟨hi.comp T.symm.injective, ?_, ?_⟩
+    · rw [← hr]
+      ext y
+      constructor
+      · rintro ⟨x, rfl⟩
+        exact ⟨T.symm x, rfl⟩
+      · rintro ⟨x, rfl⟩
+        exact ⟨T x, by simp⟩
+    · intro x y
+      obtain ⟨c, hc'⟩ := hne
+      have h1 := (h.2 c hc'.1).2.2 x y
+      have h2 := (h'.2 c hc'.2).2.2 (T.symm x) (T.symm y)
+      rw [hR c hc' x, hR c hc' y, h1] at h2
+      simpa using (hq (T.symm x) (T.symm y)).trans h2.symm
+  · intro b hb
+    ext1 x
+    exact hR b hb x
+
+theorem IsHolMarkingOn.exists_glue {U V : Set (Fin n → ℂ)} (hU : IsOpen U) (hV : IsOpen V)
+    (hc : IsPreconnected (U ∩ V)) (hne : (U ∩ V).Nonempty)
+    {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
+    (h : IsHolMarkingOn Γ Q e U P) (h' : IsHolMarkingOn Γ Q e V P') :
+    ∃ R, IsHolMarkingOn Γ Q e (U ∪ V) R := by
+  classical
+  obtain ⟨R, hR, hRP⟩ := h.exists_twist hU hV hc hne h'
+  have eU : ∀ b ∈ U, (if b ∈ U then P b else R b) = P b := fun b hb => if_pos hb
+  have eV : ∀ b ∈ V, (if b ∈ U then P b else R b) = R b := fun b hb => by
+    by_cases hbU : b ∈ U
+    · rw [if_pos hbU, hRP b ⟨hbU, hb⟩]
+    · rw [if_neg hbU]
+  refine ⟨fun b => if b ∈ U then P b else R b, fun x => ?_, ?_⟩
+  · have d1 : DifferentiableOn ℂ (fun b => (if b ∈ U then P b else R b) x) U :=
+      (h.1 x).congr fun b hb => by rw [eU b hb]
+    have d2 : DifferentiableOn ℂ (fun b => (if b ∈ U then P b else R b) x) V :=
+      (hR.1 x).congr fun b hb => by rw [eV b hb]
+    rintro b (hb | hb)
+    · exact ((d1 b hb).differentiableAt (hU.mem_nhds hb)).differentiableWithinAt
+    · exact ((d2 b hb).differentiableAt (hV.mem_nhds hb)).differentiableWithinAt
+  · rintro b (hb | hb)
+    · simpa only [eU b hb] using h.2 b hb
+    · simpa only [eV b hb] using hR.2 b hb
+
+theorem IsHolMarkingOn.eq_of_eq_at {W : Set (Fin n → ℂ)} (hW : IsOpen W) (hc : IsPreconnected W)
+    {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
+    (h : IsHolMarkingOn Γ Q e W P) (h' : IsHolMarkingOn Γ Q e W P')
+    {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ W) (h0 : P b₀ = P' b₀) : ∀ b ∈ W, P b = P' b := by
+  obtain ⟨T, hT⟩ := exists_const_addEquiv_of_range_eq n g Λ Λ W hW hc ⟨b₀, hb₀⟩ P P' h.1 h'.1
+    (fun b hb => ⟨(h.2 b hb).1, (h'.2 b hb).1, by rw [(h.2 b hb).2.1, (h'.2 b hb).2.1]⟩)
+  have hid : ∀ x, T x = x := fun x => (h.2 b₀ hb₀).1 (by rw [← hT b₀ hb₀, h0])
+  intro b hb
+  ext1 x
+  rw [hT b hb, hid]
+
+theorem exists_marking_of_convex_family {B : Set (Fin n → ℂ)} {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ B)
+    (H : ∀ b ∈ B, ∃ U : Set (Fin n → ℂ), IsOpen U ∧ Convex ℝ U ∧ U ⊆ B ∧ b₀ ∈ U ∧ b ∈ U ∧
+      ∃ P, IsHolMarkingOn Γ Q e U P) :
+    ∃ P, IsHolMarkingOn Γ Q e B P := by
+  obtain ⟨U₀, hU₀, hC₀, -, hbU₀, -, P₀, hP₀⟩ := H b₀ hb₀
+  have H' : ∀ b ∈ B, ∃ U : Set (Fin n → ℂ), IsOpen U ∧ Convex ℝ U ∧ U ⊆ B ∧ b₀ ∈ U ∧ b ∈ U ∧
+      ∃ R, IsHolMarkingOn Γ Q e U R ∧ R b₀ = P₀ b₀ := by
+    intro b hb
+    obtain ⟨U, hU, hC, hUB, h0, h1, P, hP⟩ := H b hb
+    obtain ⟨R, hR, hRP⟩ := hP₀.exists_twist hU₀ hU (hC₀.inter hC).isPreconnected ⟨b₀, hbU₀, h0⟩ hP
+    exact ⟨U, hU, hC, hUB, h0, h1, R, hR, hRP b₀ ⟨hbU₀, h0⟩⟩
+  choose! U hU hC hUB h0 h1 R hR hRb using H'
+  have key : ∀ b ∈ B, ∀ c ∈ U b, R c c = R b c := fun b hb c hcb => by
+    have hc : c ∈ B := hUB b hb hcb
+    exact ((hR c hc).mono inter_subset_left).eq_of_eq_at ((hU c hc).inter (hU b hb))
+      ((hC c hc).inter (hC b hb)).isPreconnected ((hR b hb).mono inter_subset_right)
+      ⟨h0 c hc, h0 b hb⟩ ((hRb c hc).trans (hRb b hb).symm) c ⟨h1 c hc, hcb⟩
+  refine ⟨fun b => R b b, fun x b hb => ?_, fun b hb => (hR b hb).2 b (h1 b hb)⟩
+  have hn := (hU b hb).mem_nhds (h1 b hb)
+  have hev : (fun c => R c c x) =ᶠ[nhds b] fun c => R b c x := by
+    filter_upwards [hn] with c hc
+    rw [key b hb c hc]
+  exact (((hR b hb).1 x b (h1 b hb)).differentiableAt hn).congr_of_eventuallyEq hev
+    |>.differentiableWithinAt
+
+theorem exists_marking_tube {B : Set (Fin n → ℂ)} (hconv : Convex ℝ B)
+    (H : ∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧
+      ∃ P, IsHolMarkingOn Γ Q e N P)
+    {a b : Fin n → ℂ} (ha : a ∈ B) (hb : b ∈ B) :
+    ∃ U : Set (Fin n → ℂ), IsOpen U ∧ Convex ℝ U ∧ U ⊆ B ∧ a ∈ U ∧ b ∈ U ∧
+      ∃ P, IsHolMarkingOn Γ Q e U P := by
+  let γ : ℝ →ᵃ[ℝ] (Fin n → ℂ) := AffineMap.lineMap a b
+  have hγ : Continuous γ := by
+    have : (γ : ℝ → Fin n → ℂ) = fun t => t • (b - a) + a :=
+      funext fun t => AffineMap.lineMap_apply_module' a b t
+    rw [this]
+    fun_prop
+  have hγ0 : γ 0 = a := AffineMap.lineMap_apply_zero a b
+  have hγ1 : γ 1 = b := AffineMap.lineMap_apply_one a b
+  have hmem : ∀ r ∈ Icc (0 : ℝ) 1, γ r ∈ B := fun r hr =>
+    hconv.segment_subset ha hb (by rw [segment_eq_image_lineMap]; exact ⟨r, hr, rfl⟩)
+  let ι := {N : Set (Fin n → ℂ) // IsOpen N ∧ N ⊆ B ∧ ∃ P, IsHolMarkingOn Γ Q e N P}
+  let c : ι → Set unitInterval := fun N => (fun s : unitInterval => γ s) ⁻¹' N.1
+  obtain ⟨t, ht0, hmono, ⟨m, hm⟩, hcov⟩ := exists_monotone_Icc_subset_open_cover_unitInterval
+    (c := c) (fun N => N.2.1.preimage (hγ.comp continuous_subtype_val)) (fun s _ => by
+      obtain ⟨N, h1, h2, h3, h4⟩ := H _ (hmem s s.2)
+      exact mem_iUnion.2 ⟨⟨N, h1, h3, h4⟩, h2⟩)
+  have claim : ∀ k, ∃ δ : ℝ, 0 < δ ∧ Metric.thickening δ (γ '' Icc 0 (t k : ℝ)) ⊆ B ∧
+      ∃ P, IsHolMarkingOn Γ Q e (Metric.thickening δ (γ '' Icc 0 (t k : ℝ))) P := by
+    intro k
+    induction k with
+    | zero =>
+      obtain ⟨N, hN, haN, hNB, P, hP⟩ := H a ha
+      have hsub : γ '' Icc 0 (t 0 : ℝ) ⊆ N := by
+        rintro _ ⟨r, hr, rfl⟩
+        have hr0 : r = 0 := le_antisymm (by simpa [ht0] using hr.2) hr.1
+        rw [hr0, hγ0]
+        exact haN
+      obtain ⟨δ, hδ, hth⟩ := (isCompact_Icc.image hγ).exists_thickening_subset_open hN hsub
+      exact ⟨δ, hδ, hth.trans hNB, P, hP.mono hth⟩
+    | succ k ih =>
+      obtain ⟨δ₁, hδ₁, hB₁, P₁, hP₁⟩ := ih
+      obtain ⟨N, hN⟩ := hcov k
+      obtain ⟨hNo, hNB, P₂, hP₂⟩ := N.2
+      have hle : (t k : ℝ) ≤ t (k + 1) := hmono (Nat.le_succ k)
+      have h0 : (0 : ℝ) ≤ t k := (t k).2.1
+      have hsub : γ '' Icc (t k : ℝ) (t (k + 1)) ⊆ N.1 := by
+        rintro _ ⟨r, hr, rfl⟩
+        have hr' : r ∈ Icc (0 : ℝ) 1 := ⟨h0.trans hr.1, hr.2.trans (t (k + 1)).2.2⟩
+        exact hN (show (⟨r, hr'⟩ : unitInterval) ∈ Icc (t k) (t (k + 1)) from ⟨hr.1, hr.2⟩)
+      obtain ⟨δ₂, hδ₂, hth⟩ := (isCompact_Icc.image hγ).exists_thickening_subset_open hNo hsub
+      have hδ : 0 < min δ₁ δ₂ := lt_min hδ₁ hδ₂
+      have hA : Metric.thickening (min δ₁ δ₂) (γ '' Icc 0 (t k : ℝ)) ⊆
+          Metric.thickening δ₁ (γ '' Icc 0 (t k : ℝ)) :=
+        Metric.thickening_mono (min_le_left _ _) _
+      have hC : Metric.thickening (min δ₁ δ₂) (γ '' Icc (t k : ℝ) (t (k + 1))) ⊆ N.1 :=
+        (Metric.thickening_mono (min_le_right _ _) _).trans hth
+      have hKs : γ '' Icc 0 (t (k + 1) : ℝ) =
+          γ '' Icc 0 (t k : ℝ) ∪ γ '' Icc (t k : ℝ) (t (k + 1)) := by
+        rw [← image_union, Icc_union_Icc_eq_Icc h0 hle]
+      have hconvA := ((convex_Icc (0 : ℝ) (t k)).affine_image γ).thickening (min δ₁ δ₂)
+      have hconvC := ((convex_Icc (t k : ℝ) (t (k + 1))).affine_image γ).thickening (min δ₁ δ₂)
+      have hpt : γ (t k) ∈ Metric.thickening (min δ₁ δ₂) (γ '' Icc 0 (t k : ℝ)) ∩
+          Metric.thickening (min δ₁ δ₂) (γ '' Icc (t k : ℝ) (t (k + 1))) :=
+        ⟨Metric.self_subset_thickening hδ _ ⟨_, ⟨h0, le_rfl⟩, rfl⟩,
+          Metric.self_subset_thickening hδ _ ⟨_, ⟨le_rfl, hle⟩, rfl⟩⟩
+      obtain ⟨R, hR⟩ := (hP₁.mono hA).exists_glue (P' := P₂) Metric.isOpen_thickening
+        Metric.isOpen_thickening (hconvA.inter hconvC).isPreconnected ⟨_, hpt⟩ (hP₂.mono hC)
+      refine ⟨min δ₁ δ₂, hδ, ?_, R, ?_⟩
+      · rw [hKs, Metric.thickening_union]
+        exact union_subset (hA.trans hB₁) (hC.trans hNB)
+      · rw [hKs, Metric.thickening_union]
+        exact hR
+  obtain ⟨δ, hδ, hδB, P, hP⟩ := claim m
+  have htm : (t m : ℝ) = 1 := by rw [hm m le_rfl]; rfl
+  rw [htm] at hδB hP
+  exact ⟨_, Metric.isOpen_thickening, ((convex_Icc (0 : ℝ) 1).affine_image γ).thickening δ, hδB,
+    Metric.self_subset_thickening hδ _ ⟨0, ⟨le_rfl, zero_le_one⟩, hγ0⟩,
+    Metric.self_subset_thickening hδ _ ⟨1, ⟨zero_le_one, le_rfl⟩, hγ1⟩, P, hP⟩
+
+end
+
+theorem exists_global_marking_of_local : ∀ (n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Countable Λ] (B : Set (Fin n → ℂ)), IsOpen B → Convex ℝ B → ∀ (Γ : (Fin n → ℂ) → AddSubgroup (Fin g → ℂ)) (Q : (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℝ) (e : Λ → Λ → ℝ), (∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧ ∃ P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ)), (∀ x, DifferentiableOn ℂ (fun b => P b x) N) ∧ ∀ b ∈ N, Function.Injective (P b) ∧ (P b).range = Γ b ∧ ∀ x y, Q b (P b x) (P b y) = e x y) → ∃ P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ)), (∀ x, DifferentiableOn ℂ (fun b => P b x) B) ∧ ∀ b ∈ B, Function.Injective (P b) ∧ (P b).range = Γ b ∧ ∀ x y, Q b (P b x) (P b y) = e x y := by
+  intro n g Λ _ _ B _ hconv Γ Q e H
+  rcases B.eq_empty_or_nonempty with rfl | ⟨b₀, hb₀⟩
+  · exact ⟨fun _ => 0, fun x => by simp, by simp⟩
+  · have H' : ∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧
+        ∃ P, IsHolMarkingOn Γ Q e N P := fun b hb => by
+      obtain ⟨N, h1, h2, h3, P, h4, h5⟩ := H b hb
+      exact ⟨N, h1, h2, h3, P, h4, h5⟩
+    obtain ⟨P, hP⟩ := exists_marking_of_convex_family hb₀
+      (fun b hb => exists_marking_tube hconv H' hb₀ hb)
+    exact ⟨P, hP.1, hP.2⟩
+
+end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeOnPuncturedDisc =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeOnPuncturedDisc", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto\npublic import Mathlib.LinearAlgebra.BilinearMap\npublic import Mathlib.LinearAlgebra.Dimension.Finrank\npublic import Mathlib.LinearAlgebra.FreeModule.Basic\npublic import Mathlib.LinearAlgebra.Quotient.Defs\npublic import Mathlib.RingTheory.Finiteness.Defs\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SaturatedLatticeQuotientCount\npublic import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsConstAddEquivOfRangeEq\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.FDeriv.Defs\npublic import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicGroupLawGerm\npublic import GroundTheory.HeightsAndTheta.Heights.Regularisation.PLogCoverDescent\npublic import GroundTheory.HeightsAndTheta.Heights.Regularisation.PosSemidefOfIntQuadNonneg\nimport Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionTensorPullbackRingHomBijective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -160,7 +489,7 @@ lemma coiso_of_count {Λ M : Type} [AddCommGroup Λ] [Module.Free ℤ Λ] [Modul
         N ^ Module.finrank ℤ Λ ∧
       ∀ x y : M, Submodule.Quotient.mk x ∈ T → (N : ℤ) ∣ E (l x) (l y)) :
     ∀ x, (∀ y ∈ LinearMap.range l, E x y = 0) → x ∈ LinearMap.range l := by
-  refine GlobalTheory.T.saturated_lattice_quotient_count Λ E hbij halt (LinearMap.range l) hsat fun N hN => ?_
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Flat.mem_of_forall_card_mul_eq_pow Λ E hbij halt (LinearMap.range l) hsat fun N hN => ?_
   obtain ⟨T, hcard, hdvd⟩ := hcount N hN
   let e : M ≃ₗ[ℤ] LinearMap.range l := LinearEquiv.ofInjective l hinj
   have hmap : (LinearMap.range ((N : ℤ) • (LinearMap.id : M →ₗ[ℤ] M))).map (e : M →ₗ[ℤ] _) =
@@ -202,7 +531,7 @@ theorem exists_logPeriods_range_eq : ∀ (n a g : ℕ) (_h : a ≤ n) (Λ : Type
   have hdiff : DifferentiableOn ℂ (expCover (n := n) a) (logCover h) :=
     differentiable_expCover.differentiableOn
 
-  obtain ⟨P, hPhol, hP0⟩ := GlobalTheory.T.holomorphic_lattice_family_local n g Λ (logCover h) hBo hBc
+  obtain ⟨P, hPhol, hP0⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_global_marking_of_local n g Λ (logCover h) hBo hBc
     (fun w => Γ (expCover a w)) (fun w u v => (u ⬝ᵥ Hf (expCover a w) *ᵥ star v).im)
     (fun x y => (E x y : ℝ)) (by
       intro w₀ hw₀
@@ -319,3 +648,7 @@ theorem exists_logPeriods_range_eq : ∀ (n a g : ℕ) (_h : a ≤ n) (Λ : Type
   exact hspan
 
 end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodLatticeOnPuncturedDisc =====

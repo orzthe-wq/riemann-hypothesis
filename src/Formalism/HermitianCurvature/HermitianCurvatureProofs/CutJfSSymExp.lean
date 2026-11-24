@@ -53,6 +53,10 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LinearChangeOfVariablesBis
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.DensityLemma.PFibreBoundV
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.HermitianXiOrthogonal
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV
 
 @[expose] public section
 
@@ -85,7 +89,7 @@ lemma exp_mulVec_sq {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → �
   show (∑' m : ℕ, ((m.factorial : ℂ))⁻¹ • X ^ m) *ᵥ y = y + X *ᵥ y
   rw [← mvL_apply y, ContinuousLinearMap.map_tsum (mvL y) hs]
   rw [tsum_eq_sum (s := Finset.range 2) ?_]
-  · simp [Finset.sum_range_succ, mvL_apply, Matrix.smul_mulVec]
+  · simp [Finset.sum_range_succ, mvL_apply]
   · intro m hm
     simp only [Finset.mem_range, not_lt] at hm
     rw [mvL_apply, Matrix.smul_mulVec]
@@ -118,21 +122,6 @@ lemma hpk_symm (i j : Fin (2 * r + k + 1)) : Hpk k r i j = Hpk k r j i := by
     simp only [hij, hji, and_false, if_false]
     split_ifs <;> first | rfl | (exfalso; omega)
 
-lemma herm_conj (y w : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) y w = star (herm (Hpk k r) w y) := by
-  simp only [herm, dotProduct, mulVec, star_sum, star_mul', star_star, Pi.star_apply, hpk_star,
-    Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  rw [hpk_symm j i]
-  ring
-
-lemma vmv_mulVec {n : ℕ} (u w y : Fin n → ℂ) : vecMulVec u w *ᵥ y = (w ⬝ᵥ y) • u := by
-  ext i
-  simp only [vecMulVec, mulVec, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul,
-    Finset.mul_sum]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  ring
-
 lemma star_hpk_dot (v y : Fin (2 * r + k + 1) → ℂ) : star (Hpk k r *ᵥ v) ⬝ᵥ y = herm (Hpk k r) y v := by
   simp only [herm, dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, hpk_star, Finset.sum_mul,
     Finset.mul_sum]
@@ -144,7 +133,7 @@ lemma star_hpk_dot (v y : Fin (2 * r + k + 1) → ℂ) : star (Hpk k r *ᵥ v) �
 theorem xuv_mulVec (u v y : Fin (2 * r + k + 1) → ℂ) :
     Xuv k r u v *ᵥ y = herm (Hpk k r) y v • u - herm (Hpk k r) y u • v := by
   unfold Xuv
-  rw [Matrix.sub_mulVec, vmv_mulVec, vmv_mulVec, star_hpk_dot, star_hpk_dot]
+  rw [Matrix.sub_mulVec, _root_.PI.PolynomialProperness.TauN.vmv_mulVec, _root_.PI.PolynomialProperness.TauN.vmv_mulVec, star_hpk_dot, star_hpk_dot]
 
 theorem xuv_inLie (u v : Fin (2 * r + k + 1) → ℂ) : B.inLie k r (Xuv k r u v) := by
   have hH : (Hpk k r)ᴴ = Hpk k r := (hpkFacts k r).1
@@ -199,36 +188,24 @@ lemma hpk_eI_row_block (a : Fin r) (j : Fin (2 * r + k + 1)) (hj : r ≤ j.val) 
   simp only [eI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
-lemma hpk_eI_eI (a c : Fin r) : Hpk k r (eI k r a) (eI k r c) = 0 := by
-  have ha := a.isLt
-  have hc := c.isLt
-  unfold Hpk
-  simp only [eI, Fin.ext_iff]
-  split_ifs <;> first | rfl | (exfalso; omega)
-
-lemma one_mem_UWset (z : Fin (2 * r + k + 1) → ℂ) : (1 : B.Mat k r) ∈ UWset k r z := by
-  refine ⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
-  show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Hpk k r * 1 = Hpk k r
-  simp
-
 theorem xuv_lieN (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) (v : Fin (2 * r + k + 1) → ℂ)
     (hv : ∀ b : Fin r, b.val ≤ a.val → v (esI k r b) = 0) :
     Xuv k r (bvec (eI k r a)) v ∈ lieOf (Sset k r z) := by
   intro t
   set X := Xuv k r (bvec (eI k r a)) v with hX
   have hXa : X *ᵥ bvec (eI k r a) = 0 := by
-    rw [hX, xuv_mulVec, herm_eI_left, hv a le_rfl, herm_bvec_bvec, hpk_eI_eI]
+    rw [hX, xuv_mulVec, herm_eI_left, hv a le_rfl, herm_bvec_bvec, _root_.PI.UnitaryGroupMassFormula.DLm.NBk.Hpk_ee]
     simp
   have hXc : ∀ c : Fin r, X *ᵥ bvec (eI k r c) = star (v (esI k r c)) • bvec (eI k r a) := by
     intro c
-    rw [hX, xuv_mulVec, herm_eI_left, herm_bvec_bvec, hpk_eI_eI]
+    rw [hX, xuv_mulVec, herm_eI_left, herm_bvec_bvec, _root_.PI.UnitaryGroupMassFormula.DLm.NBk.Hpk_ee]
     simp
   have hXj : ∀ j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k →
       X *ᵥ bvec j = herm (Hpk k r) (bvec j) v • bvec (eI k r a) := by
     intro j hj hj'
     rw [hX, xuv_mulVec, herm_bvec_bvec, hpk_eI_row_block a j hj hj']
     simp
-  refine ⟨1, one_mem_UWset z, NormedSpace.exp ((t : ℂ) • X), ⟨Formalism.FourierDecayAlt.P.B5.exp_mem (xuv_inLie _ _) t, ?_, ?_⟩,
+  refine ⟨1, _root_.Formalism.FourierDecayAlt.P.C2x7.one_mem_UW z, NormedSpace.exp ((t : ℂ) • X), ⟨Formalism.FourierDecayAlt.P.B5.exp_mem (xuv_inLie _ _) t, ?_, ?_⟩,
     (Matrix.one_mul _).symm⟩
   · intro c i hci
     have e := exp_smul_mulVec_sq X (bvec (eI k r c)) (by rw [hXc, Matrix.mulVec_smul, hXa, smul_zero]) (t : ℂ)
@@ -239,7 +216,7 @@ theorem xuv_lieN (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) (v : Fin (2 * r +
       · rw [hv c hca]; simp
       · have : i ≠ eI k r a := by
           intro h; rw [h] at hci; simp only [eI] at hci; omega
-        simp [bvec, Pi.single_apply, this]
+        simp [bvec, this]
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hz, mul_zero, add_zero]
     simp [bvec, Pi.single_apply]
   · intro i j hj hj' hi
@@ -265,7 +242,7 @@ theorem xuv_lieW (z u v : Fin (2 * r + k + 1) → ℂ) (hu : inWb k r u) (hv : i
   · refine exp_smul_mulVec_fix X _ ?_ _
     rw [hX, xuv_mulVec, herm_esI_left, herm_esI_left, hei v hv, hei u hu]; simp
   · refine exp_smul_mulVec_fix X _ ?_ _
-    rw [hX, xuv_mulVec, herm_conj z v, herm_conj z u, hvz, huz]; simp
+    rw [hX, xuv_mulVec, _root_.PI.StabPairsW.herm_swap z v, _root_.PI.StabPairsW.herm_swap z u, hvz, huz]; simp
 
 end
 

@@ -65,4 +65,4 @@ theorem _root_.GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnit
     (c0L c0L' : ∀ i : Fin m, VV D.what₂.LL (lamL i) →ₛₗ[D.what₂.embLL] (cL i).W),
     Bridge.FamTie B pl S Qt tauL lamR lamL gramR c0R c0L → Bridge.FamTie B pl S Qt tauL lamR lamL gramR' c0R' c0L' →
     ∀ i : Fin m, ∃ a : D.what₂.LL, (∃ k : ℕ, k ≠ 0 ∧ a ^ k = 1) ∧ ∀ F, c0L' i F = D.what₂.embLL a • c0L i F := by
-  first | exact @GlobalTheory.CoefRoot.coef_root | exact GlobalTheory.CoefRoot.coef_root | (intros; apply GlobalTheory.CoefRoot.coef_root <;> assumption)
+  first | exact @GlobalTheory.CoefRoot.coef_root

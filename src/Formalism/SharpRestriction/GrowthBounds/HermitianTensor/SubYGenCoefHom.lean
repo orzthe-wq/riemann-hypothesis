@@ -225,7 +225,7 @@ theorem subY_gen_coefHom (A : Type) [CommRing A] (r : ℕ) (w : Fin (r + 1 + 1) 
   · rw [subY_X_none _ _ _ _ hn]
     have hf : (fun j' : Fin r => colW (r + 1 + 1) (r + 1 + 1) (a, t) (midI r j')) = 0 := by
       funext j'
-      simp [colW, Pi.single_apply, midOf_none_ne hn j']
+      simp [colW, midOf_none_ne hn j']
     rw [hf]
     exact CoefHom.ofX _
 

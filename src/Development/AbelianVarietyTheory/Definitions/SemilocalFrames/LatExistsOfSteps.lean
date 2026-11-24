@@ -302,10 +302,6 @@ section GF
 
 open Formalism.L2.SG.Saturated
 
-theorem fi_neg {E : Type} [Field E] [NumberField E] {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} {u : E}
-    (hu : u ∈ I) : -u ∈ I :=
-  FractionalIdeal.mem_coe.1 (Submodule.neg_mem _ (FractionalIdeal.mem_coe.2 hu))
-
 theorem fi_sum {E : Type} [Field E] [NumberField E] {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} {r : ℕ}
     (g : Fin r → E) (hg : ∀ k, g k ∈ I) : ∑ k, g k ∈ I :=
   FractionalIdeal.mem_coe.1 (Submodule.sum_mem _ (fun k _ => FractionalIdeal.mem_coe.2 (hg k)))
@@ -396,14 +392,14 @@ theorem genFrame_holds : GenFrame := by
     rw [map_smul, smul_eq_mul] at hm
     rcases lt_trichotomy k b with hkb | hkb | hkb
     · simp only [cc, hkb, ↓reduceIte, star_neg, hconj, neg_mul]
-      exact fi_neg (by rw [mul_comm]; exact hm)
+      exact _root_.Formalism.L2.SG.Pf.LatEx.fi_neg_mem (by rw [mul_comm]; exact hm)
     · subst hkb
       have key : star (cc k k) * S.hT (e k) y = -((s1 : E) * (S.hT (e k) y * S.hT (f0 k) (f0 k))) := by
         simp only [cc, lt_irrefl, ↓reduceIte]
         rw [star_neg, star_mul', hconj, hs1]
         ring
       rw [key]
-      exact fi_neg (fi_intm s1 hm)
+      exact _root_.Formalism.L2.SG.Pf.LatEx.fi_neg_mem (fi_intm s1 hm)
     · have h1 : ¬ k < b := not_lt.2 hkb.le
       have h2 : k ≠ b := hkb.ne'
       simp only [cc, h1, h2, ↓reduceIte, star_zero, zero_mul]
@@ -432,8 +428,6 @@ noncomputable section
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat IsDedekindDomain
 
 namespace GlobalTheory.St.Lat
-open Formalism.L2.SG.Pf Formalism.L2.SG.Pf.LatEx
-
 end GlobalTheory.St.Lat
 
 noncomputable section

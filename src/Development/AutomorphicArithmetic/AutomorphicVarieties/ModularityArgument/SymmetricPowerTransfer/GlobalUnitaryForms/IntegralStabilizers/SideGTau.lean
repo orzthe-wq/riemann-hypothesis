@@ -99,7 +99,7 @@ theorem UpperTheory.V.Z.Sym.Glob.sideGTau :
       simpa using Polynomial.monic_X_sub_C (1 : Lsq K Δ)
     have e1 := m.isRegular.left e
     have e2 := congrArg (fun p => p.coeff 1) e1
-    simp [coeff_X, coeff_one, coeff_X_pow] at e2
+    simp [coeff_one, coeff_X_pow] at e2
     exact e2
   · intro K K' _ _ f Δ δ δ' τ hd h
     unfold HasTau at h ⊢
@@ -130,7 +130,7 @@ theorem UpperTheory.V.Z.Sym.Glob.sideGTau :
     have hc := Matrix.trace_eq_neg_charpoly_coeff ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ))
     have c2 : ∀ s : Lsq K Δ, (X ^ 3 - C s * X ^ 2 + C s * X - 1 : (Lsq K Δ)[X]).coeff (Fintype.card (Fin 3) - 1) = -s := by
       intro s
-      simp [coeff_X, coeff_one, coeff_X_pow, coeff_C_mul]
+      simp [coeff_one, coeff_X_pow, coeff_C_mul]
     rw [h, poly_expand, c2, neg_neg] at hc
     rw [hc] at ht
     have h2 : IsIntegral O (algebraMap K (Lsq K Δ) τ) := by

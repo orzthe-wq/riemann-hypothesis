@@ -3,6 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesisBundleConversions
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.GeometricGaloisRepCompatibility
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.LocalRepresentationTheoryHypotheses
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.HeckeLAdicParameterAbove
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BoundAtTwoAndThreeForFamily
@@ -118,10 +120,8 @@ structure UnitaryGroupThirdPlaceHypotheses : Prop where
   discreteSeriesClassification : GlobalTheory.Published.DiscreteSeriesClassification
   strongApproxSU : GlobalTheory.Published.StrongApproxSU
   siegelWeilUnitaryConvergent2 : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent
-  harishChandraAnalyticity : GlobalTheory.Published.HarishChandraAnalyticity
   cuspTraceClass : GlobalTheory.Published.CuspTraceClass
   dixmierMalliavinFactorisation : GlobalTheory.Published.DixmierMalliavinFactorisation
-  flathFactorisation : GlobalTheory.Published.FlathFactorisation
   cMCurveGoodOutsidePrimeSt : GlobalTheory.Published.CMCurveGoodOutsidePrimeSt
   weberRayFieldSt : GlobalTheory.Published.WeberRayFieldSt
   discreteSeriesCoverExists : GlobalTheory.Published.DiscreteSeriesCoverExists

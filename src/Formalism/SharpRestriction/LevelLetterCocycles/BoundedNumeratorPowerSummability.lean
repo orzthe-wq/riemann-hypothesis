@@ -1,24 +1,26 @@
 module
 
-public import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
+public import Formalism.GaussValuationBounds.Statement
+public import Formalism.WindowSums.PowerSeriesRelationList
+public import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineMapLemmas
+public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ColTwoStep
+public import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.Galois
 public import Formalism.TruncatedSeriesCounting.AprimeArith
+public import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates
 public import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AevalApplySubEvalOneMem
 public import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AprimeCuts
-public import Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof
-public import Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible
-public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound
-public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp
-import Formalism.WindowSums.PowerSeriesRelationList
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -26,7 +28,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,10 +47,696 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof, Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible, Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound, Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp, Formalism.SharpRestriction.LevelLetterCocycles.BoundedNumeratorPowerSummability
+
+-- ===== clump member: Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof =====
+-- clump-header: {"m": "Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof", "h": "module\n\npublic import Formalism.GaussValuationBounds.Statement\npublic import Formalism.WindowSums.PowerSeriesRelationList\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.NOK
+
+theorem kapBound_proof : KapBound := by
+  intro ℓ _ hℓ χ hχ ell g h a JJ hJJ hbd
+  obtain ⟨hne, hval⟩ := Formalism.WindowSums.arc_KillerVal ℓ hℓ χ hχ ell JJ
+  refine ⟨hne, ?_⟩
+
+  have hcard : (JJ.erase 0).card ≤ 20 * g := by
+    calc (JJ.erase 0).card ≤ JJ.card := Finset.card_le_card (Finset.erase_subset _ _)
+      _ ≤ (Finset.univ.biUnion (fun t : Fin 5 => Finset.Ico (a t) (a t + 4 * (g : ℤ)))).card :=
+          Finset.card_le_card hJJ
+      _ ≤ ∑ t : Fin 5, (Finset.Ico (a t) (a t + 4 * (g : ℤ))).card := Finset.card_biUnion_le
+      _ = ∑ t : Fin 5, 4 * g := by
+          apply Finset.sum_congr rfl
+          intro t _
+          rw [Int.card_Ico, add_sub_cancel_left]
+          omega
+      _ = 20 * g := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]
+          ring
+
+  have hsumv : ((∑ i ∈ JJ.erase 0, padicValInt ℓ i : ℕ) : ℝ) ≤
+      5 * (4 * (g : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ (2 * (h : ℝ))) := by
+    have hle : (∑ i ∈ JJ.erase 0, padicValInt ℓ i) ≤
+        ∑ t : Fin 5, ∑ i ∈ (JJ.erase 0).filter (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ))),
+          padicValInt ℓ i := by
+      calc (∑ i ∈ JJ.erase 0, padicValInt ℓ i)
+          ≤ ∑ i ∈ JJ.erase 0, ∑ t : Fin 5,
+              (if i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ)) then padicValInt ℓ i else 0) := by
+            apply Finset.sum_le_sum
+            intro i hi
+            obtain ⟨t, -, ht⟩ := Finset.mem_biUnion.mp (hJJ (Finset.mem_of_mem_erase hi))
+            calc padicValInt ℓ i
+                = (if i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ)) then padicValInt ℓ i else 0) :=
+                  (if_pos ht).symm
+              _ ≤ ∑ t' : Fin 5,
+                    (if i ∈ Finset.Ico (a t') (a t' + 4 * (g : ℤ)) then padicValInt ℓ i else 0) :=
+                  Finset.single_le_sum
+                    (f := fun t' => if i ∈ Finset.Ico (a t') (a t' + 4 * (g : ℤ)) then padicValInt ℓ i else 0)
+                    (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)
+        _ = ∑ t : Fin 5, ∑ i ∈ JJ.erase 0,
+              (if i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ)) then padicValInt ℓ i else 0) :=
+            Finset.sum_comm
+        _ = ∑ t : Fin 5, ∑ i ∈ (JJ.erase 0).filter (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ))),
+              padicValInt ℓ i := by
+            apply Finset.sum_congr rfl
+            intro t _
+            rw [Finset.sum_filter]
+    have hwin : ∀ t : Fin 5,
+        ((∑ i ∈ (JJ.erase 0).filter (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ))),
+            padicValInt ℓ i : ℕ) : ℝ) ≤ 4 * (g : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ (2 * (h : ℝ)) := by
+      intro t
+      have hw := _root_.Formalism.WindowSums.sum_padicValInt_le ℓ (a t) (4 * g) (2 * h)
+        ((JJ.erase 0).filter (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ)))) ?_ ?_ ?_
+      · push_cast at hw ⊢
+        exact hw
+      · intro i hi
+        rw [Finset.mem_filter] at hi
+        push_cast
+        exact hi.2
+      · intro h0
+        rw [Finset.mem_filter] at h0
+        exact (Finset.mem_erase.mp h0.1).1 rfl
+      · intro i hi
+        rw [Finset.mem_filter] at hi
+        push_cast
+        exact hbd i (Finset.mem_of_mem_erase hi.1)
+    calc ((∑ i ∈ JJ.erase 0, padicValInt ℓ i : ℕ) : ℝ)
+        ≤ ((∑ t : Fin 5, ∑ i ∈ (JJ.erase 0).filter
+              (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ))), padicValInt ℓ i : ℕ) : ℝ) := by
+          exact_mod_cast hle
+      _ = ∑ t : Fin 5, ((∑ i ∈ (JJ.erase 0).filter
+              (fun i => i ∈ Finset.Ico (a t) (a t + 4 * (g : ℤ))), padicValInt ℓ i : ℕ) : ℝ) := by
+          rw [Nat.cast_sum]
+      _ ≤ ∑ _t : Fin 5, (4 * (g : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ (2 * (h : ℝ))) :=
+          Finset.sum_le_sum (fun t _ => hwin t)
+      _ = 5 * (4 * (g : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ (2 * (h : ℝ))) := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+          norm_num
+  have hsplit : (∑ i ∈ JJ.erase 0, (1 + ell + padicValInt ℓ i)) =
+      (JJ.erase 0).card * (1 + ell) + ∑ i ∈ JJ.erase 0, padicValInt ℓ i := by
+    rw [Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]
+  have hc : (((JJ.erase 0).card * (1 + ell) : ℕ) : ℝ) ≤ 20 * (g : ℝ) * (1 + (ell : ℝ)) := by
+    have h1 : (JJ.erase 0).card * (1 + ell) ≤ 20 * g * (1 + ell) := Nat.mul_le_mul_right _ hcard
+    exact_mod_cast h1
+  rw [hval, hsplit]
+  push_cast at hc hsumv ⊢
+  linarith
+
+end Formalism.NOK
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineMapLemmas\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ColTwoStep\npublic import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.Galois\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Classical
+
+namespace Formalism.MainNotions.LocalTheoryWindows
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module
+
+section Gen
+
+variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    (PD : PeriodData G Qp K₀ K B BdR)
+    {LL : Type} [Field LL] [Algebra Qp LL] {O : Type} [CommRing O] [Algebra O LL]
+    {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
+    [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
+    [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
+    {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
+    [Module O V'] [IsScalarTower O LL V'] {ρ' : Representation LL G V'}
+    [TopologicalSpace V'] [ContinuousAdd V'] [ContinuousConstSMul LL V']
+    {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'} (F : LatHom L L')
+
+abbrev clsZ (L' : Lattice (O := O) ρ') : ↥(latticeCocycles L') →ₗ[O] LatticeCohomology L' := Submodule.mkQ _
+
+theorem mem_H1fT_iff (x : LatticeCohomology L') :
+    x ∈ latticeFiniteCohomology PD L' ↔ ∃ c : ↥(latticeCocycles L'), (c : G → V') ∈ latticeFiniteCocycles PD L' ∧ clsZ L' c = x := by
+  unfold latticeFiniteCohomology
+  rw [Submodule.mem_map]
+  rfl
+
+theorem clsZ_eq_zero (c : ↥(latticeCocycles L')) : clsZ L' c = 0 ↔ (c : G → V') ∈ latticeCoboundaries L' := by
+  unfold clsZ
+  rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+  rfl
+
+theorem H1map_clsZ (c : ↥(latticeCocycles L)) :
+    F.H1map (clsZ L c) = clsZ L' ⟨F.post c, F.post_Z1T c c.2⟩ := rfl
+
+theorem mem_ImF_of_cls (p : ↥(latticeCocycles L')) (h : clsZ L' p ∈ (latticeFiniteCohomology PD L).map F.H1map) :
+    (p : G → V') ∈ F.ImF PD := by
+  obtain ⟨x, hx, hxp⟩ := h
+  obtain ⟨c, hc, rfl⟩ := (mem_H1fT_iff PD x).1 hx
+  rw [H1map_clsZ] at hxp
+  have h0 : clsZ L' (p - ⟨F.post c, F.post_Z1T c c.2⟩) = 0 := by rw [map_sub, hxp, sub_self]
+  have h1 := (clsZ_eq_zero _).1 h0
+  have h2 : (p : G → V') = F.post c + ((p - ⟨F.post c, F.post_Z1T c c.2⟩ : ↥(latticeCocycles L')) : G → V') := by
+    simp
+  rw [h2]
+  exact Submodule.add_mem_sup (Submodule.mem_map_of_mem hc) h1
+
+theorem cls_mem_of_ImF (p : ↥(latticeCocycles L')) (h : (p : G → V') ∈ F.ImF PD) :
+    clsZ L' p ∈ (latticeFiniteCohomology PD L).map F.H1map := by
+  obtain ⟨a, ha, b, hb, hab⟩ := Submodule.mem_sup.1 h
+  obtain ⟨c, hc, rfl⟩ := ha
+  have hcZ : c ∈ latticeCocycles L := hc.1
+  refine ⟨clsZ L ⟨c, hcZ⟩, (mem_H1fT_iff PD _).2 ⟨⟨c, hcZ⟩, hc, rfl⟩, ?_⟩
+  rw [H1map_clsZ]
+  have h0 : clsZ L' (p - ⟨F.post c, F.post_Z1T c hcZ⟩) = 0 := by
+    rw [clsZ_eq_zero]
+    have : ((p - ⟨F.post c, F.post_Z1T c hcZ⟩ : ↥(latticeCocycles L')) : G → V') = b := by
+      simp [← hab]
+    rw [this]; exact hb
+  rw [map_sub, sub_eq_zero] at h0
+  exact h0.symm
+
+def liftZ (x : LatticeCohomology L') : ↥(latticeCocycles L') :=
+  if h : x ∈ latticeFiniteCohomology PD L' then ((mem_H1fT_iff PD x).1 h).choose else 0
+
+theorem liftZ_mem {x : LatticeCohomology L'} (h : x ∈ latticeFiniteCohomology PD L') : ((liftZ PD x : ↥(latticeCocycles L')) : G → V') ∈ latticeFiniteCocycles PD L' := by
+  unfold liftZ; rw [dite_eq_left h]; exact ((mem_H1fT_iff PD x).1 h).choose_spec.1
+
+theorem liftZ_cls {x : LatticeCohomology L'} (h : x ∈ latticeFiniteCohomology PD L') : clsZ L' (liftZ PD x) = x := by
+  unfold liftZ; rw [dite_eq_left h]; exact ((mem_H1fT_iff PD x).1 h).choose_spec.2
+
+def liftS (A : Finset (LatticeCohomology L')) : Finset (G → V') := A.image fun x => ((liftZ PD x : ↥(latticeCocycles L')) : G → V')
+
+theorem exists_lift_span (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L') (a : LatticeCohomology L')
+    (ha : a ∈ Submodule.span O (↑A : Set (LatticeCohomology L'))) :
+    ∃ y : ↥(latticeCocycles L'), (y : G → V') ∈ Submodule.span O (↑(liftS PD A) : Set (G → V')) ∧ clsZ L' y = a := by
+  induction ha using Submodule.span_induction with
+  | mem x hx =>
+    refine ⟨liftZ PD x, Submodule.subset_span ?_, liftZ_cls PD (hA hx)⟩
+    exact Finset.mem_coe.2 (Finset.mem_image_of_mem _ hx)
+  | zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨u, hu, rfl⟩ := hx
+    obtain ⟨w, hw, rfl⟩ := hy
+    exact ⟨u + w, Submodule.add_mem _ hu hw, map_add _ _ _⟩
+  | smul c x _ hx =>
+    obtain ⟨u, hu, rfl⟩ := hx
+    exact ⟨c • u, Submodule.smul_mem _ c hu, map_smul _ _ _⟩
+
+theorem mem_span_sup_ImF (A : Finset (LatticeCohomology L')) (hA : (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L')
+    (p : ↥(latticeCocycles L'))
+    (hp : clsZ L' p ∈ Submodule.span O (↑A : Set (LatticeCohomology L')) ⊔ (latticeFiniteCohomology PD L).map F.H1map) :
+    (p : G → V') ∈ Submodule.span O (↑(liftS PD A) : Set (G → V')) ⊔ F.ImF PD := by
+  obtain ⟨a, ha, b, hb, hab⟩ := Submodule.mem_sup.1 hp
+  obtain ⟨y, hy, rfl⟩ := exists_lift_span PD A hA a ha
+  have h1 : clsZ L' (p - y) ∈ (latticeFiniteCohomology PD L).map F.H1map := by
+    rw [map_sub, ← hab, add_sub_cancel_left]; exact hb
+  have h2 := mem_ImF_of_cls PD F _ h1
+  have h3 : (p : G → V') = (y : G → V') + ((p - y : ↥(latticeCocycles L')) : G → V') := by simp
+  rw [h3]
+  exact Submodule.add_mem_sup hy h2
+
+theorem col_le_of_span (hI : F.ImF PD ≤ latticeFiniteCocycles PD L') (gens cls : Finset (LatticeCohomology L')) (g e e' : ℕ)
+    (hgens : Submodule.span O (↑gens : Set (LatticeCohomology L')) = latticeFiniteCohomology PD L') (hg : gens.card ≤ g)
+    (hcls : (↑cls : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L')
+    (h1 : ∀ x ∈ latticeFiniteCohomology PD L', (((PD.p : ℕ) : O) ^ e) • x ∈
+      Submodule.span O (↑cls : Set (LatticeCohomology L')) ⊔ (latticeFiniteCohomology PD L).map F.H1map)
+    (h2 : ∀ x ∈ cls, (((PD.p : ℕ) : O) ^ e') • x ∈ (latticeFiniteCohomology PD L).map F.H1map) :
+    F.col PD ≤ ((g * e + cls.card * e' : ℕ) : ℕ∞) * lenOl PD (O := O) := by
+  have hgs : (↑gens : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L' := by
+    rw [← hgens]; exact Submodule.subset_span
+  have hsub : ∀ (A : Finset (LatticeCohomology L')), (↑A : Set (LatticeCohomology L')) ⊆ latticeFiniteCohomology PD L' →
+      (↑(liftS PD A) : Set (G → V')) ⊆ latticeFiniteCocycles PD L' := by
+    intro A hA p hp
+    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.1 (Finset.mem_coe.1 hp)
+    exact liftZ_mem PD (hA hx)
+  have hnat : ∀ (k : ℕ) (p : G → V'), (PD.p ^ k : ℕ) • p = (((PD.p : ℕ) : O) ^ k) • p := by
+    intro k p
+    rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
+  refine Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds.length_quotient_le_of_two_step O (G → V') PD.p g cls.card e e' (latticeFiniteCocycles PD L') (F.ImF PD)
+    (liftS PD gens) (liftS PD cls) hI (le_trans Finset.card_image_le hg) Finset.card_image_le
+    (hsub cls hcls) ?_ ?_ ?_
+  · apply le_antisymm
+    · exact sup_le (Submodule.span_le.2 (hsub gens hgs)) hI
+    · intro p hp
+      have hpZ : p ∈ latticeCocycles L' := hp.1
+      refine mem_span_sup_ImF PD F gens hgs ⟨p, hpZ⟩ (Submodule.mem_sup_left ?_)
+      rw [hgens]
+      exact (mem_H1fT_iff PD _).2 ⟨⟨p, hpZ⟩, hp, rfl⟩
+  · intro p hp
+    have hpZ : p ∈ latticeCocycles L' := hp.1
+    rw [hnat]
+    refine mem_span_sup_ImF PD F cls hcls ((((PD.p : ℕ) : O) ^ e) • (⟨p, hpZ⟩ : ↥(latticeCocycles L'))) ?_
+    rw [map_smul]
+    exact h1 _ ((mem_H1fT_iff PD _).2 ⟨⟨p, hpZ⟩, hp, rfl⟩)
+  · intro p hp
+    rw [hnat]
+    have hle : Submodule.span O (↑(liftS PD cls) : Set (G → V')) ≤
+        (F.ImF PD).comap ((((PD.p : ℕ) : O) ^ e') • (LinearMap.id : (G → V') →ₗ[O] (G → V'))) := by
+      rw [Submodule.span_le]
+      intro q hq
+      obtain ⟨x, hx, rfl⟩ := Finset.mem_image.1 (Finset.mem_coe.1 hq)
+      have := mem_ImF_of_cls PD F ((((PD.p : ℕ) : O) ^ e') • liftZ PD x) (by
+        rw [map_smul, liftZ_cls PD (hcls hx)]; exact h2 x hx)
+      exact this
+    exact hle hp
+
+theorem cls_of_LiftF {e' : ℕ} (hL : F.LiftF PD e') (x : LatticeCohomology L') (hx : x ∈ latticeFiniteCohomology PD L') :
+    (((PD.p : ℕ) : O) ^ e') • x ∈ (latticeFiniteCohomology PD L).map F.H1map := by
+  obtain ⟨c, hc, rfl⟩ := (mem_H1fT_iff PD x).1 hx
+  rw [← map_smul]
+  exact cls_mem_of_ImF PD F _ (hL c hc)
+
+end Gen
+
+section Core
+
+variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
+    {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
+
+theorem ImF_le (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
+    (F : LatHom T₁.L T₂.L) : F.ImF PD ≤ latticeFiniteCocycles PD T₂.L := by
+  have : IsTopologicalAddGroup T₁.V := IsModuleTopology.topologicalAddGroup LL T₁.V
+  have : IsTopologicalAddGroup T₂.V := IsModuleTopology.topologicalAddGroup LL T₂.V
+  exact (finiteCocycles_properties.2.2.2 G Qp K₀ K B BdR PD LL O T₁.V T₂.V T₁.ρ T₂.ρ T₁.L T₂.L F T₂.cont).1
+
+theorem colLeR_of_span (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
+    (F : LatHom T₁.L T₂.L) (gens cls : Finset (LatticeCohomology T₂.L)) (g e e' k : ℕ)
+    (hk : lenOl PD (O := O) = (k : ℕ∞))
+    (hgens : Submodule.span O (↑gens : Set (LatticeCohomology T₂.L)) = latticeFiniteCohomology PD T₂.L) (hg : gens.card ≤ g)
+    (hcls : (↑cls : Set (LatticeCohomology T₂.L)) ⊆ latticeFiniteCohomology PD T₂.L)
+    (h1 : ∀ x ∈ latticeFiniteCohomology PD T₂.L, (((PD.p : ℕ) : O) ^ e) • x ∈
+      Submodule.span O (↑cls : Set (LatticeCohomology T₂.L)) ⊔ (latticeFiniteCohomology PD T₁.L).map F.H1map)
+    (h2 : ∀ x ∈ cls, (((PD.p : ℕ) : O) ^ e') • x ∈ (latticeFiniteCohomology PD T₁.L).map F.H1map) :
+    Formalism.MainNotions.TruncatedSeriesCountingBounds.ColLeR PD F ((g : ℝ) * e + cls.card * e') := by
+  have h := col_le_of_span PD F (ImF_le PD F) gens cls g e e' hgens hg hcls h1 h2
+  rw [hk] at h
+  have h' : F.col PD ≤ (((g * e + cls.card * e') * k : ℕ) : ℕ∞) := by
+    rw [Nat.cast_mul]; exact h
+  obtain ⟨mm, hmm⟩ := ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) h')
+  refine ⟨mm, k, hmm.symm, hk, ?_⟩
+  rw [← hmm] at h'
+  have h3 : mm ≤ (g * e + cls.card * e') * k := by exact_mod_cast h'
+  have h4 : (mm : ℝ) ≤ (((g * e + cls.card * e') * k : ℕ) : ℝ) := by exact_mod_cast h3
+  push_cast at h4
+  exact h4
+
+theorem colLeR_of_liftF (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O}
+    (F : LatHom T₁.L T₂.L) (gens : Finset (LatticeCohomology T₂.L)) (g e k : ℕ)
+    (hk : lenOl PD (O := O) = (k : ℕ∞))
+    (hgens : Submodule.span O (↑gens : Set (LatticeCohomology T₂.L)) = latticeFiniteCohomology PD T₂.L) (hg : gens.card ≤ g)
+    (hL : F.LiftF PD e) :
+    Formalism.MainNotions.TruncatedSeriesCountingBounds.ColLeR PD F ((g : ℝ) * e) := by
+  have h := colLeR_of_span PD F gens ∅ g e 0 k hk hgens hg (by simp)
+    (fun x hx => Submodule.mem_sup_right (cls_of_LiftF PD F hL x hx)) (by simp)
+  simpa using h
+
+end Core
+
+section Fin
+
+variable {l : ℕ} [Fact l.Prime]
+
+theorem OL_finite (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) := by
+  have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
+  exact IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
+
+theorem OL_quot_finite (LL : FinExt l) :
+    Finite (↥(OL LL) ⧸ Ideal.span {((l : ℕ) : ↥(OL LL))}) := by
+  have := OL_finite LL
+  obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' ℤ_[l] ↥(OL LL)
+  let g : (Fin n → Fin l) → (↥(OL LL) ⧸ Ideal.span {((l : ℕ) : ↥(OL LL))}) :=
+    fun r => Ideal.Quotient.mk _ (f fun i => ((r i : ℕ) : ℤ_[l]))
+  apply Finite.of_surjective g
+  intro x
+  obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
+  obtain ⟨a, rfl⟩ := hf y
+  have hrep : ∀ i, ∃ b : ℤ_[l], a i = ((a i).zmodRepr : ℤ_[l]) + (l : ℤ_[l]) * b := by
+    intro i
+    have h := PadicInt.sub_zmodRepr_mem (a i)
+    rw [PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton] at h
+    obtain ⟨b, hb⟩ := h
+    exact ⟨b, by rw [← hb]; ring⟩
+  choose b hb using hrep
+  refine ⟨fun i => ⟨(a i).zmodRepr, PadicInt.zmodRepr_lt_p _⟩, ?_⟩
+  have ha : a = (fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) + (l : ℕ) • b := by
+    funext i
+    rw [Pi.add_apply, Pi.smul_apply, nsmul_eq_mul]
+    exact hb i
+  have hfa : f a = f (fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) + ((l : ℕ) : ↥(OL LL)) * f b := by
+    conv_lhs => rw [ha]
+    rw [map_add (f := _), map_nsmul, nsmul_eq_mul]
+  show Ideal.Quotient.mk _ (f fun i => (((a i).zmodRepr : ℕ) : ℤ_[l])) = Ideal.Quotient.mk _ (f a)
+  rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
+  refine ⟨- f b, ?_⟩
+  rw [hfa]
+  ring
+
+theorem len_finite_of_finite (R : Type) [CommRing R] (I : Ideal R) [Finite (R ⧸ I)] :
+    ∃ k : ℕ, Module.length R (R ⧸ I) = (k : ℕ∞) := by
+  have h1 : IsFiniteLength R (R ⧸ I) :=
+    isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩
+  obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 (Module.length_ne_top_iff.2 h1)
+  exact ⟨k, hk.symm⟩
+
+theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
+    ∃ k : ℕ, lenOl (P.PD K) (O := ↥(OL LL)) = (k : ℕ∞) := by
+  unfold lenOl
+  rw [P.PD_p K]
+  have := OL_quot_finite LL
+  exact len_finite_of_finite _ _
+
+end Fin
+
+section Words
+
+variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
+    {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
+
+end Words
+
+end Formalism.MainNotions.LocalTheoryWindows
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible =====
+
+-- ===== clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound =====
+-- clump-header: {"m": "Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound", "h": "module\n\npublic import Formalism.TruncatedSeriesCounting.AprimeArith\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.TruncatedSeriesCounting.WachCoordinates
+
+open Finset
+
+private theorem geom_sum_range_mul_one_sub (x : ℝ) :
+    ∀ n : ℕ, Finset.sum (range n) (fun i => x ^ i) * (1 - x) = 1 - x ^ n := fun
+  | 0 => by simp
+  | n + 1 => by rw [sum_range_succ, add_mul, geom_sum_range_mul_one_sub x n, pow_succ]; ring
+
+theorem tsum_le_two_level (x A B D : ℝ) (j : ℕ) (f : ℕ → ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1)
+    (hA0 : 0 ≤ A) (hf0 : ∀ a, 0 ≤ f a) (hfB : ∀ a, f a ≤ (B + D) * x ^ a)
+    (hfA : ∀ a, a < j → f a ≤ (A + D) * x ^ a) :
+    ∑' a, f a ≤ (A + B * x ^ j + D) * (1 - x)⁻¹ := by
+  have hx1' : 0 < 1 - x := by linarith
+  have hgeo : Summable (fun a : ℕ => (B + D) * x ^ a) :=
+    (summable_geometric_of_lt_one hx0 hx1).mul_left (B + D)
+  have hsum : Summable f := Summable.of_nonneg_of_le hf0 hfB hgeo
+  have hsplit : Finset.sum (range j) f + ∑' a, f (a + j) = ∑' a, f a := by
+    exact hsum.sum_add_tsum_nat_add j
+  have hshift : Summable (fun a => f (a + j)) := by
+    exact (summable_nat_add_iff j).mpr hsum
+  have hg2 : HasSum (fun a : ℕ => (B + D) * x ^ j * x ^ a) ((B + D) * x ^ j * (1 - x)⁻¹) :=
+    (hasSum_geometric_of_lt_one hx0 hx1).mul_left _
+  have h2 : ∑' a, f (a + j) ≤ (B + D) * x ^ j * (1 - x)⁻¹ :=
+    hasSum_le (fun a => by
+      calc f (a + j) ≤ (B + D) * x ^ (a + j) := hfB (a + j)
+        _ = (B + D) * x ^ j * x ^ a := by rw [pow_add]; ring) hshift.hasSum hg2
+  have h1 : Finset.sum (range j) f ≤ (A + D) * Finset.sum (range j) (fun a => x ^ a) := by
+    rw [mul_sum]
+    exact sum_le_sum fun a ha => hfA a (mem_range.mp ha)
+  have hS' : Finset.sum (range j) (fun a => x ^ a) = (1 - x ^ j) * (1 - x)⁻¹ := by
+    rw [← geom_sum_range_mul_one_sub x j, mul_assoc, mul_inv_cancel₀ hx1'.ne', mul_one]
+  have hpos : 0 ≤ A * x ^ j * (1 - x)⁻¹ :=
+    mul_nonneg (mul_nonneg hA0 (pow_nonneg hx0 _)) (inv_nonneg.mpr hx1'.le)
+  rw [← hsplit]
+  calc Finset.sum (range j) f + ∑' a, f (a + j)
+      ≤ (A + D) * Finset.sum (range j) (fun a => x ^ a) + (B + D) * x ^ j * (1 - x)⁻¹ :=
+        add_le_add h1 h2
+    _ = (A + B * x ^ j + D) * (1 - x)⁻¹ - A * x ^ j * (1 - x)⁻¹ := by rw [hS']; ring
+    _ ≤ (A + B * x ^ j + D) * (1 - x)⁻¹ := by linarith
+
+theorem rr_arith (l d G h y C L s r q : ℝ) (hld : l = d + 1) (hd2 : 2 ≤ d) (hG0 : 0 ≤ G)
+    (hh0 : 0 ≤ h) (hy0 : 0 ≤ y) (hC0 : 0 ≤ C) (hCL : C ≤ 3 + L) (hL0 : 0 ≤ L)
+    (hq : q = d / (d - 1)) (hsA : s ≤ (2 * G + 2 * h * y + C + 3) * q)
+    (hr : r ≤ s * l / d ^ 2 + C) : r ≤ 20 * (G / l + h * y / d + L + 1) := by
+  subst hld
+  subst hq
+  have hd1 : 0 < d - 1 := by linarith
+  have hd0 : 0 < d := by linarith
+  have hl0 : 0 < d + 1 := by linarith
+  have hdd : 0 < (d - 1) * d := mul_pos hd1 hd0
+  have hst : s * (d + 1) / d ^ 2 ≤ (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d)) := by
+    have h1 : s * (d + 1) / d ^ 2 ≤ (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2 := by
+      have e : (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2 - s * (d + 1) / d ^ 2
+          = ((2 * G + 2 * h * y + C + 3) * (d / (d - 1)) - s) * ((d + 1) / d ^ 2) := by ring
+      have : 0 ≤ ((2 * G + 2 * h * y + C + 3) * (d / (d - 1)) - s) * ((d + 1) / d ^ 2) :=
+        mul_nonneg (by linarith) (div_nonneg hl0.le (sq_nonneg d))
+      linarith
+    have h2 : (2 * G + 2 * h * y + C + 3) * (d / (d - 1)) * (d + 1) / d ^ 2
+        = (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d)) := by
+      have hd1' : d - 1 ≠ 0 := hd1.ne'
+      have hd0' : d ≠ 0 := hd0.ne'
+      field_simp
+    linarith
+  have ht0 : 0 ≤ (d + 1) / ((d - 1) * d) := div_nonneg hl0.le hdd.le
+  have htc : (d + 1) / ((d - 1) * d) ≤ 3 / 2 := by
+    have key : d + 1 ≤ 3 / 2 * ((d - 1) * d) := by
+      nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ d - 2) (by linarith : (0:ℝ) ≤ 3 * d + 1)]
+    exact (div_le_iff₀ hdd).mpr key
+  have htG : (d + 1) / ((d - 1) * d) ≤ 10 / (d + 1) := by
+    have key : (d + 1) * (d + 1) ≤ 10 * ((d - 1) * d) := by
+      nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ d - 2) (by linarith : (0:ℝ) ≤ 9 * d + 6)]
+    exact (div_le_div_iff₀ hdd hl0).mpr key
+  have hth : (d + 1) / ((d - 1) * d) ≤ 3 / d := by
+    have key : (d + 1) * d ≤ 3 * ((d - 1) * d) := by
+      nlinarith [mul_nonneg hd0.le (by linarith : (0:ℝ) ≤ d - 2)]
+    exact (div_le_div_iff₀ hdd hd0).mpr key
+  have e1 : 2 * G * ((d + 1) / ((d - 1) * d)) ≤ 20 * (G / (d + 1)) := by
+    calc 2 * G * ((d + 1) / ((d - 1) * d)) ≤ 2 * G * (10 / (d + 1)) :=
+          mul_le_mul_of_nonneg_left htG (by linarith)
+      _ = 20 * (G / (d + 1)) := by ring
+  have hhy : 0 ≤ h * y := mul_nonneg hh0 hy0
+  have e2 : 2 * h * y * ((d + 1) / ((d - 1) * d)) ≤ 20 * (h * y / d) := by
+    have hq0 : 0 ≤ h * y / d := div_nonneg hhy hd0.le
+    calc 2 * h * y * ((d + 1) / ((d - 1) * d)) = 2 * (h * y) * ((d + 1) / ((d - 1) * d)) := by ring
+      _ ≤ 2 * (h * y) * (3 / d) := mul_le_mul_of_nonneg_left hth (by linarith)
+      _ = 6 * (h * y / d) := by ring
+      _ ≤ 20 * (h * y / d) := by linarith
+  have e3 : (C + 3) * ((d + 1) / ((d - 1) * d)) ≤ (C + 3) * (3 / 2) :=
+    mul_le_mul_of_nonneg_left htc (by linarith)
+  have expand : (2 * G + 2 * h * y + C + 3) * ((d + 1) / ((d - 1) * d)) + C
+      = 2 * G * ((d + 1) / ((d - 1) * d)) + 2 * h * y * ((d + 1) / ((d - 1) * d))
+        + (C + 3) * ((d + 1) / ((d - 1) * d)) + C := by ring
+  linarith
+
+theorem remainder_bound_of_tsum : RrBound := by
+  intro ℓ hℓ n _ H G h j cut s r hh hH hG hs hr
+  have hL3 : (3:ℝ) ≤ (ℓ:ℝ) := by exact_mod_cast hℓ
+  have hb : (1:ℝ) < (ℓ:ℝ) := by linarith
+  have hh1 : (1:ℝ) ≤ (h:ℝ) := by exact_mod_cast hh
+  have hlog0 : 0 ≤ Real.logb ℓ (2 * h + 1) := Real.logb_nonneg hb (by linarith)
+  have hceil := Nat.ceil_lt_add_one (R := ℝ) (a := 1 + Real.logb ℓ (2 * h + 1)) (by linarith)
+  have hlog3 : Real.logb ℓ 3 ≤ 1 := by
+    rw [← Real.logb_self_eq_one hb]
+    exact (Real.logb_le_logb hb (by norm_num) (by linarith)).mpr hL3
+  have hlogmul : Real.logb ℓ (2 * h + 1) ≤ Real.logb ℓ 3 + Real.logb ℓ h := by
+    rw [← Real.logb_mul (by norm_num) (by linarith)]
+    exact (Real.logb_le_logb hb (by linarith) (by nlinarith)).mpr (by linarith)
+  have hL0 : 0 ≤ Real.logb ℓ h := Real.logb_nonneg hb hh1
+  have hC0 : (0:ℝ) ≤ (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) := Nat.cast_nonneg _
+  have hCL : (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) ≤ 3 + Real.logb ℓ h := by linarith
+  have hd2 : (2:ℝ) ≤ (ℓ:ℝ) - 1 := by linarith
+  have hdpos : (0:ℝ) < (ℓ:ℝ) - 1 := by linarith
+  have hx0 : (0:ℝ) ≤ 1 / ((ℓ:ℝ) - 1) := by positivity
+  have hx1 : 1 / ((ℓ:ℝ) - 1) < 1 := by rw [div_lt_one hdpos]; linarith
+  have hser := tsum_le_two_level (1 / ((ℓ:ℝ) - 1)) (2 * G) (2 * h)
+    ((⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) + 3) j
+    (fun a : ℕ => ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ) +
+        (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) + 3) / ((ℓ : ℝ) - 1) ^ a)
+    hx0 hx1 (by positivity) (fun a => by positivity)
+    (fun a => by
+      have h' : ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ)) ≤ 2 * h := by
+        exact_mod_cast hH (cut + ((a + 1 : ℕ) : ZMod n))
+      rw [one_div, inv_pow, ← div_eq_mul_inv]
+      exact div_le_div_of_nonneg_right (by linarith) (pow_nonneg hdpos.le a))
+    (fun a ha => by
+      have h' : ((H (cut + ((a + 1 : ℕ) : ZMod n)) : ℝ)) ≤ 2 * G := by
+        exact_mod_cast hG (a + 1) (by omega) (by omega)
+      rw [one_div, inv_pow, ← div_eq_mul_inv]
+      exact div_le_div_of_nonneg_right (by linarith) (pow_nonneg hdpos.le a))
+  have hsA := hs.trans hser
+  have hq : (1 - 1 / ((ℓ:ℝ) - 1))⁻¹ = ((ℓ:ℝ) - 1) / ((ℓ:ℝ) - 1 - 1) := by
+    have hd0 : (ℓ:ℝ) - 1 ≠ 0 := by linarith
+    have hd1 : (ℓ:ℝ) - 1 - 1 ≠ 0 := by linarith
+    field_simp
+  have hyd : (h:ℝ) / ((ℓ:ℝ) - 1) ^ (j + 1) =
+      (h:ℝ) * (1 / ((ℓ:ℝ) - 1)) ^ j / ((ℓ:ℝ) - 1) := by
+    have hd0 : (ℓ:ℝ) - 1 ≠ 0 := by linarith
+    rw [pow_succ, one_div_pow]
+    field_simp
+  rw [hyd]
+  have key := rr_arith (ℓ:ℝ) ((ℓ:ℝ) - 1) (G:ℝ) (h:ℝ) ((1 / ((ℓ:ℝ) - 1)) ^ j)
+    (⌈1 + Real.logb ℓ (2 * h + 1)⌉₊ : ℝ) (Real.logb ℓ h) s r
+    (1 - 1 / ((ℓ:ℝ) - 1))⁻¹ (by ring) hd2 (Nat.cast_nonneg _) (by linarith)
+    (pow_nonneg hx0 j) hC0 hCL hL0 hq (by linarith) hr
+  exact key
+
+end Formalism.TruncatedSeriesCounting.WachCoordinates
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound =====
+
+-- ===== clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp =====
+-- clump-header: {"m": "Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp", "h": "module\n\npublic import Formalism.TruncatedSeriesCounting.AprimeArith\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.TruncatedSeriesCounting.WachCoordinates
+
+private lemma sigma_exponent_le_real (ℓ : ℕ) (hℓ : 3 ≤ ℓ) (g h j : ℕ) (hj : 1 ≤ j) :
+    (sigE ℓ g h j : ℝ) ≤
+      3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (j + 1) + 9 / 4 * g + 11 / 4 := by
+  obtain ⟨m, rfl⟩ : ∃ m, j = m + 1 := ⟨j - 1, by omega⟩
+  have hjm : m + 1 - 1 = m := by omega
+  unfold sigE
+  rw [hjm]
+  have hL : (3 : ℝ) ≤ ℓ := by exact_mod_cast hℓ
+  have hq : (2 : ℝ) ≤ (ℓ : ℝ) - 1 := by linarith
+  have hq0 : (0 : ℝ) < (ℓ : ℝ) - 1 := by linarith
+  have hq2 : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ 2 := by positivity
+  have hg0 : (0 : ℝ) ≤ g := by positivity
+  have hA0 : (0 : ℝ) ≤ (h : ℝ) + 2 * g := by positivity
+  have hP1 : (1 : ℝ) ≤ (ℓ : ℝ) ^ m := one_le_pow₀ (by linarith)
+  have hPq : ((ℓ : ℝ) - 1) ^ m ≤ (ℓ : ℝ) ^ m := pow_le_pow_left₀ hq0.le (by linarith) m
+  have hP0 : (0 : ℝ) < (ℓ : ℝ) ^ m := by linarith
+  have hM : (Mpar ℓ g h : ℝ) ≤ ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1 := by
+    unfold Mpar
+    push_cast
+    have hc : (((ℓ - 1 : ℕ)) : ℝ) = (ℓ : ℝ) - 1 := by
+      rw [Nat.cast_sub (by omega)]
+      simp
+    have := Nat.cast_div_le (α := ℝ) (m := h + 2 * g) (n := ℓ - 1)
+    rw [hc] at this
+    push_cast at this
+    linarith
+  have hM0 : (0 : ℝ) ≤ (Mpar ℓ g h : ℝ) := by positivity
+  have hr : (ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2 ≤ 3 / 4 := by
+    rw [div_le_iff₀ hq2]
+    linarith [hq, mul_nonneg (show (0 : ℝ) ≤ 3 * ℓ - 1 by linarith) (sub_nonneg.mpr hL)]
+  have hr0 : (0 : ℝ) ≤ (ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2 := by positivity
+  have hX0 : (0 : ℝ) ≤ ((3 * g : ℝ) + (Mpar ℓ g h : ℝ) / (ℓ : ℝ) ^ m) * ℓ / ((ℓ : ℝ) - 1) ^ 2 + 1 := by
+    positivity
+  have hceil := Nat.ceil_lt_add_one hX0
+  have e1 : ((3 * g : ℝ) + (Mpar ℓ g h : ℝ) / (ℓ : ℝ) ^ m) * ℓ / ((ℓ : ℝ) - 1) ^ 2 =
+      3 * g * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) +
+        (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m := by
+    field_simp
+  have t1 : 3 * g * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) ≤ 9 / 4 * g := by linarith [mul_le_mul_of_nonneg_left hr hg0]
+  have t2 : (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤
+      3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (m + 1 + 1) + 3 / 4 := by
+    have hB : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ (m + 1 + 1) := by positivity
+    have s1 : (Mpar ℓ g h : ℝ) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤
+        (((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m := by
+      gcongr
+    have s2 : (((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) + 1) * ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m =
+        ((h : ℝ) + 2 * g) * ℓ / (((ℓ : ℝ) - 1) ^ 3 * (ℓ : ℝ) ^ m) +
+          ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m := by
+      field_simp
+    have s3 : ((h : ℝ) + 2 * g) * ℓ / (((ℓ : ℝ) - 1) ^ 3 * (ℓ : ℝ) ^ m) ≤
+        3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (m + 1 + 1) := by
+      rw [div_le_div_iff₀ (by positivity) hB]
+      have k1 : (ℓ : ℝ) * ((ℓ : ℝ) - 1) ^ m ≤ 3 / 2 * ((ℓ : ℝ) - 1) * (ℓ : ℝ) ^ m := by
+        have : (ℓ : ℝ) ≤ 3 / 2 * ((ℓ : ℝ) - 1) := by linarith
+        calc (ℓ : ℝ) * ((ℓ : ℝ) - 1) ^ m ≤ 3 / 2 * ((ℓ : ℝ) - 1) * ((ℓ : ℝ) - 1) ^ m :=
+              mul_le_mul_of_nonneg_right this (by positivity)
+          _ ≤ 3 / 2 * ((ℓ : ℝ) - 1) * (ℓ : ℝ) ^ m :=
+              mul_le_mul_of_nonneg_left hPq (by positivity)
+      have k2 := mul_le_mul_of_nonneg_left k1 (mul_nonneg hA0 hq2.le)
+      have e2 : ((ℓ : ℝ) - 1) ^ (m + 1 + 1) = ((ℓ : ℝ) - 1) ^ m * ((ℓ : ℝ) - 1) ^ 2 := by ring
+      rw [e2]
+      linarith [k2]
+    have s4 : ((ℓ : ℝ) / ((ℓ : ℝ) - 1) ^ 2) / (ℓ : ℝ) ^ m ≤ 3 / 4 := by
+      rw [div_le_iff₀ hP0]
+      linarith [hM0, hr0, le_mul_of_one_le_right (by norm_num : (0 : ℝ) ≤ 3 / 4) hP1]
+    linarith
+  rw [e1] at hceil ⊢
+  linarith
+
+theorem total_exponent_le_eight_hundred : ExponentBoundOfRankAndKappaBounds := by
+  intro ℓ hℓ G g h j ell rr kap hj hG hg hgh hell hrr hkap
+  have hσ := sigma_exponent_le_real ℓ hℓ g h j hj
+  unfold eE a0E
+  have hL : (3 : ℝ) ≤ ℓ := by exact_mod_cast hℓ
+  have hq : (2 : ℝ) ≤ (ℓ : ℝ) - 1 := by linarith
+  have hB4 : (4 : ℝ) ≤ ((ℓ : ℝ) - 1) ^ (j + 1) := by
+    have := pow_le_pow_right₀ (by linarith : (1 : ℝ) ≤ (ℓ : ℝ) - 1) (by omega : 2 ≤ j + 1)
+    linarith [pow_le_pow_left₀ (by norm_num) hq 2]
+  have hB0 : (0 : ℝ) < ((ℓ : ℝ) - 1) ^ (j + 1) := by linarith
+  have hg1 : (1 : ℝ) ≤ g := by exact_mod_cast hg
+  have hGg : (G : ℝ) ≤ g := by exact_mod_cast hG
+  have hgh' : (g : ℝ) ≤ h := by exact_mod_cast hgh
+  have hh1 : (1 : ℝ) ≤ h := by linarith
+  have hell1 : (1 : ℝ) ≤ ell := by exact_mod_cast hell
+  have hT : (0 : ℝ) ≤ (h : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1) := by positivity
+  have hΛ : (0 : ℝ) ≤ Real.logb ℓ h := Real.logb_nonneg (by linarith) hh1
+  have hlog2 : Real.logb ℓ (2 * h) = Real.logb ℓ 2 + Real.logb ℓ h :=
+    Real.logb_mul (by norm_num) (by positivity)
+  have hl2 : Real.logb ℓ 2 ≤ 1 := by
+    have := Real.logb_le_logb_of_le (by linarith : (1 : ℝ) < ℓ) (by norm_num : (0 : ℝ) < 2)
+      (by linarith : (2 : ℝ) ≤ ℓ)
+    rwa [Real.logb_self_eq_one (by linarith)] at this
+  have hGL : (G : ℝ) / ℓ ≤ g / 3 := by
+    rw [div_le_div_iff₀ (by positivity) (by norm_num)]
+    exact mul_le_mul hGg hL (by norm_num) (by linarith)
+  have hgB : (g : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1) ≤ g / 4 :=
+    div_le_div_of_nonneg_left (by positivity) (by norm_num) hB4
+  have h4g : 4 * (g : ℝ) / ((ℓ : ℝ) - 1) ≤ 2 * g := by
+    rw [div_le_iff₀ (by linarith)]
+    linarith [mul_le_mul_of_nonneg_left hq (show (0 : ℝ) ≤ g by linarith)]
+  have eσ : 3 / 2 * ((h : ℝ) + 2 * g) / ((ℓ : ℝ) - 1) ^ (j + 1) =
+      3 / 2 * ((h : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1)) + 3 * ((g : ℝ) / ((ℓ : ℝ) - 1) ^ (j + 1)) := by
+    ring
+  rw [eσ] at hσ
+  rw [hlog2] at hkap
+  have hge : (g : ℝ) ≤ g * ell := le_mul_of_one_le_right (by linarith) hell1
+  have hee : (ell : ℝ) ≤ g * ell := le_mul_of_one_le_left (by linarith) hg1
+  have h1e : (1 : ℝ) ≤ g * ell := one_le_mul_of_one_le_of_one_le hg1 hell1
+  linarith [hB0, hgh', hT, hΛ, hl2, hGL, hgB, h4g, hrr, hkap]
+
+end Formalism.TruncatedSeriesCounting.WachCoordinates
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.BoundedNumeratorPowerSummability =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.BoundedNumeratorPowerSummability", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.WachCoordinates\npublic import Formalism.TruncatedSeriesCounting.AprimeArith\npublic import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AevalApplySubEvalOneMem\npublic import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AprimeCuts\npublic import Formalism.GaussValuationBounds.GaussValueContraction.KapBoundProof\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcIffLocalOfAdmissible\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.RrBound\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.ThmEExp\nimport Formalism.WindowSums.PowerSeriesRelationList\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -308,7 +994,7 @@ end KillerBridge
 
 theorem killer_conditions_of_stable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h : AtCaseA fun l _ K LL h => Pi0Stable ((HW l).W K 1 LL h.2.2)) : adm11 D HW F :=
-  ⟨Formalism.WindowSums.arc_KillerVal, Formalism.WindowSums.arc_KillerKills,
+  ⟨Formalism.WindowSums.arc_KillerVal, _root_.Formalism.WindowSums.annihilatorPoly_kills,
     fun l _ K LL hc h5 => killerModule_of_stable _ (h l K LL hc h5)⟩
 
 end Formalism.MainNotions.WachCoordinates
@@ -779,3 +1465,7 @@ theorem corollary_of_Theorem_E : ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : D7) (C₁ : �
 end RecordA
 
 end Formalism.MainNotions.WachCoordinates
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.BoundedNumeratorPowerSummability =====

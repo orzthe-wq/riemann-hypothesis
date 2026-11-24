@@ -104,8 +104,8 @@ theorem integral : Algebra.IsIntegral C (D C) := by
   apply Algebra.IsIntegral.adjoin
   rintro _ ⟨c, rfl⟩
   refine ⟨Polynomial.X * (Polynomial.X - Polynomial.C 1), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C 1), ?_⟩
-  simp only [Polynomial.eval₂_mul, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C, map_one]
-  funext p; simp only [Pi.mul_apply, Pi.sub_apply, Pi.one_apply, Pi.zero_apply]; unfold e; split_ifs <;> simp
+  simp only [Polynomial.eval₂_mul, Polynomial.eval₂_sub, Polynomial.eval₂_X, map_one]
+  funext p; simp only [Pi.mul_apply, Pi.sub_apply, Pi.zero_apply]; unfold e; split_ifs <;> simp
 
 theorem approx (r : Ideal (D C)) [r.IsPrime] (s : D C) :
     ∃ ε : D C, ε ∉ r ∧ ∃ c : C, ε * s = ε * algebraMap C (D C) c := by

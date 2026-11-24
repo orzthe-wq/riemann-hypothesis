@@ -58,12 +58,6 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FrameSign
 
-private theorem hermC_emb_eq_map_herm' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
-    (Gm : Matrix (Fin r) (Fin r) E) (v w : Fin r → E) :
-    hermC τ Gm (Data.emb τ v) (Data.emb τ w) = τ (herm Gm v w) := by
-  set_option synthInstance.maxHeartbeats 100000 in
-    simp only [hermC, herm, Data.emb, cc, map_sum, map_mul, IsCMField.complexEmbedding_complexConj]
-
 private theorem re_emb' {E : Type} [Field E] [NumberField E] [IsCMField E] (τ : E →+* ℂ) (ξ : E)
     (hξ : cc ξ = -ξ) : (τ ξ).re = 0 := by
   have h1 : τ (cc ξ) = τ (-ξ) := by rw [hξ]
@@ -96,7 +90,7 @@ theorem im_hermForm_signed {E : Type} [Field E] [NumberField E] [IsCMField E] {r
   refine Finset.sum_congr rfl fun τ _ => ?_
   have hsum := GlobalTheory.UnitFrame.im_sum_periods q τ.1 Gm (mat x τ) (hx τ) (Data.emb τ.1 v) (Data.emb τ.1 w)
   simp only [hP, Equiv.apply_symm_apply]
-  rw [← Finset.mul_sum, ← Complex.im_sum, hsum, hermC_emb_eq_map_herm', map_mul, Complex.mul_re, re_emb' τ.1 ξ hξ]
+  rw [← Finset.mul_sum, ← Complex.im_sum, hsum, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, map_mul, Complex.mul_re, re_emb' τ.1 ξ hξ]
   ring
 
 theorem pos_of_pullback_pos {g : ℕ} (d : Fin g → ℝ) (h : Matrix (Fin g) (Fin g) ℂ)

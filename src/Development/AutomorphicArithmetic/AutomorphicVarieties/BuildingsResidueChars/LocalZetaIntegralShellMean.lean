@@ -108,18 +108,6 @@ private theorem lc_lemma {G β : Type*} [Group G] [TopologicalSpace G] [IsTopolo
     simpa using this
   exact tendsto_nhds_of_eventually_eq h3
 
-private theorem ordDet_zpow' {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
-    [IsNonarchimedeanLocalField F] {n : ℕ} (g : GL (Fin n) F) (j : ℤ) :
-    ordDet (g ^ j) = j * ordDet g := by
-  refine Int.induction_on j ?_ ?_ ?_
-  · simp [ordDet_one]
-  · intro i ih
-    rw [zpow_add_one, ordDet_mul, ih]
-    ring
-  · intro i ih
-    rw [zpow_sub_one, ordDet_mul, ordDet_inv, ih]
-    ring
-
 private theorem continuous_ordDet {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {n : ℕ} : Continuous (ordDet : GL (Fin n) F → ℤ) :=
   lc_lemma (integralGL F n) (isOpen_integralGL F n) _ (fun x y hy => by
@@ -281,7 +269,7 @@ private theorem exists_isCompact_ordDet_eq_centralUnif_zpow_mul_mem {F : Type*} 
     hJ.isCompact_biUnion (fun j _ => hC.image (continuous_const_mul _)), ?_⟩
   rintro g hg ⟨j, hj⟩
   refine Set.mem_iUnion₂.2 ⟨j, ?_, ⟨_, hj, by simp⟩⟩
-  exact ⟨_, hj, by rw [ordDet_mul, ordDet_zpow', ordDet_centralUnif, hg]⟩
+  exact ⟨_, hj, by rw [ordDet_mul, _root_.GroundTheory.Automorphic.GodementJacquet.ordDet_zpow, ordDet_centralUnif, hg]⟩
 
 private theorem integrableOn_of_continuous_of_support_inter_subset_compact {X : Type*} [MeasurableSpace X] [TopologicalSpace X]
     [OpensMeasurableSpace X] [T2Space X] (μ : Measure X) [IsFiniteMeasureOnCompacts μ]

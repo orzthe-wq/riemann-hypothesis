@@ -100,7 +100,7 @@ theorem twisted_norm_local_step : ∀ {A K : Type} [Ring A] [CommRing K] [Algebr
 
   have e : a * (β : A) = ((k⁻¹ : Aˣ) : A) * ((k : A) * (a * β) * (σ (k : A)).unop) *
       (σ ((k⁻¹ : Aˣ) : A)).unop := by
-    simp only [mul_assoc, shinv', shc, mul_one, Units.inv_mul_cancel_left]
+    simp only [mul_assoc, shinv', mul_one, Units.inv_mul_cancel_left]
   rw [hk, ← Algebra.commutes (lam : K), hkz, Units.val_mul, shmul] at e
   have ha : a = algebraMap K A lam * ((z : A) * ((m : A) * (σ (m : A)).unop) * (σ (z : A)).unop *
       ((β⁻¹ : Aˣ) : A)) := by

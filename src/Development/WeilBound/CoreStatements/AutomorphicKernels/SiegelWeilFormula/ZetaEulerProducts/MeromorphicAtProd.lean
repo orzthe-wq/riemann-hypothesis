@@ -2,6 +2,7 @@ module
 
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Meromorphic.Basic
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -153,5 +154,17 @@ theorem meromorphicAt_prod {ι : Type*} (t : Finset ι) (F : ι → ℂ → ℂ)
     simp only [Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self a t)).fun_mul
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
+
+/-- An Euler factor with a coefficient in the closed unit disk is nonzero for `0 < s.re`. -/
+theorem factor_ne_zero (N : ℕ) (hN : 2 ≤ N) (c s : ℂ) (hc : ‖c‖ ≤ 1) (hs : 0 < s.re) :
+    1 - c * (N : ℂ) ^ (-s) ≠ 0 := by
+  have hpos : 0 < N := by omega
+  have hN1 : (1 : ℝ) < N := by exact_mod_cast (show 1 < N by omega)
+  have hlt : ‖(N : ℂ) ^ (-s)‖ < 1 := by
+    rw [Complex.norm_natCast_cpow_of_pos hpos, Complex.neg_re]
+    exact Real.rpow_lt_one_of_one_lt_of_neg hN1 (neg_neg_of_pos hs)
+  refine (IsUnit.one_sub_of_norm_lt_one ?_).ne_zero
+  rw [norm_mul]
+  exact (mul_le_of_le_one_left (norm_nonneg _) hc).trans_lt hlt
 
 end PositivityTheory.Lord

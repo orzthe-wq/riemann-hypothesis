@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 
 theorem _root_.GlobalTheory.T.gridRowLevel_zero_inf_unitary_eq_datumLevel : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {U : Set T} (S : GridChoice W U) {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (h : 0 ≤ D.R.m), HEq (S.levRow t 0 h ⊓ UA D.sp.cm (G.V (.grid 0 D.R.m)).gram) (lev D.sp.cm D.sp.X'.gram L.βX (L.datXt t)) := by
-  first | exact @GlobalTheory.FunObj.levRow_zero_eq_lev | exact GlobalTheory.FunObj.levRow_zero_eq_lev | (intros; apply GlobalTheory.FunObj.levRow_zero_eq_lev <;> assumption)
+  first | exact @GlobalTheory.FunObj.levRow_zero_eq_lev

@@ -43,22 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_18f638bfe5f22e80269acda3
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_18f638bfe5f22e80269acda3
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -189,7 +174,7 @@ variable {B Z : Type} [TopologicalSpace B] [TopologicalSpace Z] [FirstCountableT
 
 theorem tame_mixS (hψ : IsStdChar D ψ (-1)) {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ)
     (x : Mx D T.rank ρ) {F : B → Z → WO S T → ℂ} (h : Tame fun b (q : Z × WO S T) => F b q.1 q.2) :
-    Tame fun b (q : Z × WO S₀ T) => (_root_.I195MixedCoordinates_18f638bfe5f22e80269acda3.source d) T ψ v.μ v.𝓕 (F b q.1) x q.2 := by
+    Tame fun b (q : Z × WO S₀ T) => (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (F b q.1) x q.2 := by
   obtain ⟨i1, -, i3, -⟩ := lattice_Mx D T.rank S₀.rank
   have : FirstCountableTopology (WO S₀ T) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _
   obtain ⟨j1, -⟩ := lattice_Mx D T.rank S.rank
@@ -229,11 +214,11 @@ theorem om_evalBF (hd : Descent D) (hm : GlobalTheory.IndefiniteRowSideFullHecke
   unfold evalBF evalZero evalAt
   simp only [e1, e2, map_mul, Module.End.mul_apply]
   change s.om₀ (B.o.emb (h₀, 1), 1) (s.om₀ (1, h')
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕
-      (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source B.d J.W ψ s.vS.μ s.vS.𝓕 Ψ (xZero J.d))
+    (_root_.I195MixedCoordinates.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕
+      (_root_.I195MixedCoordinates.source B.d J.W ψ s.vS.μ s.vS.𝓕 Ψ (xZero J.d))
       (yZero B.V₀ ρ (vecB B.o B.ζ)))) =
-    _root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕
-      (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source B.d J.W ψ s.vS.μ s.vS.𝓕
+    _root_.I195MixedCoordinates.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕
+      (_root_.I195MixedCoordinates.source B.d J.W ψ s.vS.μ s.vS.𝓕
         (s.om (B.d.emb0 (B.o.emb (h₀, 1)), 1) (s.om (1, J.d.emb0 h') Ψ)) (xZero J.d))
       (yZero B.V₀ ρ (vecB B.o B.ζ))
   rw [(hS _ (s.weil.om_pres _ _ hΨ)).core, (hS _ hΨ).target, ex, (hT _ (h₁.om_pres _ _ hf)).source, ey, (hT _ hf).core]

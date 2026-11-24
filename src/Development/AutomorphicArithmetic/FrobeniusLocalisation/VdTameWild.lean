@@ -82,7 +82,7 @@ theorem UpperTheory.HF.vd_tame_wild :
       have h2 : 0 < (l ^ j).totient := Nat.totient_pos.2 (pow_pos hl.pos _)
       have h3 : 0 < (l ^ e).totient := Nat.totient_pos.2 (pow_pos hl.pos _)
       exact Nat.pos_of_dvd_of_pos (hdvd j hje) (Nat.div_pos (Nat.le_of_dvd h3 h1) h2)
-    · push_neg at hje
+    · push Not at hje
       rw [(hcard_one j hjv).2 hje.le]
       exact Nat.one_pos
   have hge : ∀ j, j < e → 2 ≤ Nat.card (G j) := by
@@ -108,7 +108,7 @@ theorem UpperTheory.HF.vd_tame_wild :
   have key1 : ¬ l ∣ H.el l → e ≤ 1 := by
     intro hnd
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have h1v : 1 ≤ v := by omega
     have hd := hdvd 1 hlt.le
     rw [Nat.totient_prime_pow hl (by omega), pow_one, Nat.totient_prime hl,

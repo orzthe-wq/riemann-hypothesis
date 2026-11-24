@@ -94,8 +94,7 @@ theorem smul_mem_bbSpec (p : ℕ) {σ : Type*} (sp : ℕ) (F : MvPolynomial σ (
   classical
   have hF : s • F = ∑ μ ∈ F.support, monomial μ (s • F.coeff μ) := by
     conv_lhs => rw [← F.support_sum_monomial_coeff, Finset.smul_sum]
-    refine Finset.sum_congr rfl fun μ _ => ?_
-    rw [MvPolynomial.smul_monomial]
+    simp only [MvPolynomial.smul_monomial]
   rw [hF]
   refine Submodule.sum_mem _ fun μ hμ => Submodule.subset_span ?_
   obtain ⟨o, ho⟩ := h μ hμ
@@ -207,9 +206,8 @@ theorem totalDegree_chPol {K : Type*} [CommSemiring K] (LL : ChainLetters N) (y 
   unfold totalDegree
   refine Finset.sup_le fun m hm => ?_
   have h := hy (Finset.mem_coe.2 hm)
-  have h' : ∀ i, multideg m i = LL.deg i := h
   rw [Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type]
-  exact le_of_eq (Finset.sum_congr rfl fun i _ => h' i)
+  exact le_of_eq (Finset.sum_congr rfl fun i _ => h i)
 
 theorem totalDegree_xi (t b : ℕ) (g : MvPolynomial (BVar N r t) (KK O)) (hg : g ∈ XiPolZ O N r t b) :
     g.totalDegree ≤ b := by
@@ -367,7 +365,6 @@ theorem rkAt_all (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : RkAt C0 CYb Cde Ck 
   exact finrank_segLat _ _ _ _ _ _ (kf_kept_finite _ _ _ _)
 
 theorem restRk : RestRk := by
-  unfold RestRk
-  exact TransportedAlt.mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc _ => rkAt_all C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) thr_std
+  simpa [RestRk] using TransportedAlt.mono (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc _ => rkAt_all C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) thr_std
 
 end Formalism.MainNotions.ColumnSystems.Pf

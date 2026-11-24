@@ -1,62 +1,16 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.Finsupp.Interval
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.CycDim
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -84,7 +38,7 @@ theorem weight_mw (m : (Σ k, ι k) →₀ ℕ) :
   rw [Fintype.sum_sigma, Finset.sum_eq_single k]
   · simp
   · intro b _ hb
-    simp [Pi.single_apply, Ne.symm hb]
+    simp [Ne.symm hb]
   · simp
 
 theorem mem_weighted_of_isMultiHomog {f : MRingOver F ι} {a : K → ℕ}
@@ -95,9 +49,7 @@ theorem mem_weighted_of_isMultiHomog {f : MRingOver F ι} {a : K → ℕ}
   unfold IsMultiHomog at hf
   have h := hf m (by simpa [MvPolynomial.mem_support_iff] using hm)
   first
-    | exact h
     | exact funext h
-    | simpa [funext_iff] using h
 
 theorem isMultiHomog_of_mem_weighted {f : MRingOver F ι} {a : K → ℕ}
     (hf : f ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) a) : IsMultiHomog f a := by
@@ -107,9 +59,7 @@ theorem isMultiHomog_of_mem_weighted {f : MRingOver F ι} {a : K → ℕ}
   have h := hf (by simpa [MvPolynomial.mem_support_iff] using hm)
   rw [weight_mw] at h
   first
-    | exact h
     | exact congrFun h
-    | simpa [funext_iff] using h
 
 theorem monomial_mem_weighted (m : (Σ k, ι k) →₀ ℕ) (c : F) :
     monomial m c ∈ weightedHomogeneousSubmodule F (mw (ι := ι)) (fun k => ∑ i, m ⟨k, i⟩) := (mem_weightedHomogeneousSubmodule _ _ _ _).mpr
@@ -329,12 +279,12 @@ theorem isUnit_mk_chartIdeal_form {V : Ideal (MRingOver F ι)} (hV : IsProjVarF 
     intro S
     induction S using Finset.induction_on with
     | empty =>
-      have := cyc_dim_add_one_le (hVQ ∅) hbase hp
+      have := _root_.Bl.FirstBlockLemmaB.goal1 (hVQ ∅) hbase hp
       rw [Finset.card_empty, Nat.cast_zero, zero_add, add_comm]
       exact this
     | @insert k S hk ih =>
       have : (Q S).IsPrime := hQp S
-      have h1 := cyc_dim_add_one_le (hmono S k) (hin S k) (hout S k hk)
+      have h1 := _root_.Bl.FirstBlockLemmaB.goal1 (hmono S k) (hin S k) (hout S k hk)
       rw [Finset.card_insert_of_notMem hk]
       calc (((S.card + 1 : ℕ)) : WithBot ℕ∞) + 1 + ringKrullDim (MRingOver F ι ⧸ Q (insert k S))
           = (S.card : WithBot ℕ∞) + 1 + (ringKrullDim (MRingOver F ι ⧸ Q (insert k S)) + 1) := by

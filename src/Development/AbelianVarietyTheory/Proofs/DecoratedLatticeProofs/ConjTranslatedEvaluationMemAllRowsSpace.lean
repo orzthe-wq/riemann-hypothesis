@@ -106,7 +106,7 @@ theorem re_fix_of_row {D : D7} (X : HidaSetting D) {f : X.B.I.GA → ℂ} (hf : 
     X.B.Re (star (hm.toLp f)) = star (hm.toLp f) := by
   have hs : MemLp (fun x => star (f x)) 2 (muX X) := hm.star
   rw [star_toLp_eq X hm hs]
-  have hK := Formalism.L2.SG.Closed.level_subgroup_is_group X
+  have hK := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X
   have hKL := Formalism.L2.SG.Closed.level_subgroup_properties X
   have hKM : MeasurableSet X.K2 := (Formalism.L2.SG.PoincareInHH.Cut.level_subgroup_isClopen X hK hKL).isOpen.measurableSet
   have hvol : (X.B.μf X.K2).toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hKL.2.2.1.ne', hKL.2.2.2.ne⟩
@@ -172,7 +172,7 @@ theorem real_shift {D : D7} (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.Ins
         funext σ
         by_cases hσ : σ = τ
         · subst hσ; simp [ws]
-        · simp [ws, hσ, Function.update_of_ne hσ]
+        · simp [ws, hσ]
       have hE := Formalism.IndefR.Eqv.KerDiag.mult_equiv θ M J χ hU τ (ha τ) (ws s) ⟨_, hsm τ⟩
         (by simp only [hws])
       have hmul : iotaX X h (atTau θ (D.sp.Y 0) τ (a τ)) * gs s = gs (insert τ s) := by

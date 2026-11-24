@@ -153,7 +153,7 @@ def partU {a : AF F} (ha : a * a = a) (g : UA σ J) : UA σ J :=
     have h3 : (1 - a) * (1 - a) = 1 - a := by rw [sub_mul, one_mul, h1, sub_zero]
     have e : (a • mat g + (1 - a) • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (cA σ) = a • (mat g).map (cA σ) + (1 - a) • 1 := by
       ext i j
-      by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+      by_cases hij : i = j <;> simp [hij]
     show (a • mat g + (1 - a) • (1 : Matrix (Fin n) (Fin n) (AE F E)))ᵀ * incM F J *
       (a • mat g + (1 - a) • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (cA σ) = incM F J
     rw [e]

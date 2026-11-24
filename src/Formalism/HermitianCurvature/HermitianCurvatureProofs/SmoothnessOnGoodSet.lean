@@ -139,8 +139,6 @@ lemma continuous_xiP (D : RealPlaceData k r Wp Wq) : Continuous (xiP D) := by
       refine continuous_finsetSum _ fun j _ => ?_
       first
         | fun_prop
-        | exact (((continuous_apply j).comp (continuous_apply (eI k r a))).mul continuous_const :)
-        | continuity
   have hpsi : ∀ z : Fin (2 * r + k + 1) → ℂ, Continuous fun M : Mt k r => psi k r z cStd (Matrix.of M) := by
     intro z
     unfold psi

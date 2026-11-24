@@ -287,7 +287,6 @@ theorem mul_H_conj {g : Matrix m m ℂ} (h2 : H * H = 1) (hg : g ∈ UH H) : g *
     rw [show H * gᴴ * H * g = H * (gᴴ * H * g) by simp only [Matrix.mul_assoc], show gᴴ * H * g = H from hg, h2]
   have h3 : g * (H * gᴴ * H) = 1 := by
     first
-    | exact Matrix.mul_eq_one_comm.mp h1
     | exact mul_eq_one_comm.mp h1
   calc g * H * gᴴ = g * H * gᴴ * (H * H) := by rw [h2, Matrix.mul_one]
     _ = g * (H * gᴴ * H) * H := by simp only [Matrix.mul_assoc]
@@ -330,28 +329,28 @@ theorem hsblock : Formalism.FourierDecayAlt.B2.HSBlock := by
   have hH2 : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
   have hAA : Ppos k r * Ppos k r = Ppos k r := by
     unfold Ppos
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul,
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul,
       Matrix.mul_one, hH2]
     ext i j
     simp only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]
     ring
   have hDD : Pneg k r * Pneg k r = Pneg k r := by
     unfold Pneg
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
       Matrix.mul_one, hH2]
     ext i j
     simp only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]
     ring
   have hAD : Ppos k r * Pneg k r = 0 := by
     unfold Ppos Pneg
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.add_mul, Matrix.mul_sub, Matrix.one_mul,
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_sub, Matrix.one_mul,
       Matrix.mul_one, hH2]
     ext i j
     simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.zero_apply, smul_eq_mul]
     ring
   have hDA : Pneg k r * Ppos k r = 0 := by
     unfold Ppos Pneg
-    simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.sub_mul, Matrix.mul_add, Matrix.one_mul,
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_add, Matrix.one_mul,
       Matrix.mul_one, hH2]
     ext i j
     simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.zero_apply, smul_eq_mul]
@@ -1002,7 +1001,6 @@ theorem isAddHaarMeasure_matrix_volume {A B : Type} [Fintype A] [Fintype B] : (v
     | infer_instance
   rw [MeasureTheory.volume_pi]
   first
-  | infer_instance
   | exact MeasureTheory.Measure.pi.isAddHaarMeasure _
 
 attribute [local instance] isAddHaarMeasure_matrix_volume
@@ -1012,7 +1010,6 @@ theorem haar_prod2 {A B C D : Type} [Fintype A] [Fintype B] [Fintype C] [Fintype
   haveI := (isAddHaarMeasure_matrix_volume : (volume : Measure (A → B → ℂ)).IsAddHaarMeasure)
   haveI := (isAddHaarMeasure_matrix_volume : (volume : Measure (C → D → ℂ)).IsAddHaarMeasure)
   first
-  | infer_instance
   | exact MeasureTheory.Measure.prod.instIsAddHaarMeasure _ _
 
 attribute [local instance] haar_prod2

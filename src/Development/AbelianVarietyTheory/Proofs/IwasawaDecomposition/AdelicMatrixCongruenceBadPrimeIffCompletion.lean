@@ -48,9 +48,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 noncomputable section
 namespace GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary
 
-theorem vAlg {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (x : E) :
-    Valued.v (algebraMap E (P.adicCompletion E) x) = P.valuation E x :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P x
+alias vAlg := _root_.Formalism.UG.P.levelaf_valued_algebraMap
 
 theorem v_qOf {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (hp : (qOf P).Prime)
     (h2 : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) :

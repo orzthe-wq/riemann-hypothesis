@@ -66,7 +66,7 @@ theorem nsq (z w : ℂ) : ‖z - conj w‖ ^ 2 = (z.re - w.re) ^ 2 + (z.im + w.i
 
 theorem pos_den {z w : ℂ} (h : 0 < z.im * w.im) : 0 < ‖z - conj w‖ ^ 2 := by
   rw [nsq]
-  nlinarith [sq_nonneg (z.re - w.re), sq_nonneg z.im, sq_nonneg w.im]
+  linarith [sq_nonneg (z.re - w.re), sq_nonneg z.im, sq_nonneg w.im]
 
 theorem kap_of {z w : P} (h : 0 < z.1.im * w.1.im) :
     kap z w = 4 * (z.1.im * w.1.im) / ‖z.1 - conj w.1‖ ^ 2 := by
@@ -88,11 +88,11 @@ theorem key {z w u : ℂ} (h1 : 0 < z.im * w.im) (h2 : 0 < w.im * u.im) :
   have h13 : 0 < z.im * u.im := by
     by_contra hc
     have hc := not_lt.mp hc
-    nlinarith [mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.im)]
-  have hp : 0 ≤ z.im ^ 2 + 2 * z.im * w.im := by nlinarith [sq_nonneg z.im]
-  have hq : 0 ≤ u.im ^ 2 + 2 * w.im * u.im := by nlinarith [sq_nonneg u.im]
+    linarith [mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.im)]
+  have hp : 0 ≤ z.im ^ 2 + 2 * z.im * w.im := by linarith [sq_nonneg z.im]
+  have hq : 0 ≤ u.im ^ 2 + 2 * w.im * u.im := by linarith [sq_nonneg u.im]
   rw [nsq, nsq, nsq]
-  nlinarith [sq_nonneg ((z.re - w.re) * (w.re - u.re) - w.im ^ 2),
+  linarith [sq_nonneg ((z.re - w.re) * (w.re - u.re) - w.im ^ 2),
     mul_nonneg (sq_nonneg (z.re - w.re)) hq, mul_nonneg (sq_nonneg (w.re - u.re)) hp,
     mul_nonneg (sq_nonneg w.im) h1.le, mul_nonneg (sq_nonneg w.im) h2.le,
     mul_nonneg (sq_nonneg w.im) h13.le, mul_nonneg h13.le h1.le, mul_nonneg h13.le h2.le,
@@ -102,7 +102,7 @@ theorem p1 (z w : P) : 0 ≤ kap z w ∧ kap z w ≤ 1 ∧ kap z w = kap w z := 
   refine ⟨kap_nonneg z w, ?_, ?_⟩
   · by_cases h : 0 < z.1.im * w.1.im
     · rw [kap_of h, div_le_iff₀ (pos_den h), nsq]
-      nlinarith [sq_nonneg (z.1.re - w.1.re), sq_nonneg (z.1.im - w.1.im)]
+      linarith [sq_nonneg (z.1.re - w.1.re), sq_nonneg (z.1.im - w.1.im)]
     · rw [kap_of_not h]
       norm_num
   · have e2 : ‖w.1 - conj z.1‖ ^ 2 = ‖z.1 - conj w.1‖ ^ 2 := by
@@ -122,14 +122,14 @@ theorem p3 (z w u : P) : kap z w * kap w u ≤ 4 * kap z u := by
     · have h13 : 0 < z.1.im * u.1.im := by
         by_contra hc
         have hc := not_lt.mp hc
-        nlinarith [mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.1.im)]
+        linarith [mul_pos h1 h2, mul_nonneg (neg_nonneg.mpr hc) (sq_nonneg w.1.im)]
       have hA := pos_den h1
       have hB := pos_den h2
       have hC := pos_den h13
       have hk := mul_le_mul_of_nonneg_left (key h1 h2) h13.le
       rw [kap_of h1, kap_of h2, kap_of h13, div_mul_div_comm, mul_div_assoc', le_div_iff₀ hC,
         div_mul_eq_mul_div, div_le_iff₀ (mul_pos hA hB)]
-      nlinarith [hk]
+      linarith [hk]
     · rw [kap_of_not h2, mul_zero]
       exact mul_nonneg (by norm_num) (kap_nonneg z u)
   · rw [kap_of_not h1, zero_mul]
@@ -139,14 +139,14 @@ theorem p4 (z w : P) : kap z w * |w.1.im| ≤ 4 * |z.1.im| := by
   by_cases h : 0 < z.1.im * w.1.im
   · rw [kap_of h, div_mul_eq_mul_div, div_le_iff₀ (pos_den h), nsq]
     rcases lt_or_gt_of_ne w.2 with hw | hw
-    · have hz : z.1.im < 0 := by nlinarith [h, hw]
+    · have hz : z.1.im < 0 := by by_contra hc; linarith [mul_nonpos_of_nonneg_of_nonpos (not_lt.mp hc) hw.le]
       rw [abs_of_neg hw, abs_of_neg hz]
-      nlinarith [mul_nonneg (neg_nonneg.mpr hz.le) (sq_nonneg (z.1.re - w.1.re)),
+      linarith [mul_nonneg (neg_nonneg.mpr hz.le) (sq_nonneg (z.1.re - w.1.re)),
         mul_nonneg (neg_nonneg.mpr hz.le) (sq_nonneg z.1.im),
         mul_nonneg (sq_nonneg z.1.im) (neg_nonneg.mpr hw.le)]
-    · have hz : 0 < z.1.im := by nlinarith [h, hw]
+    · have hz : 0 < z.1.im := by by_contra hc; linarith [mul_nonpos_of_nonpos_of_nonneg (not_lt.mp hc) hw.le]
       rw [abs_of_pos hw, abs_of_pos hz]
-      nlinarith [mul_nonneg hz.le (sq_nonneg (z.1.re - w.1.re)), mul_nonneg hz.le (sq_nonneg z.1.im),
+      linarith [mul_nonneg hz.le (sq_nonneg (z.1.re - w.1.re)), mul_nonneg hz.le (sq_nonneg z.1.im),
         mul_nonneg (sq_nonneg z.1.im) hw.le]
   · rw [kap_of_not h, zero_mul]
     positivity

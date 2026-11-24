@@ -115,7 +115,7 @@ theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n :=
     · have hs := u_step P n hA
       unfold wtN
       rw [dif_pos hA, dif_pos hn0]
-      simp only [hcToWeightQ, rhoVec, Fin.val_mk]
+      simp only [hcToWeightQ, rhoVec]
       push_cast
       linarith
     · have hk : n + 1 = R.k := by omega
@@ -139,7 +139,7 @@ theorem wtN_step (n : ℕ) (hn : n + 1 < R.N R.m) : wtN P (n + 1) ≤ wtN P n :=
       have hnq : (n : ℚ) + 1 = R.k := by exact_mod_cast hk
       unfold wtN
       rw [dif_pos hn0]
-      simp only [wG, hcToWeightQ, rhoVec, Fin.val_mk]
+      simp only [wG, hcToWeightQ, rhoVec]
       push_cast
       linarith
   · have hmn : n + 1 - R.k < R.m * (R.t + 1) := by
@@ -183,7 +183,7 @@ theorem wtQ_int (j : ℕ) (hj : j ≤ R.m) (i : Fin (R.N j)) : ∃ z : ℤ, wtQ 
   · obtain ⟨z, hz⟩ := P.u_half ⟨i.1, h⟩
     refine ⟨z + 1 - a + i.1, ?_⟩
     rw [wtQ, dif_pos h]
-    simp only [hcToWeightQ, rhoVec, Fin.val_mk, hz]
+    simp only [hcToWeightQ, rhoVec, hz]
     rw [hk]
     push_cast
     ring

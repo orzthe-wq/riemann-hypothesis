@@ -69,7 +69,7 @@ def reLin (n : ℕ) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] EuclideanSpace ℝ 
 theorem re_unr (n : ℕ) (v : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : reLin n (unrLin n v) = v := by
   ext q
   rcases q with ⟨i, j, b⟩
-  cases b <;> simp [reLin, unrLin, realifyFun, unrealify, LinearMap.coe_mk, AddHom.coe_mk] <;> rfl
+  cases b <;> simp [reLin, unrLin, realifyFun, unrealify, LinearMap.coe_mk, AddHom.coe_mk]
 
 def unit2 (n : ℕ) : (Matrix (Fin n) (Fin n) ℂ)ˣ where
   val := 1 + 1

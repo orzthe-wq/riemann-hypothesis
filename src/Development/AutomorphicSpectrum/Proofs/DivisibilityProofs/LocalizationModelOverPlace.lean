@@ -93,7 +93,6 @@ theorem injective_toField [Algebra A Ω] [Algebra O Ω] [IsScalarTower A O Ω]
   have hu : IsUnit (algebraMap A O s) := IsLocalization.map_units O s
   first
     | exact hu.mul_left_eq_zero.1 hs'
-    | exact hu.mul_right_eq_zero.1 hs'
 
 
 include m in

@@ -4,47 +4,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHAlg
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.TermDefPf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermOpInhab
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -210,10 +170,10 @@ private theorem norm_exp_sum_conj_lemma {ι : Type*} (s : Finset ι) (w : ι →
   rw [Complex.norm_exp]
   have hS : (∑ a ∈ s, (w a + star (w a))).im = 0 := by
     rw [Complex.im_sum]
-    exact Finset.sum_eq_zero fun a _ => by simp [Complex.star_def]
+    exact Finset.sum_eq_zero fun a _ => by simp
   have hT : ((∑ a ∈ s, (w a + star (w a))) / (gg : ℂ)).im = 0 := by
     rw [Complex.div_natCast_im, hS, zero_div]
-  simp [Complex.mul_re, hT]
+  simp [Complex.mul_re]
 
 theorem psiR_norm1 {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
@@ -586,13 +546,11 @@ theorem ooVanish_of (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTr
     obtain ⟨hr1, hr2⟩ := hr
     obtain ⟨hr1', hr2'⟩ := hr'
     have e : t.pt.1⁻¹ * (r * r') * t.pt.1 = (t.pt.1⁻¹ * r * t.pt.1) * (t.pt.1⁻¹ * r' * t.pt.1) := by group
-    beta_reduce
     rw [((hG D X u).2.1 r hr1 r' hr1').2, e, ((hG D X u').2.1 _ hr2 _ hr2').2, map_mul]
     ring
   · intro s hs
     have hψ := hC D X Y u u' t.lam t.lam' t.mem t.mem' t.rep s hs
     have ept : t.pt = t.rep.1.1 := rfl
-    beta_reduce
     rw [ept, hψ, mul_comm]
     exact hpsi u' _
   · obtain ⟨r, hr, hne⟩ := h4 D X Y u u' t ht
@@ -601,7 +559,6 @@ theorem ooVanish_of (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTr
     linear_combination (X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1)) * h - (X.psiInfU u r) * hn
   · intro r hr x
     obtain ⟨hr1, hr2⟩ := hr
-    beta_reduce
     rw [wu_N X u hr1 x, show t.pt.1⁻¹ * (r * x) = (t.pt.1⁻¹ * r * t.pt.1) * (t.pt.1⁻¹ * x) by group,
       wu_N X u' hr2, rankOneInnerOperator_smul_smul]
 

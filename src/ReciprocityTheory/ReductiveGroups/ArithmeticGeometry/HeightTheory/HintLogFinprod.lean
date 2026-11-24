@@ -6,53 +6,9 @@ public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HNormDefs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HeightIntegralEstimates
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.Interval.Finset.Box
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.ComponentFormProperties
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.GoodPrimesProperties
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HNormPtsB
@@ -61,7 +17,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormFac
 import ReciprocityTheory.SemistableReduction.LagrangeIdealLiftsFact
 import ReciprocityTheory.SemistableReduction.RestBlockSubstIsMultiHomogeneous
 import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -237,7 +192,6 @@ theorem hint_intNorm (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (g
   have hIb := hint_logInt_tail hn hmapb hβb hβb0 0
   refine (hIa.sub hIb).congr ?_
   filter_upwards [d.norm_at_sg_B hd h c sg, hint_ae_tail hn hmapb hβb hβb0 0] with z hz hbz
-  beta_reduce at hz
   obtain ⟨hfin, -, hcl1, -⟩ := hz
   have hbz' : d.evT sg 0 (d.tOf z) b ≠ 0 := by rw [hint_evT_eq]; exact hbz
   have hprod := hcl1 g a' b 0 hg hb0 hkey hbz'
@@ -361,7 +315,6 @@ theorem hint_intU (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) :
     (integrable_const ((d.delc c : ℝ) * (harmonic d.N : ℝ) / 2))).congr ?_
   filter_upwards [d.norm_at_sg_B hd h c sg, hint_ae_tail hn hac0 hαa hαa0 0,
     hint_ae_tail hn hbc0 hαb hαb0 0] with z hz haz hbz
-  beta_reduce at hz
   obtain ⟨hfin, hcard, -, hcl2⟩ := hz
   set S := d.ST c sg (d.tOf z) with hS
   have hind : ∀ (q : MvPolynomial (Fin (d.D + 1) × Fin (d.N + 1)) ℂ) (α : Fin (d.D + 1) → ℕ),

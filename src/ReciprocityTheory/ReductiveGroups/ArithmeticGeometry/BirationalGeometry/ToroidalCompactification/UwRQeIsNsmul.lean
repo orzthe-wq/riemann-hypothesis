@@ -2,44 +2,6 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.QkExtExistsSt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 
 @[expose] public section
@@ -66,7 +28,6 @@ theorem uwRQe_gen {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {Y Y' : Scheme.{0}} 
   intro Z r z J hg
   first
     | exact val_pull hg t g r
-    | exact val_pull t g r
 
 section QkExt
 
@@ -81,12 +42,10 @@ theorem uwRQe_e : CommRingCat.ofHom (algebraMap (FractionRing R) F) ≫ CommRing
   ext x
   first
     | exact hf x
-    | simpa using hf x
 
 theorem uwRQe_rho_jFK : spMap f ≫ Out.jFK (R := R) F = Out.jFK (R := R) F' := by
   first
     | rw [← Spec.map_comp, uwRQe_e f hf]
-    | (simp only [spMap, Out.jFK]; rw [← Spec.map_comp, uwRQe_e f hf])
 
 def uwRQe_rho : Out.TF (R := R) F' ⟶ Out.TF (R := R) F :=
   Over.homMk (spMap f) (by
@@ -96,14 +55,10 @@ def uwRQe_rho : Out.TF (R := R) F' ⟶ Out.TF (R := R) F :=
 theorem uwRQe_cF (χ : D.X) : Out.DegPre.cF D F' χ = uwRQe_rho f hf ≫ Out.DegPre.cF D F χ := by
   first
     | simp [Out.DegPre.cF]
-    | (show toUnit _ ≫ D.c χ = uwRQe_rho f hf ≫ toUnit _ ≫ D.c χ
-       rw [← Category.assoc, CartesianMonoidalCategory.comp_toUnit])
 
 theorem uwRQe_zeroF : Out.DegPre.zeroF D F' = uwRQe_rho f hf ≫ Out.DegPre.zeroF D F := by
   first
     | simp [Out.DegPre.zeroF]
-    | (show toUnit _ ≫ η[D.P.A] = uwRQe_rho f hf ≫ toUnit _ ≫ η[D.P.A]
-       rw [← Category.assoc, CartesianMonoidalCategory.comp_toUnit])
 
 theorem uwRQe_padd (x y : Out.TF (R := R) F ⟶ D.P.A) :
     padd D.P.A (uwRQe_rho f hf ≫ x) (uwRQe_rho f hf ≫ y) = uwRQe_rho f hf ≫ padd D.P.A x y := by
@@ -144,8 +99,6 @@ theorem uwRQe_cub {Z : Scheme.{0}} {z : Z} {J : (Z ⟶ D.P.A.left) → D.P.L.ι}
   simp only [Out.DegPre.cubAt]
   rw [e]
   first
-    | exact (val_pull D.cub.t _ r).trans ((congrArg (fun q => val D.cub.t q z J)
-        (Category.assoc r (spMap f) _).symm).trans (val_pull D.cub.t _ (r ≫ spMap f)).symm)
     | exact (val_pull hJ D.cub.t _ r).trans ((congrArg (fun q => val D.cub.t q z J)
         (Category.assoc r (spMap f) _).symm).trans (val_pull hJ D.cub.t _ (r ≫ spMap f)).symm)
 
@@ -197,8 +150,6 @@ theorem uwRQe_isIota {y : D.X} {g : Out.GtPtF D F} (h : g.IsIota y) : (uwRQe_ext
     rw [h1, uwRQe_cF D f hf y]
   · rw [uwRQe_val D f hf g χ _ p J hJ, val_corr hJ (h2 χ)]
     first
-      | exact (val_pull _ _ _).trans ((congrArg (fun q => val (D.io y χ) q p J)
-          (by rw [Category.assoc, uwRQe_rho_jFK f hf])).trans (val_pull _ _ _).symm)
       | exact (val_pull hJ _ _ _).trans ((congrArg (fun q => val (D.io y χ) q p J)
           (by rw [Category.assoc, uwRQe_rho_jFK f hf])).trans (val_pull hJ _ _ _).symm)
 
@@ -221,7 +172,6 @@ theorem qkExtExists : QkExtExistsSt := by
   refine ⟨rfl, rfl, fun χ => corr_of_val D.P.isLB fun q J hJ => ?_⟩
   rw [uwRQe_val D f hf p.g χ _ q J hJ]
   first
-    | exact (val_pull _ _ _).symm
     | exact (val_pull hJ _ _ _).symm
 
 end ReciprocityTheory.ChartRestriction.G.Geo.Tor

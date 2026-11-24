@@ -151,7 +151,7 @@ theorem pf_Glob2 : PositivityTheory.Rg.BcB.D4.SplitAt2 → PositivityTheory.Rg.B
       (continuous_const.prodMk continuous_id)
     convert h2 using 1
     ext g
-    simp only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_prod, one_mem, and_self, true_and]
+    simp only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_prod, one_mem, true_and]
   have hcomm3 : ∀ s ∈ twCent θ' (e (ratGL E n d)).2, ∀ t ∈ twCent θ' (e (ratGL E n d)).2, s * t = t * s := by
     intro s hs t ht
     have hs' : e.symm ((1, 1), s) ∈ adCent d := (hmem _).2 (by

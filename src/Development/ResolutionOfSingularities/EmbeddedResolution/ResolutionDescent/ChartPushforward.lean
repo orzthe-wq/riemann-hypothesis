@@ -71,7 +71,7 @@ structure ChartPushforward (S S' : EmbeddedBlowupSequence k Y pY) where
       levelMap (i + 1) hi ≫ S'.blowdown i = S.blowdown i ≫ levelMap i hi.le
   ambientCenter_eq :
     ∀ (i : ℕ) (hi : i < S'.length),
-      S'.ambientCenter i = imageIdealSheaf (levelMap i hi.le) (S.ambientCenter i)
+      S'.ambientCenter i = _root_.FunctorialResolution.Blowup.schemeImageIdeal (levelMap i hi.le) (S.ambientCenter i)
   ker_levelMap_succ :
     ∀ (i : ℕ) (hi : i < S'.length),
       (levelMap (i + 1) hi).ker =
@@ -117,7 +117,7 @@ theorem blowdown_comm_of_isPushforwardBlowupSeq
 theorem ambientCenter_eq_imageIdealSheaf_of_isPushforwardBlowupSeq
     (h : IsPushforwardBlowupSeq f S.ambientSeq S'.ambientSeq) (i : ℕ) (hi : i < S'.length) :
     S'.ambientCenter i =
-      imageIdealSheaf (h.2.choose i (hi.le.trans_eq h.1.symm)) (S.ambientCenter i) :=
+      _root_.FunctorialResolution.Blowup.schemeImageIdeal (h.2.choose i (hi.le.trans_eq h.1.symm)) (S.ambientCenter i) :=
   h.2.choose_spec.2.2.2.1 i (hi.trans_eq h.1.symm)
 
 theorem ker_succ_eq_strictTransform_of_isPushforwardBlowupSeq

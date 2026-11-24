@@ -99,13 +99,6 @@ theorem exists_place_over (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l
   have := (Fact.out : l.Prime).ne_zero
   simp_all
 
-theorem eventually_not_mem_l (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
-    ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal := by
-  have h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact_mod_cast (Fact.out : l.Prime).ne_zero
-  exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
-
 end GlobalTheory.CongEx
 
 end

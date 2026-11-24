@@ -82,7 +82,7 @@ theorem trace_pi (K σ : Type) [Field K] [Fintype σ] [DecidableEq σ] (z : σ �
     Algebra.trace K (σ → K) z = ∑ i, z i := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basisFun K σ), Matrix.trace]
   refine Finset.sum_congr rfl fun i _ => ?_
-  simp [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]
+  simp [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul]
 
 theorem traceForm_pi_nondegenerate (K σ : Type) [Field K] [Fintype σ] [DecidableEq σ] :
     (Algebra.traceForm K (σ → K)).Nondegenerate := by

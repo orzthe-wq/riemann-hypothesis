@@ -98,7 +98,7 @@ theorem wwMain_of (hE : EvalH) (hL : LH) (hLin : LLin) (hD : DeXCB) : WwMain := 
       simp [mul_comm]
     rw [hy, hQ (fun s a j => ∑ b : Fin N1, z (s, a, b) * y' s b j), hD Lt l N0 N1 nu z y']
 
-    simp only [map_sum, map_mul, eval_C, C_mul', map_smul, smul_eq_mul, MvPolynomial.smul_eval,
+    simp only [map_sum, C_mul', map_smul, smul_eq_mul, MvPolynomial.smul_eval,
     hE Lt l N0 N1 ph]
   rw [hP, Lfun_sum hLin, finsum_eq_sum_of_fintype]
   refine Finset.sum_congr rfl fun I _ => ?_

@@ -110,21 +110,17 @@ theorem sgn_ne (i : Fin (2 * r + k + 1)) : sgn k r i ≠ 0 := by
 theorem mul_hpk_apply (A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (A * Hpk k r) i j = A i (tau k r j) * sgn k r j := by
   have hH : ∀ l, Hpk k r l j = sgn k r l * (if tau k r l = j then 1 else 0) := fun l => by
-    have e := hpk_mul_apply (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) l j
-    rw [Matrix.mul_one, Matrix.one_apply] at e
-    exact e
+    simpa only [Matrix.mul_one, Matrix.one_apply] using hpk_mul_apply (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) l j
   rw [Matrix.mul_apply, Finset.sum_eq_single (tau k r j)]
   · rw [hH, tau_tau, if_pos rfl, mul_one, sgn_tau]
   · intro l _ hl
     rw [hH, if_neg (fun h => hl (by rw [← h, tau_tau])), mul_zero, mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · simp
 
 theorem inv_eq {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UH (Hpk k r)) : s⁻¹ = Hpk k r * sᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
-  have e : Hpk k r * sᴴ * Hpk k r * s = Hpk k r * (sᴴ * Hpk k r * s) := by simp only [Matrix.mul_assoc]
-  rw [e, show sᴴ * Hpk k r * s = Hpk k r from hs, hpk_sq]
+  simpa only [Matrix.mul_assoc, hpk_sq] using congrArg (fun x => Hpk k r * x) hs
 
 theorem inv_apply {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UH (Hpk k r)) (p q : Fin (2 * r + k + 1)) :
@@ -134,9 +130,7 @@ theorem inv_apply {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
 private theorem inv_mul_eq_one_of_mem_UH_Hpk {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UH (Hpk k r)) : s⁻¹ * s = 1 := by
-  rw [inv_eq hs]
-  have e : Hpk k r * sᴴ * Hpk k r * s = Hpk k r * (sᴴ * Hpk k r * s) := by simp only [Matrix.mul_assoc]
-  rw [e, show sᴴ * Hpk k r * s = Hpk k r from hs, hpk_sq]
+  simpa only [inv_eq hs, Matrix.mul_assoc, hpk_sq] using congrArg (fun x => Hpk k r * x) hs
 
 theorem low_zero {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hs : s ∈ UH (Hpk k r)) (hX : colX k r s) (i j : Fin (2 * r + k + 1))
@@ -159,11 +153,7 @@ theorem low_zero {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     subst h2
     omega
   rw [inv_apply hs, tau_tau, tau_tau, if_neg hne] at e
-  rcases mul_eq_zero.mp e with h | h
-  · exact absurd h (sgn_ne _)
-  · rcases mul_eq_zero.mp h with h' | h'
-    · exact star_eq_zero.mp h'
-    · exact absurd h' (sgn_ne _)
+  simpa [mul_eq_zero, sgn_ne, star_eq_zero] using e
 
 theorem hW_in {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {i j : Fin (2 * r + k + 1)} (hi : r ≤ i.val ∧ i.val ≤ r + k) (hj : r ≤ j.val ∧ j.val ≤ r + k) :

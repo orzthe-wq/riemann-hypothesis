@@ -111,7 +111,7 @@ lemma _root_.GlobalTheory.ThetaPositivity.exists_norm_le (Λ : Submodule ℤ (Fi
     intro l z
     have hre : ∀ a b : ℂ, ((Real.pi : ℂ) * a + Real.pi / 2 * b).re
         = Real.pi * a.re + Real.pi / 2 * b.re := fun a b => by
-      simp [Complex.add_re, Complex.re_ofReal_mul]
+      simp [Complex.add_re]
     simp only [hFdef, htr, norm_mul, hχ, one_mul, Complex.norm_exp, hre,
       _root_.GlobalTheory.ThetaPositivity.form_add_self hH]
     rw [mul_comm (Real.exp _) ‖θ z‖, mul_assoc, ← Real.exp_add]

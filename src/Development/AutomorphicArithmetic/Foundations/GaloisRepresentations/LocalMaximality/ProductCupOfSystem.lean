@@ -171,7 +171,7 @@ private lemma term_mem {d : ℕ} (x : Fin (d + 1) → Fˣ) (hfin : IsFinCover �
     intro w' hw' w'' hw''
     rw [muP_tmul']
     have hw'I : w' ∈ omB ℂ K (rB ℂ K (xv x) I) (d - a) := hmono (d - a) I' I hI' hs' hw'
-    have htr := (GlobalTheory.T.twistedDual_regularForms_finiteCover ℂ F K d (xv x) hfin τ hτ I hne (d - a) a (Nat.sub_add_cancel had) y
+    have htr := (_root_.GlobalTheory.PD.twistedDual_omB ℂ F K d (xv x) hfin τ hτ I hne (d - a) a (Nat.sub_add_cancel had) y
       (omB_le_fixed _ a y hyI)).2 hyI w' hw'I
     exact Submodule.apply_mem_map₂ _ htr hw''
   have hle : Submodule.map₂ (TensorProduct.mk ℂ (DR ℂ K) (DR ℂ K)) (omB ℂ K (rB ℂ K (xv x) I') (d - a))
@@ -256,7 +256,6 @@ theorem UpperTheory.Gal.productCup_of_system.pCup_of :
     simp only [rcup, lft_uni', rgt_uni']
     first
       | exact Submodule.smul_of_tower_mem _ _ hsum
-      | exact Submodule.smul_mem _ _ hsum
   · rw [LinearMap.mem_ker]
     have hz : ∀ (l : Mi d) (m : DR ℂ K ⊗[ℂ] DR ℂ K) (y : DR ℂ K),
         muP F K τ ((sysZ K x a).act ((sysZ K x a).mu l) m) y =

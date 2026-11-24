@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymLevelTestFunctionsAgreeRationalPointsStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymLevelTestFunctionsAgreeRationalPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -85,9 +85,7 @@ theorem pow_red (k : ℕ) : IntAt P ((qOf P : E) ^ (k + 1)) ∧ redP P ((qOf P :
     rw [pow_succ]
     exact ⟨ih.1.mul (intAt_q P), by rw [reduction_mul ih.1 (intAt_q P), ih.2, zero_mul]⟩
 
-theorem reduction_one' : redP P (1 : E) = 1 := by
-  have := reduction_coe P 1
-  rwa [map_one, map_one] at this
+alias reduction_one' := _root_.GlobalTheory.SymBridge.PhiAgreeProof.reduction_one'
 
 theorem valuation_one₂ : LocE.vP P (qOf P) (1 : E) = 0 := by
   have hq0 := q_ne_zero P
@@ -236,7 +234,7 @@ theorem psiAgree_of_atType : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : 
     rintro (a | a)
     · simp [E₁, yPos, he a]
     · exact a.elim0
-  have hPhi := GlobalTheory.T.symLevelTestFunctions_agree_rationalPoints X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hA.tie
+  have hPhi := _root_.GlobalTheory.SymBridge.PhiAgreeProof.phiAgree X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hA.tie
     R.t s 0 rfl (R.N s) (cOf R s) (R.N (s + 1)) (cOf R (s + 1)) rfl rfl hc1 hc0 E' E₁ hE' hE₁
   refine ⟨1, one_ne_zero, fun x₀ y' => ?_⟩
   have hmat : withCol (toLoc ι e e' x₀) (fun a => ι (y' (e a))) =

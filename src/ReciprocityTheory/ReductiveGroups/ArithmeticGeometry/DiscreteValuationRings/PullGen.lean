@@ -3,51 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.CartesianLiftThreeCompProjection
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.AppCompatGeneric
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBCorr
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric
 
@@ -120,8 +77,7 @@ lemma fsum_pull (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X) :
   have h7 : (toUnit (DegPre.BF D.toPre F) ≫ D.toPre.c (star a • χ)).left = (cPB D F (star a • χ)).left := rfl
   simp only [fsum, lf, pullφ, pullε, DegPre.famφ, DegPre.famε, pullSum, Fintype.sum_sum_type, Sum.elim_inl,
     Sum.elim_inr, Fin.sum_univ_succ, Fin.sum_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, add_zero,
-    h1, h2, h3, h4, h5, h6, h7, neg_neg, Finsupp.mapDomain_add, Finsupp.mapDomain_smul,
-    Finsupp.mapDomain_single, Finsupp.smul_single_one]
+    h1, h2, h3, h4, h5, h6, h7, neg_neg, Finsupp.mapDomain_add, Finsupp.mapDomain_single, Finsupp.smul_single_one]
   clear h1 h2 h3 h4 h5 h6 h7
   congr 1
   · simp only [add_assoc]
@@ -289,7 +245,7 @@ theorem exists_pullGen (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
   have hφr : fsum (fun _ : PUnit => jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A)
       (fun _ : PUnit => (n : ℤ) * 1) = (n : ℤ) • Finsupp.single (1 : TF (R := V) F ⟶ D.toPre.P.A).left 1 := by
     rw [one_left_TF]
-    simp [fsum, Finsupp.smul_single_one]
+    simp [fsum]
   have h0 : fsum (fun i => z ≫ Sum.elim (pullφ D F oa a χ)
         (fun _ : PUnit => p ≫ jFK (R := V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A) i)
       (Sum.elim (pullε k N) (fun _ : PUnit => -((n : ℤ) * 1))) = 0 := by
@@ -384,22 +340,13 @@ lemma smul_star_inj {O : Type} [CommRing O] [StarRing O] {X : Type} [AddCommGrou
   have h3 : (N : ℤ) • χ₁ = (N : ℤ) • χ₂ := by rw [natCast_zsmul, natCast_zsmul]; exact h2
   exact smul_right_injective X (by omega) h3
 
-private lemma rs_rs_eq_rs_trans {Y : Scheme.{0}} {U W Z : Y.Opens} (h₁ : W ≤ U) (h₂ : Z ≤ W) (x : Γ(Y, U)) :
-    rs h₂ (rs h₁ x) = rs (h₂.trans h₁) x := by
-  simp only [rs]
-  rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
-  rfl
-
-private lemma rs_mul' {Y : Scheme.{0}} {U W : Y.Opens} (h : W ≤ U) (x y : Γ(Y, U)) :
-    rs h (x * y) = rs h x * rs h y := map_mul _ _ _
-
 lemma shape_secRel {Y : Scheme.{0}} {U₁ U₂ U₃ W V₂ O : Y.Opens} (hW : W ≤ U₃) (hWV : W ≤ V₂) (hV : V₂ ≤ U₂)
     (o : O ≤ W ⊓ U₁) (o₁ : O ≤ U₁) (o₂ : O ≤ U₂) (o₃ : O ≤ U₃) (x : Γ(Y, U₁)) (y : Γ(Y, U₂)) (u : Γ(Y, U₃)ˣ)
     (e : rs (inf_le_left : W ⊓ U₁ ≤ W) (rs hW (u : Γ(Y, U₃)) * rs hWV (rs hV y)) =
       rs (inf_le_right : W ⊓ U₁ ≤ U₁) x) :
     rs o₁ x = rs o₂ y * rs o₃ (u : Γ(Y, U₃)) := by
   have e2 := congrArg (fun z => rs o z) e
-  simp only [rs_rs_eq_rs_trans, rs_mul'] at e2
+  simp only [_root_.ReciprocityTheory.ChartRestriction.G.DVR.rs_rs, _root_.ReciprocityTheory.ChartRestriction.G.DVR.rs_mul] at e2
   rw [mul_comm]
   exact e2.symm
 
@@ -490,7 +437,7 @@ theorem exists_XB (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
       lf (-(k : ℤ) • (Finsupp.single (oa.onB.act a) 1 - (N : ℤ) • Finsupp.single (𝟙 D.toPre.P.A) 1 +
         ((N : ℤ) - 1) • Finsupp.single (1 : D.toPre.P.A ⟶ D.toPre.P.A) 1) +
         ((k : ℤ) * ((N : ℤ) - 1)) • Finsupp.single (1 : D.toPre.P.A ⟶ D.toPre.P.A) 1) := by
-    simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [← Over.id_left, ← lf_single, ← lf_single, ← lf_add]
     congr 1
     rw [← Finsupp.smul_single_one, ← Finsupp.smul_single_one _ (-(k : ℤ))]
@@ -507,7 +454,7 @@ theorem exists_XB (hL : D.toPre.P.L.IsLB) (oa : D.toPre.OAct O) (w0 : O)
   have ha : eSec D.toPre.P.A ≫ (oa.onB.act a).left = eSec D.toPre.P.A := by
     haveI := oa.onB.hom a
     simp only [eSec, ← Over.comp_left, IsMonHom.one_hom]
-  simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Category.comp_id,
+  simp only [fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id,
     ha, Fintype.univ_punit, Finset.sum_singleton, ← Finsupp.single_add]
   congr 1
   rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_sub hN1]

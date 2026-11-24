@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.RingTheory.Flat.TorsionFree
 public import Formalism.SharpRestriction.LevelLetterCocycles.InvariantsIsoOfGenerators
 
 @[expose] public section
@@ -27,6 +27,7 @@ theorem zl_LL_injective (LL : FinExt l) : Function.Injective (algebraMap ℤ_[l]
 instance tfLL (LL : FinExt l) : Module.IsTorsionFree ℤ_[l] ↥LL.1 :=
   Module.isTorsionFree_iff_algebraMap_injective.2 (zl_LL_injective LL)
 
+set_option synthInstance.maxHeartbeats 60000 in
 theorem O_RW_injective (LL : FinExt l) : Function.Injective (algebraMap ↥(OL LL) (RW LL)) := by
   have h := Algebra.TensorProduct.includeLeft_injective (R := ℤ_[l]) (A := ↥(OL LL)) (B := WCb l)
     (S := ↥(OL LL)) zl_WCb_injective

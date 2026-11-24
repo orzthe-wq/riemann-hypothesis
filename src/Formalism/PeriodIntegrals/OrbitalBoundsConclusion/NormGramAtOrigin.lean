@@ -130,7 +130,7 @@ private lemma exists_hform_ne_zero_of_det_ne_zero {E : Type} [Field E] (σ : E �
     rw [Finset.sum_eq_single i]
     · simp [Matrix.mulVec, dotProduct]
     · intro l _ hl
-      simp [Pi.single_apply, hl]
+      simp [hl]
     · intro h
       exact absurd (Finset.mem_univ i) h
   rw [e]

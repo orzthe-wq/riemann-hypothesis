@@ -44,7 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib
+public import Mathlib.RingTheory.MvPolynomial
 
 @[expose] public section
 
@@ -93,7 +93,7 @@ def lowB {p q r s : ℕ} (l : Ln p q r s) : Module.End ℂ (Pol p q r s) :=
 
 def raiB {p q r s : ℕ} (l : Ln p q r s) : Module.End ℂ (Pol p q r s) :=
   if linePos l then LinearMap.mulLeft ℂ (MvPolynomial.X l)
-  else -(MvPolynomial.pderiv l).toLinearMap
+  else -((MvPolynomial.pderiv (R := ℂ) l).toLinearMap)
 
 def omE {p q r s : ℕ} (l l' : Ln p q r s) : Module.End ℂ (Pol p q r s) :=
   raiB l * lowB l' + if l = l' then (1 / 2 : ℂ) • 1 else 0

@@ -1,53 +1,114 @@
 module
 
+public import GroundTheory.PAdicHodge.PerfectoidField
 public import GroundTheory.PAdicHodge.TiltValuation
-public import GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.LocalProperties.Reduced
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.LocalProperties.Reduced
+import Mathlib.RingTheory.SimpleRing.Principal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods, GroundTheory.PAdicHodge.TiltField
+
+-- ===== clump member: GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods =====
+-- clump-header: {"m": "GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods", "h": "module\n\npublic import GroundTheory.PAdicHodge.PerfectoidField\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Variant₂.N1
+
+open GroundTheory.PAdicHodge
+
+section
+
+variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
+
+private lemma mem_integers_iff (x : K) : x ∈ (normInteger K) ↔ ‖x‖ ≤ 1 := by
+  change NormedField.valuation x ≤ 1 ↔ _
+  rw [NormedField.valuation_apply, ← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]
+
+private lemma norm_eq_of_norm_sub_lt {u z : K} (h : ‖u - z‖ < ‖z‖) : ‖u‖ = ‖z‖ := by
+  have h1 : ‖u‖ ≤ max ‖u - z‖ ‖z‖ := by
+    simpa using IsUltrametricDist.norm_add_le_max (u - z) z
+  have h2 : ‖z‖ ≤ max ‖z - u‖ ‖u‖ := by
+    simpa using IsUltrametricDist.norm_add_le_max (z - u) u
+  rw [norm_sub_rev] at h2
+  apply le_antisymm
+  · exact h1.trans (max_le h.le le_rfl)
+  · rcases le_max_iff.mp h2 with h3 | h3
+    · exact absurd h3 (not_le.mpr h)
+    · exact h3
+
+private lemma norm_le_of_mem_span {x : (normInteger K)} {p : ℕ}
+    (hx : x ∈ Ideal.span {((p : (normInteger K)))}) : ‖(x : K)‖ ≤ ‖(p : K)‖ := by
+  obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.mp hx
+  have hc : ‖(c : K)‖ ≤ 1 := (mem_integers_iff (c : K)).mp c.2
+  simp only [Subring.coe_mul, Subring.coe_natCast, norm_mul]
+  exact mul_le_of_le_one_left (norm_nonneg _) hc
+
+variable {p : ℕ} [Fact (Nat.Prime p)] [Fact ¬IsUnit (p : (normInteger K))] [IsAdicComplete (Ideal.span {(p : (normInteger K))}) (normInteger K)]
+
+private lemma exists_untilt_norm_of_lt
+    (hsurj : Function.Surjective fun x : ModP (normInteger K) p => x ^ p)
+    {x : K} (hpx : ‖(p : K)‖ < ‖x‖) (hx1 : ‖x‖ ≤ 1) :
+    ∃ a : PreTilt (normInteger K) p, ‖((PreTilt.untilt a : (normInteger K)) : K)‖ = ‖x‖ := by
+  let x' : (normInteger K) := ⟨x, (mem_integers_iff x).mpr hx1⟩
+  let s : ℕ → ModP (normInteger K) p := fun n => Nat.rec (Ideal.Quotient.mk _ x')
+    (fun _ t => Classical.choose (hsurj t)) n
+  have hs : ∀ n, s (n + 1) ^ p = s n := fun n => Classical.choose_spec (hsurj (s n))
+  let a : PreTilt (normInteger K) p := ⟨s, hs⟩
+  refine ⟨a, ?_⟩
+  have h0 : Ideal.Quotient.mk _ (PreTilt.untilt a) = Ideal.Quotient.mk (Ideal.span {(p : (normInteger K))}) x' := by
+    rw [PreTilt.mk_untilt_eq_coeff_zero]
+    rfl
+  have hdiff : ‖((PreTilt.untilt a : (normInteger K)) : K) - x‖ ≤ ‖(p : K)‖ := by
+    have hmem := Ideal.Quotient.eq.mp h0
+    simpa [x'] using norm_le_of_mem_span hmem
+  exact norm_eq_of_norm_sub_lt (lt_of_le_of_lt hdiff hpx)
+
+private lemma exists_untilt_norm
+    (hsurj : Function.Surjective fun x : ModP (normInteger K) p => x ^ p)
+    {t : K} (hpt : ‖(p : K)‖ < ‖t‖) (ht1 : ‖t‖ < 1)
+    {y : K} (hy : y ≠ 0) (hy1 : ‖y‖ ≤ 1) :
+    ∃ a : PreTilt (normInteger K) p, ‖((PreTilt.untilt a : (normInteger K)) : K)‖ = ‖y‖ := by
+  obtain ⟨at', hat⟩ := exists_untilt_norm_of_lt hsurj hpt ht1.le
+  have ht0 : 0 < ‖t‖ := lt_of_le_of_lt (norm_nonneg _) hpt
+  obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one (norm_pos_iff.mpr hy) ht1
+
+  induction n generalizing y with
+  | zero =>
+    exact absurd hy1 (not_le.mpr (by simpa using hn))
+  | succ n ih =>
+    by_cases hyt : ‖t‖ < ‖y‖
+    · exact exists_untilt_norm_of_lt hsurj (hpt.trans hyt) hy1
+    · rw [not_lt] at hyt
+      have htne : t ≠ 0 := norm_pos_iff.mp ht0
+      have hv : ‖y / t‖ = ‖y‖ / ‖t‖ := norm_div y t
+      obtain ⟨b, hb⟩ := ih (y := y / t) (div_ne_zero hy htne)
+        (by rw [hv]; exact (div_le_one ht0).mpr hyt)
+        (by rw [hv, lt_div_iff₀ ht0, ← pow_succ]; exact hn)
+      refine ⟨at' * b, ?_⟩
+      rw [map_mul, Subring.coe_mul, norm_mul, hat, hb, hv, mul_div_cancel₀ _ ht0.ne']
+
+end
+
+theorem exists_norm_untilt_eq_norm_of_norm_le_one {K : Type*} [NontriviallyNormedField K]
+    [IsUltrametricDist K] {p : ℕ} [Fact (Nat.Prime p)] [IsPerfectoidField K p] {y : K}
+    (hy : y ≠ 0) (hy1 : ‖y‖ ≤ 1) :
+    ∃ a : PreTilt (normInteger K) p, ‖((PreTilt.untilt a : normInteger K) : K)‖ = ‖y‖ := by
+  obtain ⟨t, hpt, ht1⟩ := IsPerfectoidField.exists_norm_mem_Ioo (K := K) p ‖(p : K)‖
+    IsPerfectoidField.norm_natCast_lt_one
+  exact exists_untilt_norm IsPerfectoidField.surjective_pow hpt ht1 hy hy1
+
+end GroundTheory.Variant₂.N1
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods =====
+
+-- ===== clump member: GroundTheory.PAdicHodge.TiltField =====
+-- clump-header: {"m": "GroundTheory.PAdicHodge.TiltField", "h": "module\n\npublic import GroundTheory.PAdicHodge.TiltValuation\npublic import GroundTheory.PowerSubgroups.CountableNeighbourhoods.TiltCountableNeighbourhoods\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.LocalProperties.Reduced\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -275,15 +336,11 @@ end Norm
 
 section ValueGroup
 
-theorem exists_norm_untilt_eq_norm {y : K} (hy0 : y ≠ 0) (hy1 : ‖y‖ ≤ 1) :
-    ∃ a : 𝒪♭, ‖♮a‖ = ‖y‖ :=
-  _root_.GroundTheory.Variant₂.N1.exists_norm_untilt_eq_norm_of_norm_le_one hy0 hy1
-
 theorem exists_tilt_norm_eq {y : K} (hy : y ≠ 0) : ∃ x : K♭, ‖x‖ = ‖y‖ := by
   rcases le_or_gt ‖y‖ 1 with h | h
-  · obtain ⟨a, ha⟩ := exists_norm_untilt_eq_norm (p := p) hy h
+  · obtain ⟨a, ha⟩ := _root_.GroundTheory.Variant₂.N1.exists_norm_untilt_eq_norm_of_norm_le_one (p := p) hy h
     exact ⟨algebraMap 𝒪♭ K♭ a, by rw [norm_algebraMap_preTilt, preTilt_norm_def, ha]⟩
-  · obtain ⟨a, ha⟩ := exists_norm_untilt_eq_norm (p := p) (inv_ne_zero hy)
+  · obtain ⟨a, ha⟩ := _root_.GroundTheory.Variant₂.N1.exists_norm_untilt_eq_norm_of_norm_le_one (p := p) (inv_ne_zero hy)
       (by rw [norm_inv]; exact inv_le_one_of_one_le₀ h.le)
     refine ⟨(algebraMap 𝒪♭ K♭ a)⁻¹, ?_⟩
     rw [norm_inv, norm_algebraMap_preTilt, preTilt_norm_def, ha, norm_inv, inv_inv]
@@ -293,3 +350,6 @@ end ValueGroup
 end GroundTheory.PAdicHodge
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.PAdicHodge.TiltField =====

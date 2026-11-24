@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TeichmullerInertiaLabelCondition
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -107,7 +108,7 @@ private theorem orbit_of_sums (hn : 0 < n) (θ θ' : Kˣ →* ℂˣ)
     have h0 := (linearIndependent_monoidHom Kˣ ℂ).comp _ hinj
     exact h0
   by_contra hne
-  push_neg at hne
+  push Not at hne
   let l1 : (Kˣ →* ℂˣ) →₀ ℂ := ∑ i ∈ Finset.range n, Finsupp.single (θ ^ g ^ i) 1
   let l2 : (Kˣ →* ℂˣ) →₀ ℂ := ∑ i ∈ Finset.range n, Finsupp.single (θ' ^ g ^ i) 1
   have hl : Finsupp.linearCombination ℂ v l1 = Finsupp.linearCombination ℂ v l2 := by

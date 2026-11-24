@@ -52,8 +52,8 @@ private theorem natCast_mem_iff (K : Type) [Field K] [NumberField K] (la : Heigh
 
 private theorem ringChar_prime (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     (ringChar (𝓞 K ⧸ la.asIdeal)).Prime := by
-  haveI := la.isPrime
-  haveI : Finite (𝓞 K ⧸ la.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot
+  have := la.isPrime
+  have : Finite (𝓞 K ⧸ la.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot la.asIdeal la.ne_bot
   exact CharP.char_prime_of_ne_zero (𝓞 K ⧸ la.asIdeal) (CharP.ringChar_ne_zero_of_finite _)
 
 theorem UpperTheory.cmDatum_natCast_mem_heightOneSpectrum_iff :

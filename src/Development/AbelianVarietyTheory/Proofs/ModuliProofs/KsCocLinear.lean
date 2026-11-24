@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldsBasisVerticalDerivationsStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldsBasisVerticalDerivations
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,13 +54,7 @@ open GlobalTheory.KS
 noncomputable section
 namespace GlobalTheory.KS.LinDir
 
-theorem pbT_id {Y : Scheme.{0}} {O : Y.Opens} (s : Γ(Y, O)) : pbT (𝟙 Y) s O = s := by
-  unfold pbT
-  rw [dite_eq_left (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl)]
-  have : (𝟙 Y : Y ⟶ Y).appLE O O (show O ≤ (𝟙 Y) ⁻¹ᵁ O from le_rfl) = 𝟙 _ := by
-    change 𝟙 _ ≫ Y.presheaf.map (𝟙 (Opposite.op O)) = _
-    simp
-  rw [this]; rfl
+alias pbT_id := _root_.GlobalTheory.KS.InvField.pbT_id
 
 theorem constFn_lin {K : Type} [Field K] {Y : Scheme.{0}} (q : Y ⟶ Sp K) (O : Y.Opens) (c x y : K) :
     constFn q O (c * x + y) - constFn q O c * constFn q O x - constFn q O y = constFn q O 0 := by
@@ -107,7 +101,7 @@ theorem basis_id (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : �
         d W f = ∑ a, rsT (c a) _ * pbT y (dd a (m ⁻¹ᵁ W) ((m.app W).hom f)) _ := by
     intro y m' q' e₁ e₂ d h
     subst e₁ e₂
-    exact GlobalTheory.T.invariantVectorFields_basis_verticalDerivations K A₀ g v dd hs hv hd R x₀ X p m hp _ y W₀ d h
+    exact _root_.GlobalTheory.InvFieldBasis.existsUnique_coeff K A₀ g v dd hs hv hd R x₀ X p m hp _ y W₀ d h
   have := key (𝟙 _) m A₀.hom (Category.id_comp _) (Category.id_comp _) d h
   simpa only [pbT_id] using this
 

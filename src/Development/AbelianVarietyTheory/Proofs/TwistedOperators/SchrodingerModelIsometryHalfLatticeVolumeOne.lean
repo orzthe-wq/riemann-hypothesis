@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+public import Mathlib.RingTheory.PiTensorProduct
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RestrictedTensorBasePointNormSq
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntOv
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaInnerProductHermitianStatement
@@ -32,12 +32,6 @@ theorem eq_zero_of_eq_mul {c z : ℂ} (hc : c ≠ 1) (h : z = c * z) : z = 0 := 
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
-theorem isHalf_add {m n : ℕ} {a : AE D} {x y : Mx D m n} (hx : IsHalf a x) (hy : IsHalf a y) : IsHalf a (x + y) :=
-  fun i j => by rw [Matrix.add_apply, mul_add, hx, hy]
-
-theorem isHalf_sub {m n : ℕ} {a : AE D} {x y : Mx D m n} (hx : IsHalf a x) (hy : IsHalf a y) : IsHalf a (x - y) :=
-  fun i j => by rw [Matrix.sub_apply, mul_sub, hx, hy]
-
 theorem char_mul_conj (hψ : IsStdChar D ψ (-1)) (s t : AF D.host.F) :
     ψ s * (starRingEnd ℂ) (ψ t) = ψ (s - t) := by
   have h : ψ t * (starRingEnd ℂ) (ψ t) = 1 := by rw [Complex.mul_conj', hψ.1.2.1]; simp
@@ -53,7 +47,7 @@ theorem exists_section {v : FinPl D} {m n : ℕ} {a : AE D} {Λ : AddSubgroup (W
     ∃ σ : Matrix (Fin m) (Fin n) (Fv D.host.F v) → WO S T, (∀ z, IsHalf a (σ z)) ∧ (∀ z, κ (σ z) = z) ∧
       ∀ z t, IsHalf a t → σ (z + κ t) = σ z + t := by
   choose σ h1 h2 using fun z => h.2.1.surjOn (Set.mem_univ z)
-  exact ⟨σ, h1, h2, fun z t ht => h.2.1.injOn (h1 _) (isHalf_add (h1 z) ht) (by rw [h2, h.1, h2])⟩
+  exact ⟨σ, h1, h2, fun z t ht => h.2.1.injOn (h1 _) (_root_.GlobalTheory.HalfCoordSB.isHalf_add (h1 z) ht) (by rw [h2, h.1, h2])⟩
 
 variable {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
@@ -109,30 +103,30 @@ theorem ipO_translates (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
     rw [symplO_sub_right, symplO_sub_right, sub_add_sub_comm, e]
   split_ifs with h
   · have e1 : heisO ψ S T x f = heisO ψ S T x' f := by
-      rw [← add_sub_cancel x' x, heisO_add_of_orth ψ S T (symplO_eq_zero S T h0 hx' (isHalf_sub hx hx')),
-        hl.2 a ha _ h.1 (isHalf_sub hx hx')]
+      rw [← add_sub_cancel x' x, heisO_add_of_orth ψ S T (symplO_eq_zero S T h0 hx' (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hx hx')),
+        hl.2 a ha _ h.1 (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hx hx')]
     have e2 : heisO ψ S T y (heisO ψ S T x' f) =
         ψ (symplO S T (y - y') x') • heisO ψ S T y' (heisO ψ S T x' f) := by
-      have := heisO_eigen (hl.2 _ hb _ h.2 (isHalf_sub hy hy')) x' y'
-      rw [symplO_eq_zero S T h0' (isHalf_sub hy hy') hy', zero_add] at this
-      rw [← this, ← heisO_add_of_orth ψ S T (symplO_eq_zero S T h0' (isHalf_sub hy hy') hy'), sub_add_cancel]
+      have := heisO_eigen (hl.2 _ hb _ h.2 (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy')) x' y'
+      rw [symplO_eq_zero S T h0' (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy') hy', zero_add] at this
+      rw [← this, ← heisO_add_of_orth ψ S T (symplO_eq_zero S T h0' (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy') hy'), sub_add_cancel]
     rw [e1, e2, ((I _ _ t2 t2).2.2.1 _).1, ((I _ _ (th x' _ hf) (th x' _ hf)).2.2.2.2.2.2.1 y').1,
       ((I _ _ hf hf).2.2.2.2.2.2.1 x').1, (I _ _ hf hf).2.2.2.2.1, hn, Complex.ofReal_one, mul_one]
   · rcases not_and_or.1 h with h | h
-    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT ha (isHalf_sub hx hx') h
+    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT ha (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hx hx') h
       refine key l (hl.2 _ hb l hl1 hl2) ?_
-      rwa [symplO_eq_zero S T h0' hl2 (isHalf_sub hy hy'), zero_add]
-    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT hb (isHalf_sub hy hy') h
+      rwa [symplO_eq_zero S T h0' hl2 (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy'), zero_add]
+    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT hb (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy') h
       rw [GlobalTheory.DualPairCheck.cA_cA] at hl2
       refine key l (hl.2 _ ha l hl1 hl2) ?_
-      rwa [symplO_eq_zero S T h0 hl2 (isHalf_sub hx hx'), add_zero]
+      rwa [symplO_eq_zero S T h0 hl2 (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hx hx'), add_zero]
 
 theorem halfInd_add {a : AE D} {Λ : AddSubgroup (WO S T)} {l : WO S T} (hl : l ∈ Λ) (hl' : IsHalf a l) (t : WO S T) :
     halfInd a Λ (t + l) = halfInd a Λ t := by
   classical
   unfold halfInd
-  refine if_congr (and_congr (Λ.add_mem_cancel_right hl) ⟨fun h => ?_, fun h => isHalf_add h hl'⟩) rfl rfl
-  simpa using isHalf_sub h hl'
+  refine if_congr (and_congr (Λ.add_mem_cancel_right hl) ⟨fun h => ?_, fun h => _root_.GlobalTheory.HalfCoordSB.isHalf_add h hl'⟩) rfl rfl
+  simpa using _root_.GlobalTheory.HalfCoordSB.isHalf_sub h hl'
 
 
 open Classical in
@@ -163,7 +157,7 @@ theorem integral_waves (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
         (fun _ => ψ (symplO S T (y - y') x')) z := fun z => by
       have e1 : σ z + -x' + x = σ z + (x - x') := by abel
       simp only [F]
-      rw [e1, neg_add_cancel_right, halfInd_add h.1 (isHalf_sub hx hx')]
+      rw [e1, neg_add_cancel_right, halfInd_add h.1 (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hx hx')]
       by_cases hz : σ z ∈ Λ
       · rw [Set.indicator_of_mem (show z ∈ κ '' {t | t ∈ Λ ∧ IsHalf a t} from ⟨σ z, ⟨hz, h1 z⟩, h2 z⟩), halfInd, if_pos ⟨hz, h1 z⟩, map_one, mul_one, mul_one,
           ← sub_eq_add_neg, symplO_sub_left, sub_eq_add_neg (symplO S T (σ z) _), AddChar.map_add_eq_mul,
@@ -181,7 +175,7 @@ theorem integral_waves (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT 
       split_ifs with p q
       · exact absurd (by simpa using sub_mem p.1 q.1) h
       all_goals simp
-    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT (isSplitIdem_conj ha) (isHalf_sub hy hy') h
+    · obtain ⟨l, hl1, hl2, hl3⟩ := exists_pair_ne_one hψ hS hT (isSplitIdem_conj ha) (_root_.GlobalTheory.HalfCoordSB.isHalf_sub hy hy') h
       rw [GlobalTheory.DualPairCheck.cA_cA] at hl2
       refine eq_zero_of_eq_mul hl3 ?_
       conv_lhs => rw [tr l hl2]

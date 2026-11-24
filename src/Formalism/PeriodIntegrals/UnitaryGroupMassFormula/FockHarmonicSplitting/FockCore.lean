@@ -81,7 +81,6 @@ private lemma finiteDimensional_homog' [Fintype σ] (n : ℕ) :
     FiniteDimensional ℂ (FockH1Action.homog σ n) := by
   classical
   first
-  | exact inferInstance
   | (let c : σ →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun _ => n)
      have hS : (Set.Icc (0 : σ →₀ ℕ) c).Finite := Set.finite_Icc 0 c
      have hle : FockH1Action.homog σ n ≤ Submodule.span ℂ
@@ -94,16 +93,14 @@ private lemma finiteDimensional_homog' [Fintype σ] (n : ℕ) :
            = AddMonoidAlgebra.coeff p d • MvPolynomial.monomial d (1 : ℂ) := by
          first
          | simp [MvPolynomial.smul_monomial]
-         | rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]
        rw [hmono]
-       refine Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, ⟨by first | exact zero_le | exact bot_le | simp, ?_⟩, rfl⟩)
+       refine Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, ⟨by first | exact zero_le | simp, ?_⟩, rfl⟩)
        have hp0 : p ≠ 0 := by
          rintro rfl
          simp at hd
        have htd : p.totalDegree ≤ n := by
          first
          | exact hph.totalDegree_le
-         | exact (hph.totalDegree hp0).le
        have hsum : (d.sum fun _ e => e) ≤ n := (MvPolynomial.le_totalDegree hd).trans htd
        intro i
        have h1 : d i ≤ d.sum (fun _ e => e) := by
@@ -132,15 +129,11 @@ lemma exists_orth [Fintype σ] (K : Submodule ℂ (MvPolynomial σ ℂ)) (n : �
   letI : InnerProductSpace ℂ (FockV σ) := by
     first
     | exact InnerProductSpace.ofCore (fockCore (σ := σ)).toCore
-    | exact InnerProductSpace.ofCore (fockCore (σ := σ)).toPreInnerProductSpaceCore
-    | exact InnerProductSpace.ofCore (fockCore (σ := σ))
   haveI hproj : K'.HasOrthogonalProjection := inferInstance
   let g : FockV σ := f
   let P := K'.orthogonalProjection g
   have hP : ∀ x ∈ K', inner ℂ x (g - (P : FockV σ)) = 0 := by
     first
-    | exact K'.orthogonalProjection_inner_eq_zero g
-    | exact fun x hx => (K'.mem_orthogonal _).1 (K'.sub_orthogonalProjection_mem_orthogonal g) x hx
     | exact fun x hx => (K'.mem_orthogonal _).1 (K'.sub_starProjection_mem_orthogonal g) x hx
   have key : ∀ x y : FockV σ, inner ℂ x y = FockH1Action.fockInner (σ := σ) x y := fun _ _ => rfl
   let q : MvPolynomial σ ℂ := (P : FockV σ)

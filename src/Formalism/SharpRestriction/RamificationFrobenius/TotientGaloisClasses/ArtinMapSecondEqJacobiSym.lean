@@ -116,12 +116,11 @@ theorem sqrt_act {p N : ℕ} [NeZero N] (hp : p.Prime) (hp4 : p % 4 = 3) (h : p 
     rw [← pow_mul, mul_comm, pow_mul, (Cond.z_spec N).pow_eq_one, one_pow]
   have hg := gs_act hx.pow_eq_one (τ : Cond.Cyc N →+* Cond.Cyc N) _ (hτ _ hxN)
     ((ZMod.val_coe_unit_coprime u).coprime_dvd_right h)
-  have hg' : τ (Cond.gs p hx.pow_eq_one) = _ := hg
   rw [sgnN_val]
   have hsq : y ^ 2 = Cond.gs p hx.pow_eq_one ^ 2 := by rw [hy, Cond.gs_sq hp4 hx]
   rcases sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h1 | h1
-  · rw [h1, hg']
-  · rw [h1, map_neg, hg']; ring
+  · rw [h1]; exact hg
+  · rw [h1, map_neg, mul_neg]; exact congrArg Neg.neg hg
 
 variable (φ : Frame) (hinj : Function.Injective φ.h)
 
@@ -182,8 +181,7 @@ theorem artinMap_dyadic_eq (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (v : (ZMod (2 ^ 
     (hv : (v : ZMod (2 ^ (e + 2))) = (((u : ZMod (2 ^ (e + 2) * q * d)).val : ℕ) : ZMod (2 ^ (e + 2)))) :
     (art0 e hH u).2 = hcl e v := by
   have := neZeroN e hH
-  have h1 : v = ZMod.unitsMap (two_dvd e q d) u := Units.ext (by rw [hv, unitsMap_val])
-  rw [h1]; rfl
+  exact (show v = ZMod.unitsMap (two_dvd e q d) u from Units.ext (by rw [hv, unitsMap_val])).symm ▸ rfl
 
 theorem artinMap_first_eq_one (u : (ZMod (2 ^ (e + 2) * q * d))ˣ) (hu : (u : ZMod (2 ^ (e + 2) * q * d)).val ≡ 1 [MOD q]) :
     (art0 e hH u).1.1 = 1 := by
@@ -209,9 +207,8 @@ theorem artinMap_neg_one : art0 e hH (-1) = cc e := by
   have hq4 : q % 4 = 3 := by have := hH.2.2.1; omega
   have hd4 : d % 4 = 3 := by have := hH.2.2.2.1; omega
   refine Prod.ext (Prod.ext (sgnN_neg_one hH.1 hq4 _) (sgnN_neg_one hH.2.1 hd4 _)) ?_
-  have h1 : ZMod.unitsMap (two_dvd e q d) (-1) = -1 := unitsMap_neg_one _
   show hcl e (ZMod.unitsMap (two_dvd e q d) (-1)) = 1
-  rw [h1, hcl_neg_one]
+  rw [unitsMap_neg_one, hcl_neg_one]
 
 variable {e} {L : Type} [Field L] [NumberField L] {ζ a b : L} (h : IsLayer (e + 2) q d ζ a b)
 

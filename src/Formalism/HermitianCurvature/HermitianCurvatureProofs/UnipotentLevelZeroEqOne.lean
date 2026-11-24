@@ -108,8 +108,8 @@ theorem corner_matrix_level_zero_eq {k r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * 
     Zhat k r' z z' g = Zhat k r' z z' g' := by
   subst hr
   ext a b
-  have ha : a = Fin.last 0 := Fin.ext (by have := a.isLt; first | simp | omega)
-  have hb : b = Fin.last 0 := Fin.ext (by have := b.isLt; first | simp | omega)
+  have ha : a = Fin.last 0 := Fin.ext (by have := a.isLt; first | simp)
+  have hb : b = Fin.last 0 := Fin.ext (by have := b.isLt; first | simp)
   subst ha hb
   rw [← zetaL_eq_zhat, ← zetaL_eq_zhat, h]
 

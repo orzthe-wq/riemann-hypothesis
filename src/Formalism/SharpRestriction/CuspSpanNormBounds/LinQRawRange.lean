@@ -70,9 +70,7 @@ namespace HermSp
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
 lemma h_zero_left (y : V) : H.h 0 y = 0 := by
-  have h := H.h_add_left 0 0 y
-  rw [add_zero] at h
-  linear_combination -h
+  exact add_left_cancel (show H.h 0 y + H.h 0 y = H.h 0 y + 0 by simpa using (H.h_add_left 0 0 y).symm)
 
 def perp (S : Submodule E V) : Submodule E V where
   carrier := {v | ∀ x ∈ S, H.h v x = 0}
@@ -236,15 +234,13 @@ lemma linQRaw_range {m : ℕ} (ZZ : M.Mat m) (row : Fin m → M.R) :
     LinearMap.range ZZ.Z.mulVecLin ≤ LinearMap.ker (M.linQRaw ZZ row) := by
   rintro _ ⟨w, rfl⟩
   rw [LinearMap.mem_ker]
-  have hinv : (ZZ.Z.map M.R.subtype)⁻¹ * ZZ.Z.map M.R.subtype = 1 :=
-    Matrix.nonsing_inv_mul _ ZZ.unit
   have hv : (fun i => ((ZZ.Z.mulVecLin w i : M.R) : E)) =
-      (ZZ.Z.map M.R.subtype).mulVec (fun i => (w i : E)) := by
-    funext i
-    exact RingHom.map_mulVec M.R.subtype ZZ.Z w i
+      (ZZ.Z.map M.R.subtype).mulVec (fun i => (w i : E)) :=
+    funext fun i => RingHom.map_mulVec M.R.subtype ZZ.Z w i
   have key : (ZZ.Z.map M.R.subtype)⁻¹.mulVec (fun i => ((ZZ.Z.mulVecLin w i : M.R) : E)) =
       fun i => (w i : E) := by
-    rw [hv, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
+    rw [hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul (ZZ.Z.map M.R.subtype) ZZ.unit,
+      Matrix.one_mulVec]
   simp only [linQRaw, LinearMap.coe_comp, Function.comp_apply,
     LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply, LinearMap.proj_apply]
   change Submodule.mkQ M.Rsub _ = 0

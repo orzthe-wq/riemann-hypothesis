@@ -1,6 +1,7 @@
 module
 
-public import Mathlib
+import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThProps
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 public import Formalism.LocalToGlobal.ProjectiveLattices.PlaceBelow
@@ -109,7 +110,7 @@ theorem exists_nonzero_of_generator (T : CDVR) (G : SAB H (Sp T.V)) (t : SAB H (
     ∃ g : G.G.left, G.G.hom g = s ∧ g ∈ nonzeroLocus θ := by
   obtain ⟨L₁, L₂, -⟩ := GlobalTheory.firstFiveLaws
   have hprop : IsProper t.G.hom := MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper
-  obtain ⟨ψ, -⟩ := GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G G t hprop m2 m2
+  obtain ⟨ψ, -⟩ := _root_.GlobalTheory.ModelUniqueChecks.extV_holds E H T.V inferInstance G G t hprop m2 m2
   have hp := GlobalTheory.UnifAfterExt.polAt_of_sabMap ψ m2 m1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T.V) (𝟙 _)
     ((Category.comp_id _).trans (Category.id_comp _).symm)
   obtain ⟨σ, hσ⟩ := GlobalTheory.ThetaDvr.thetaNZ_of_polAt L₁ L₂ E H T.V G hp
@@ -208,7 +209,7 @@ theorem exists_unif_of_split (T T' : CDVR) (f : T.V →+* T'.V) (ψ : T.Fr →+*
   obtain ⟨k, -, -⟩ := exists_comp_rig m2 n _ hio r2 r0
   obtain ⟨mK, -⟩ := sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mP k
   have hprop : IsProper t'.G.hom := MorphismProperty.of_isPullback (P := @IsProper) m1'.cart.1 Xo.univ.proper
-  obtain ⟨j, -⟩ := GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T'.V inferInstance G' tP t' hprop m2' mK
+  obtain ⟨j, -⟩ := _root_.GlobalTheory.ModelUniqueChecks.extV_holds E H T'.V inferInstance G' tP t' hprop m2' mK
   have hp := GlobalTheory.UnifAfterExt.polAt_of_sabMap j mK m1' Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T'.V) (𝟙 _)
     ((Category.comp_id _).trans (Category.id_comp _).symm)
   obtain ⟨S, hS⟩ := hS

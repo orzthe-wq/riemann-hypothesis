@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoeffFieldIdempotentCuttingPeriodSpacesStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelOfSplitAndLevelCoeffExist
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoeffFieldIdempotentCuttingPeriodSpaces
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RegularFunctionConstOfFiniteValuesOnPeriodSpace
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelOfSplitAndLevelCoeffExist
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -141,7 +142,7 @@ private theorem key_lemma' (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ
     (h1 : spMap (τ : ℂ →+* ℂ) ≫ F.u i P = F.u k Q) (h2 : spMap (τ : ℂ →+* ℂ) ≫ F.u i P' = F.u k' Q') :
     k' = k := by
   classical
-  obtain ⟨c, -, he⟩ := GlobalTheory.T.exists_coeffField_idempotent_cutting_periodSpaces E H D l Xo σ g ty F hD hσ hty hA (Classical.arbitrary _)
+  obtain ⟨c, -, he⟩ := _root_.GlobalTheory.CompRat.exists_coeff_idempotent_functions E H D l Xo σ g ty F hD hσ hty hA (Classical.arbitrary _)
   obtain ⟨e, hee, hev⟩ := he k
   have hs : τ.symm H.rt0 = H.rt0 := by
     rw [RingEquiv.symm_apply_eq]

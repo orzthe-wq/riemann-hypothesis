@@ -117,8 +117,6 @@ private theorem appr_den_lemma_2 (k : F) (hk : v.valuation F k ≤ 1) :
     intro r
     first
       | exact HeightOneSpectrum.valuation_of_algebraMap v r
-      | exact v.valuation_of_algebraMap r
-      | simp
   have hιd0 : v.intValuation d ≠ 0 := by
     rw [← hB]
     exact (Valuation.ne_zero_iff _).mpr hdF

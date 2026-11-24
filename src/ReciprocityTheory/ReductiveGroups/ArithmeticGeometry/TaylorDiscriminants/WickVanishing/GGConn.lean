@@ -102,7 +102,7 @@ lemma rmul_mem {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {b
     exact pos_conj_mul (Finset.prod_ne_zero_iff.2 fun j _ => FrameDegreeData.bdiag_ne X hb τ _) ((hx τ).2 i)
 
 theorem flag_domain_frames_connected : GGConnStatement (E := E) := by
-  apply GlobalTheory.frames_isConnected <;> assumption
+  apply GlobalTheory.frames_isConnected
 
 end
 

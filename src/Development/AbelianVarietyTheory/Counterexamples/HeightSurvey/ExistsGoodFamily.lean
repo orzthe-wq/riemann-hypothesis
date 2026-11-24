@@ -58,11 +58,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 theorem jm_const (n : ℕ) (s : Bool) :
     Formalism.REAL.Jm (fun _ : Fin n => s) = (if s then (1 : ℂ) else -1) • (1 : Matrix (Fin n) (Fin n) ℂ) := by
   ext i j
-  by_cases h : i = j <;> simp [Formalism.REAL.Jm, h, Matrix.one_apply]
+  by_cases h : i = j <;> simp [Formalism.REAL.Jm, h]
 
 theorem kset_const (n : ℕ) (s : Bool) : Formalism.REAL.Kset (fun _ : Fin n => s) = UJset (fun _ : Fin n => s) := by
   ext g
-  simp only [Formalism.REAL.Kset, UJset, Formalism.REAL.inUJ, jm_const, Set.mem_setOf_eq, Matrix.mem_unitaryGroup_iff',
+  simp only [Formalism.REAL.Kset, UJset, Formalism.REAL.inUJ, jm_const, Set.mem_ofPred_eq, Matrix.mem_unitaryGroup_iff',
     Matrix.star_eq_conjTranspose]
   cases s <;> simp
 

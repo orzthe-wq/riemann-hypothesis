@@ -100,7 +100,7 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_xiPot {E : Type} [No
   have h10 := hC 1 0
   have h11 := hC 1 1
   have hq : ContDiffAt ℝ 2 (fun w => herm2 (H w) ![1, b w] ![1, b w]) w₀ := by
-    simp only [herm2, dotProduct, mulVec, Fin.sum_univ_two, Pi.star_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, star_one, one_mul, mul_one]
+    simp only [herm2, dotProduct, mulVec, Fin.sum_univ_two, Pi.star_apply, Matrix.cons_val_zero, Matrix.cons_val_one, star_one, one_mul, mul_one]
     fun_prop
   have hd : ContDiffAt ℝ 2 (fun w => (H w).det) w₀ := by
     simp only [Matrix.det_fin_two]

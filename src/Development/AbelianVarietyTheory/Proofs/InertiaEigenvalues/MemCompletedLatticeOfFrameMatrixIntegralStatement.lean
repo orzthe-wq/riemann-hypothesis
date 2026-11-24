@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.mem_completedLattice_of_frameMatrix_integral : ∀ {D : D7} {S T : HSp D} {F : Frame S T}, F.Good → ∀ {R : Finset (Pl D.host.E)}, PlacesOK ∅ R → ∀ {x : WO S T}, IsHalf (idem R) x → IsIntM (frMapO S T F.βS F.βT x) → x ∈ F.lat := by
-  first | exact @GlobalTheory.IntHalfLat.mem_lat_of_frMapO_int | exact GlobalTheory.IntHalfLat.mem_lat_of_frMapO_int | (intros; apply GlobalTheory.IntHalfLat.mem_lat_of_frMapO_int <;> assumption)
+  first | exact @GlobalTheory.IntHalfLat.mem_lat_of_frMapO_int

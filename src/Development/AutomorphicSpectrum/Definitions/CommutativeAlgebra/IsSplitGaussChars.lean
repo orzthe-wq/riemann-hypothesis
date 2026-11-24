@@ -242,7 +242,7 @@ theorem v_det {i : C.I} {n : ℕ}
     rw [map_mul, map_prod]
     refine mul_le_one' ?_ (Finset.prod_le_one' fun q _ => (h _).1 ((h' _).2 fun r => ?_) _)
     · rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simp [e]
-    · by_cases e : q = r <;> simp [e, Finsupp.single_apply]
+    · by_cases e : q = r <;> simp [e]
   have h1 : C.v i (b.det b') * C.v i (b'.det b) = 1 := by
     rw [← map_mul, Module.Basis.det_mul_det, Module.Basis.det_self, map_one]
   exact le_antisymm (key h h') (h1 ▸ mul_le_of_le_one_right' (key h' h))

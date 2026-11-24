@@ -110,7 +110,6 @@ theorem rep_smul {d : ℕ} (c : ℂ) {a : AA k r E} (ha : Rep d a) : Rep d (c �
 theorem rep_sub {d : ℕ} {a b : AA k r E} (ha : Rep d a) (hb : Rep d b) : Rep d (a - b) := by
   have h1 := rep_add ha (rep_smul (-1) hb)
   first
-    | (simpa [neg_one_smul] using h1)
     | (simpa [sub_eq_add_neg, neg_one_smul] using h1)
 
 private theorem exists_word_expansion_length_le_add {d e : ℕ} {b : AA k r E} (Lb : List (ℂ × List (Ix k r)))
@@ -200,7 +199,7 @@ theorem ck_mono' {m m' : ℕ} (h : m ≤ m') {f : Mat k r → E} (hf : CkOn ((m'
   intro g₀ hg₀
   obtain ⟨U, f', hU, hg, hcd, hfe⟩ := hf g₀ hg₀
   refine ⟨U, f', hU, hg, hcd.of_le ?_, hfe⟩
-  first | exact_mod_cast h | exact WithTop.coe_le_coe.mpr (Nat.cast_le.mpr h) | (norm_cast)
+  first | exact_mod_cast h
 
 theorem Fw_add (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) : ∀ (w : List (Ix k r)) (f f₂ : Mat k r → E),
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f → CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂ →
@@ -327,15 +326,12 @@ theorem ev_fsum {ι : Type*} (s : Finset ι) (F : ι → AA k r E) (f : Mat k r 
     ev Eop (∑ i ∈ s, F i) f x = ∑ i ∈ s, ev Eop (F i) f x := by
   first
     | (simp [ev, LinearMap.sum_apply, Finset.sum_apply]; done)
-    | (simp only [ev, LinearMap.coeFn_sum, Finset.sum_apply])
 
 theorem ev_intCast_mul (z : ℤ) (a : AA k r E) (f : Mat k r → E) (x : Mat k r) :
     ev Eop ((z : AA k r E) * a) f x = (z : ℂ) • ev Eop a f x := by
   rw [← map_intCast (algebraMap ℂ (AA k r E)) z]
   first
     | (simp only [ev, Module.End.mul_apply, Module.algebraMap_end_apply, Pi.smul_apply]; done)
-    | (simp only [ev, LinearMap.mul_apply, Module.algebraMap_end_apply, Pi.smul_apply]; done)
-    | rfl
 
 theorem ev_mul (hC : HC Eop) (hL : HL Eop) (hA : HA Eop) (hS : HS Eop) {d e : ℕ} {a b : AA k r E}
     (ha : Rep d a) (hb : Rep e b) (f : Mat k r → E) (hf : CkOn ((d + e : ℕ) : ℕ∞) (GV k r) f) :

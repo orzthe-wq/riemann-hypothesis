@@ -77,7 +77,7 @@ private theorem cr_alg {K : Type} [CommRing K] {n : ℕ} (A B P Q y y' Ai Bi Pi 
   have lhs : Aᵀ * P * y' * B = e • Q - Aᵀ * (Q * B) - Aᵀ * (yᵀ * (P * B)) := by
     rw [Matrix.transpose_mul] at h2
     rw [← h2]
-    simp only [Matrix.mul_assoc, Matrix.add_mul, Matrix.mul_add]
+    simp only [Matrix.mul_assoc, Matrix.add_mul]
     abel
   have rhs : Aᵀ * P * (-(Pi * yᵀ * P) + (B * (Pi * Q) * Bi - Pi * Q)) * B
       = e • Q - Aᵀ * (Q * B) - Aᵀ * (yᵀ * (P * B)) := by

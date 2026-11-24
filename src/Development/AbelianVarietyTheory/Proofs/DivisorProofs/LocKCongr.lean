@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf
 
 @[expose] public section
 
@@ -54,15 +55,11 @@ namespace GlobalTheory.GaussModulus
 
 variable {E : Type} [Field E] [NumberField E]
 
-theorem valued_algebraMap (w : HeightOneSpectrum (𝓞 E)) (z : E) :
-    Valued.v (algebraMap E (w.adicCompletion E) z) = w.valuation E z :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w z
-
 theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion E} (hx : Valued.v x ≤ 1) (k : ℕ) :
     ∃ y : 𝓞 E, Valued.v (x - algebraMap E (w.adicCompletion E) (y : E)) ≤ WithZero.exp (-(k : ℤ)) := by
   set c : w.adicCompletion E := algebraMap E _ ((unif w ^ k : Eˣ) : E) with hcdef
   have hvc : Valued.v c = WithZero.exp (-(k : ℤ)) := by
-    rw [hcdef, valued_algebraMap, valuation_unif_pow]
+    rw [hcdef, _root_.Formalism.UG.P.levelaf_valued_algebraMap, valuation_unif_pow]
   have hc0 : c ≠ 0 := fun h => by
     rw [h, map_zero] at hvc
     exact WithZero.exp_ne_zero hvc.symm
@@ -82,7 +79,7 @@ theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion
     rw [← WithZero.exp_zero, WithZero.exp_le_exp]
     omega
   have hb1 : w.valuation E b ≤ 1 := by
-    rw [← valued_algebraMap]
+    rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap]
     have e : algebraMap E (w.adicCompletion E) b = (algebraMap E _ b - x) + x := by ring
     rw [e]
     exact Valuation.map_add_le _ (hb'.trans hk1) hx
@@ -94,7 +91,7 @@ theorem exists_int_approx (w : HeightOneSpectrum (𝓞 E)) {x : w.adicCompletion
     ring
   rw [Valuation.map_sub_swap, e2]
   refine Valuation.map_add_le _ ?_ hb'
-  rw [valued_algebraMap]
+  rw [_root_.Formalism.UG.P.levelaf_valued_algebraMap]
   exact hy.le
 
 end GlobalTheory.GaussModulus

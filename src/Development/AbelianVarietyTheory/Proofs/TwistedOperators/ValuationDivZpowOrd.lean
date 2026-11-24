@@ -125,7 +125,7 @@ theorem _root_.GlobalTheory.LocalCartan.exists_diagT (g : GL n k) :
   have hdiag : diagonal (fun i => ((Units.mk0 (f (a i) / c) (hne i) : kˣ) : k)) =
       c⁻¹ • diagonal (fun i => f (a i)) := by
     ext i j
-    by_cases h : i = j <;> simp [diagonal_apply, h, div_eq_inv_mul]
+    by_cases h : i = j <;> simp [h, div_eq_inv_mul]
   apply Units.ext
   rw [Units.val_mul, Units.val_mul, hmap, hmap, _root_.GlobalTheory.SmGL.val_diagT]
   change (g : Matrix n n k) = f.mapMatrix P * _ * f.mapMatrix C

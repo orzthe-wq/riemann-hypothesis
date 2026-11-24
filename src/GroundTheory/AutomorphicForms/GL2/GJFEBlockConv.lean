@@ -76,7 +76,8 @@ theorem hasSum_geom_poly {β : ℂ} (hβ : β ≠ 0) (e : ℕ) {P : ℤ → ℂ[
     have : (-j₀ : ℤ) ≤ ((-j₀).toNat : ℤ) := Int.self_le_toNat _
     have he : (0 : ℤ) ≤ e := Int.natCast_nonneg e
     push_cast [hN]
-    nlinarith
+    rw [← mul_add]
+    exact mul_nonneg he (by linarith)
   set S : Finset ℤ := Finset.Ico j₀ j₁
   set Pn : ℂ[X] := (1 - C β * X ^ e) * ∑ j ∈ S, C (β ^ j) * X ^ ((N : ℤ) + e * j).toNat * P j +
     C (β ^ j₁) * X ^ ((N : ℤ) + e * j₁).toNat * P j₁ with hPn
@@ -166,7 +167,6 @@ theorem tsum_int_lt_top_of_le_geom₂ {a : ℤ → ℝ≥0∞} {M r₁ r₂ : �
       _ < ∞ := ENNReal.mul_lt_top hM.lt_top (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hr₁))
   · calc ∑' k : ℕ, a (-(k + 1 : ℤ)) ≤ ∑' k : ℕ, M * r₂ ^ k := ENNReal.tsum_le_tsum fun k => by
           have := h₂ k
-          push_cast at this ⊢
           exact this
       _ = M * (1 - r₂)⁻¹ := by rw [ENNReal.tsum_mul_left, ENNReal.tsum_geometric]
       _ < ∞ := ENNReal.mul_lt_top hM.lt_top (ENNReal.inv_lt_top.2 (tsub_pos_of_lt hr₂))
@@ -240,13 +240,15 @@ theorem exists_compact_tile [NeZero m] (hc : IsCentralCoeff m α c) :
   · by_contra hlt
     push Not at hlt
     have hj1 : j + 1 < 0 := by linarith [abs_nonneg d₀]
-    have h2 : (j + 1) * (m : ℤ) ≤ j + 1 := by nlinarith
+    have h2 : (j + 1) * (m : ℤ) ≤ j + 1 := by
+      have hneg := le_mul_of_one_le_right (show (0 : ℤ) ≤ -(j + 1) by linarith) hm
+      linarith
     have h3 : (j + 1) * (m : ℤ) = j * m + m := by ring
     linarith [neg_abs_le d₀]
   · by_contra hlt
     push Not at hlt
-    have : j ≤ j * (m : ℤ) := by nlinarith [abs_nonneg d₁]
-    nlinarith [le_abs_self d₁]
+    have : j ≤ j * (m : ℤ) := le_mul_of_one_le_right (by linarith [abs_nonneg d₁]) hm
+    linarith [le_abs_self d₁]
 
 theorem exists_bound_tile [NeZero m] (hc : IsCentralCoeff m α c) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ g ∈ tile F m 0, ‖c g‖ ≤ B := by
@@ -295,7 +297,7 @@ theorem IsSchwartzBruhat.exists_ordDet_ge {Φ : Matrix (Fin m) (Fin m) F → ℂ
   simp only [Fintype.card_fin] at h
   unfold ordDet
   push_cast at h
-  nlinarith
+  linarith [mul_comm (A : ℤ) (m : ℤ)]
 
 theorem IsSchwartzBruhat.exists_bound {Φ : Matrix (Fin m) (Fin m) F → ℂ} (hΦ : IsSchwartzBruhat Φ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ X, ‖Φ X‖ ≤ B := by
@@ -375,8 +377,10 @@ theorem IsCentralCoeff.lintegral_zeta_lt_top (hc : IsCentralCoeff m α c)
     rw [ordDet_centralUnif_zpow_mul] at h1
     obtain ⟨-, hg1⟩ := hg
     simp only [zero_mul, zero_add] at hg1
-    have : (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m := by nlinarith
-    nlinarith
+    have : (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m := mul_le_mul_of_nonneg_right (by linarith) hm.le
+    have hexp : (j + 1) * (m : ℤ) = j * m + m := by ring
+    have hcomm : -((m : ℤ) * A) = -(A : ℤ) * m := by ring
+    linarith
   · calc ∫⁻ g in tile F m 0, ‖Φ ((centralUnif F m ^ (-(A : ℤ) + k) * g : GL (Fin m) F) :
             Matrix (Fin m) (Fin m) F) * detPow (centralUnif F m ^ (-(A : ℤ) + k) * g) s *
             c (centralUnif F m ^ (-(A : ℤ) + k) * g)‖ₑ ∂μ
@@ -392,7 +396,8 @@ theorem IsCentralCoeff.lintegral_zeta_lt_top (hc : IsCentralCoeff m α c)
           have h1 := hBΦ ((centralUnif F m ^ (-(A : ℤ) + k) * g : GL (Fin m) F) :
             Matrix (Fin m) (Fin m) F)
           have h2 : 0 ≤ ρ ^ (-(A : ℤ)) * ρ ^ k := mul_nonneg (zpow_nonneg hρ0.le _) (pow_nonneg hρ0.le _)
-          nlinarith
+          rw [mul_assoc BΦ]
+          exact mul_le_mul_of_nonneg_right h1 h2
       _ = _ := by rw [lintegral_const_mul' _ _ (by
             exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.pow_ne_top ENNReal.ofReal_ne_top))]
                   ring
@@ -452,8 +457,10 @@ theorem IsCentralCoeff.exists_eq_div_zeta (hc : IsCentralCoeff m α c)
     rw [ordDet_centralUnif_zpow_mul] at h1
     obtain ⟨-, hg1⟩ := hg
     simp only [zero_mul, zero_add] at hg1
-    have : (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m := by nlinarith
-    nlinarith
+    have : (j + 1) * (m : ℤ) ≤ -(A : ℤ) * m := mul_le_mul_of_nonneg_right (by linarith) hm.le
+    have hexp : (j + 1) * (m : ℤ) = j * m + m := by ring
+    have hcomm : -((m : ℤ) * A) = -(A : ℤ) * m := by ring
+    linarith
   have h0 : ∀ j < -(A : ℤ), P j = 0 := by
     intro j hj
     refine Finset.sum_eq_zero fun k _ => ?_
@@ -563,8 +570,8 @@ theorem IsCentralCoeff.lintegral_weight_lt_top (hc : IsCentralCoeff m α c)
     obtain ⟨-, hg1⟩ := hg
     simp only [zero_mul, zero_add] at hg1
     refine min_le_min le_rfl (zpow_le_zpow_right₀ hqm ?_)
-    rw [ordDet_centralUnif_zpow_mul]
-    nlinarith
+    rw [ordDet_centralUnif_zpow_mul, add_mul, one_mul]
+    linarith
   rw [lintegral_eq_tsum_tile μ]
   set M : ℝ≥0∞ := B * K₁ * ENNReal.ofReal (max 1 ρ⁻¹)
   refine tsum_int_lt_top_of_le_geom₂ (M := M) (r₁ := ENNReal.ofReal ρ)

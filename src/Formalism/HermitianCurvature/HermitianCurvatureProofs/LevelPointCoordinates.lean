@@ -178,6 +178,6 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.PBP
 
 theorem pb_radHead_of_headPic (hHP : HeadPic) : KB.RadHead :=
-  pb_radHead_of module_form_eq_radial_form_one exists_zeta_normalized_haar hHP
+  pb_radHead_of _root_.Formalism.FourierDecayAlt.P.PBF.formOne exists_zeta_normalized_haar hHP
 
 end Formalism.FourierDecayAlt.P

@@ -47,4 +47,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.heckeTransform_cuspForms_reads_cosetSum : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.HeckeSupSt.HeckeReadTie → ∀ (D : D7) (X : GlobalTheory.TwInputs.RealSide D) (i : Fin D.R.m) (hV : X.core.V ((i : ℕ) + 1) (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) = Wc D i), GlobalTheory.HeckeSup.ReadsCusp X.core X.R.toRealDat X.geo.κ i (Formalism.IndefR.FWT.res X.core (sg0 D X.A3.A)) hV := by
-  first | exact @GlobalTheory.HeckeSupReal.readsCusp_realSide | exact GlobalTheory.HeckeSupReal.readsCusp_realSide | (intros; apply GlobalTheory.HeckeSupReal.readsCusp_realSide <;> assumption)
+  first | exact @GlobalTheory.HeckeSupReal.readsCusp_realSide

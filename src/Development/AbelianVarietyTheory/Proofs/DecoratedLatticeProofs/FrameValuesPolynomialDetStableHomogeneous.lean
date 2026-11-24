@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStablStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStabl
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -140,7 +140,7 @@ theorem valC_eq_map (G : ι → Matrix (Fin a) (Fin a) ℂ) (lam : ι → DomWei
 
 theorem finiteDimensional_valC (G : ι → Matrix (Fin a) (Fin a) ℂ) (lam : ι → DomWeight a) :
     FiniteDimensional ℂ (ValC G lam) := by
-  haveI := (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable ι a lam (nOf lam)).1
+  haveI := (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem ι a lam (nOf lam)).1
   rw [valC_eq_map]
   infer_instance
 
@@ -150,7 +150,7 @@ theorem valC_stable (G : ι → Matrix (Fin a) (Fin a) ℂ) (lam : ι → DomWei
   obtain ⟨F, hF, hΦF⟩ := (mem_valC_iff G lam _ _ (nOf_eq lam) Φ).1 hΦ
   rw [mem_valC_iff G lam _ _ (nOf_eq lam)]
   refine ⟨(∏ τ, (g τ).det ^ (-sOf lam τ)) • lft g F,
-    Submodule.smul_mem _ _ ((GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable ι a lam (nOf lam)).2 g F hF), fun y => ?_⟩
+    Submodule.smul_mem _ _ ((_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem ι a lam (nOf lam)).2 g F hF), fun y => ?_⟩
   let y' : Frames G := ⟨fun τ => g τ * y.1 τ, fun τ => by rw [Matrix.det_mul]; exact (hg τ).mul (y.2 τ)⟩
   rw [hΦ' y y' (fun τ => rfl), hΦF y']
   have e : evalAt y.1 ((∏ τ, (g τ).det ^ (-sOf lam τ)) • lft g F) =
@@ -160,13 +160,10 @@ theorem valC_stable (G : ι → Matrix (Fin a) (Fin a) ℂ) (lam : ι → DomWei
   simp only [y', Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]
   ring
 
-theorem natW_anti' (l : DomWeight a) : Antitone l.natW := fun i j h =>
-  Int.toNat_le_toNat (by have := l.anti h; omega)
-
 theorem isHomogeneous_of_mem_delSq (l : DomWeight a) {f : MvPolynomial (Fin a × Fin a) ℂ} (hf : f ∈ delSq ℂ a l) :
     f.IsHomogeneous (∑ r, l.natW r) := by
   have h : MvPolynomial.IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW a a) f l.natW :=
-    (Formalism.GradedWeylDivisibility.weylLeDual ℂ a a le_rfl l.natW (natW_anti' l) hf).1
+    (Formalism.GradedWeylDivisibility.weylLeDual ℂ a a le_rfl l.natW (_root_.Formalism.L2.Col.natW_anti l) hf).1
   intro m hm
   rw [← h hm]
   simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Formalism.GradedWeylDivisibility.colW]

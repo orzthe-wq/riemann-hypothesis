@@ -11,7 +11,10 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNb
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMap
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorExtendsDvrStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorExtendsDvr
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +59,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 
 @[expose] public section
 
@@ -308,7 +310,7 @@ theorem hom_maps_lie : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field
         (N'.pt (D (j e))) (N'.tan _) ?_
       · rw [hMK, ← hjj, lifts_id _ _ _ _ (hjT e), ← Category.assoc, ← spMap_dualMap_comp, hcP]
       · rw [← hD, hMK']
-    obtain ⟨e', he'⟩ := GlobalTheory.T.tangent_vector_extends_dvr O K (Sp O) (𝟙 _) G' E' M' (N'.pt (D (j e))) (N'.tan _) hloc
+    obtain ⟨e', he'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_lifts_of_local O K (Sp O) (𝟙 _) G' E' M' (N'.pt (D (j e))) (N'.tan _) hloc
     have he'' := lifts_id _ _ _ _ he'
     rw [hj''] at he''
     exact ⟨e', N'.inj (Over.OverMorphism.ext he'').symm⟩

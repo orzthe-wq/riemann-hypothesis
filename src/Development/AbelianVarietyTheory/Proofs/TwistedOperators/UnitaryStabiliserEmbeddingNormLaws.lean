@@ -136,18 +136,14 @@ end Entries
 
 section Group
 
-theorem jm_mul_jm {m : ℕ} (ε : Fin m → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1; funext a; split_ifs <;> norm_num
-
 theorem inv_of_mem {m : ℕ} {ε : Fin m → Bool} {g : Mat m} (hg : g ∈ UJset ε) : g⁻¹ = Jm ε * gᴴ * Jm ε := by
   apply Matrix.inv_eq_left_inv
   have h : gᴴ * Jm ε * g = Jm ε := hg
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, jm_mul_jm]
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, _root_.Formalism.REAL.Jm_mul_self]
 
 theorem inv_mul_of_mem {m : ℕ} {ε : Fin m → Bool} {g : Mat m} (hg : g ∈ UJset ε) : g⁻¹ * g = 1 := by
   have h : gᴴ * Jm ε * g = Jm ε := hg
-  rw [inv_of_mem hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, jm_mul_jm]
+  rw [inv_of_mem hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, _root_.Formalism.REAL.Jm_mul_self]
 
 variable (e : Option (Fin n) ≃ Fin (n + 1)) {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool}
 
@@ -185,7 +181,7 @@ theorem stab (hs : Signs e ε ε') {g : Mat (n + 1)} (hg : g ∈ UJset ε) (hc :
     intro b
     have h1 := congrFun (congrFun hJ b) (e none)
     simp only [Matrix.mul_apply, hc, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1
-    simp only [Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply, mul_ite, mul_zero,
+    simp only [Jm, Matrix.conjTranspose_apply, Matrix.diagonal_apply, mul_ite, mul_zero,
       Finset.sum_ite_eq', Finset.mem_univ, if_true, hs.1, mul_one] at h1
     have h2 := congrArg star h1
     simp only [star_star] at h2

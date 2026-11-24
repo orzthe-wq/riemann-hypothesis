@@ -74,8 +74,7 @@ lemma not_dvd_mul' {l : ℕ} (hl : l.Prime) {u v : ℤ} (hu : ¬ (l : ℤ) ∣ u
 
 lemma H_nsmul_nsmul (L : PeriodPair) (s t : ℕ) (v w : m → ℂ) :
     stdH L m (s • v) (t • w) = (s : ℂ) * t * stdH L m v w := by
-  simp only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast,
-    Finset.mul_sum]
+  simp only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, nsmul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by
     simp only [Pi.mul_apply, Pi.natCast_apply, map_mul, map_natCast]
     ring

@@ -60,7 +60,7 @@ theorem exists_hasSatake_of_unr_alt (H : _root_.UpperTheory.Zero.LLC.IsRecT h rc
     (hu : (rc (cls σ)).unr) : ∃ α, HasSatake σ.ρ α := by
   obtain ⟨m, c, e⟩ := Unram.exists_diag hu
   have H' := H
-  first | (have hOpn := UpperTheory.One.M.opn _ (H'); obtain ⟨_, _, _, H'⟩ := hOpn) | obtain ⟨_, _, _, -, H'⟩ := H'
+  first | (have hOpn := UpperTheory.One.M.opn _ (H'); obtain ⟨_, _, _, H'⟩ := hOpn)
   obtain rfl : a = m := by simpa [e] using (H'.dim (cls σ)).symm
   obtain ⟨τ, hτ⟩ := exists_hasSatake (k := w.adicCompletion E) fun i => (c i)⁻¹
   have e2 := _root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake H hτ

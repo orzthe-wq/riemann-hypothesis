@@ -3,47 +3,8 @@ module
 public import Formalism.LocalToGlobal.IndefiniteReal.CxPassSk
 public import Formalism.LocalToGlobal.Divisibility.ProjLemmas
 public import Formalism.LocalToGlobal.IndefiniteReal.CxLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.GlobalTheory.DivPassage
+import Formalism.LocalToGlobal.Divisibility.RowLatLemmas
 
 @[expose] public section
 
@@ -73,15 +34,6 @@ theorem cv_injective (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) : Function.Inje
   intro x y h
   exact (subspace_image_spec K _ (B.Z0 ℓ Z)).1
     ((image_idempotent_spec K B.S.dim (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ))).1 h)
-
-theorem mem_coord (Z : Submodule K B.S.Forms) (w : Fin B.S.dim → K) :
-    w ∈ B.coord Z ↔ B.S.basis.equivFun.symm w ∈ Z := by
-  unfold BlockDat.coord
-  constructor
-  · rintro ⟨f, hf, rfl⟩
-    simpa using hf
-  · intro h
-    exact ⟨_, h, B.S.basis.equivFun.apply_symm_apply w⟩
 
 theorem range_cv (ℓ : Lvl K G) (Z : Submodule K B.S.Forms) (w : Fin B.S.dim → K) :
     (∃ y, cv B ℓ Z y = w) ↔ w ∈ B.coord Z ∧ w ∈ LinearMap.range (B.vE ℓ).mulVecLin := by
@@ -141,13 +93,9 @@ theorem actMat_coord (g : G) (w : Fin B.S.dim → K) :
 
 theorem coord_act (Z : Submodule K B.S.Forms) (g : G) (hZ : ∀ f ∈ Z, B.r g f ∈ Z) (w : Fin B.S.dim → K)
     (hw : w ∈ B.coord Z) : (B.S.actMat B.r g).mulVec w ∈ B.coord Z := by
-  rw [mem_coord] at hw ⊢
+  rw [_root_.Formalism.L2.DIV.BlockDat.mem_coord] at hw ⊢
   rw [actMat_coord, LinearEquiv.symm_apply_apply]
   exact hZ _ hw
-
-theorem gaMat_single (g : G) : B.S.gaMat B.r (MonoidAlgebra.single g 1) = B.S.actMat B.r g := by
-  rw [CSD.gaMat_eq_lift, MonoidAlgebra.lift_single, one_smul]
-  rfl
 
 theorem comm_idem (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (a : MonoidAlgebra K G) :
     B.S.gaMat B.r a * B.S.gaMat B.r (idemOf X) = B.S.gaMat B.r (idemOf X) * B.S.gaMat B.r a := by
@@ -164,7 +112,7 @@ theorem toF_act (X : Finset (G → K)) (hX : ∀ χ ∈ X, IsAbsIrrChar χ) (Z :
     rw [range_vE_bot]
     refine ⟨(B.S.actMat B.r g).mulVec w, ?_⟩
     simp only [Matrix.mulVecLin_apply] at hw ⊢
-    rw [← hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← gaMat_single, comm_idem B X hX]
+    rw [← hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← _root_.Formalism.L2.DIV.BlockDat.gaMat_single, comm_idem B X hX]
   obtain ⟨y, hy⟩ := (range_cv B ⟨X, ⊥, 1⟩ Z _).2 ⟨coord_act B Z g hZ _ hZx, h1⟩
   refine ⟨y, ?_⟩
   rw [toF_eq, toF_eq, hy, actMat_coord, LinearEquiv.symm_apply_apply]
@@ -364,11 +312,6 @@ end Lev
 end PassRep
 
 namespace In
-
-open Formalism.IndefR.CxPass.PassRep
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
-  (I : In K G Pl0 T m)
 
 end In
 

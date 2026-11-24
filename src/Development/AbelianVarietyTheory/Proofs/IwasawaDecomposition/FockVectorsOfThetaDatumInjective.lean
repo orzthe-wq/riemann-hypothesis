@@ -174,13 +174,6 @@ end Generic
 
 section Mat
 
-theorem Jm_mul_Jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext a
-  cases ε a <;> simp
-
 def sg {n : ℕ} (ε : Fin n → Bool) (a : Fin n) : ℂ := if ε a then 1 else -1
 
 theorem sum_eq_trace {m n : ℕ} (Pm : Matrix (Fin n) (Fin n) ℂ) (Q : Matrix (Fin m) (Fin m) ℂ)
@@ -201,7 +194,7 @@ theorem trace_frame {m n : ℕ} (F : Matrix (Fin n) (Fin n) ℂ) (F' : Matrix (F
   have hd' := (isUnit_iff_isUnit_det F').1 hF'
   have hH : IsUnit Fᴴ.det := by rw [det_conjTranspose]; exact hd.star
   have hH' : IsUnit F'ᴴ.det := by rw [det_conjTranspose]; exact hd'.star
-  rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.inv_eq_left_inv (Jm_mul_Jm ε), conjTranspose_mul, conjTranspose_mul,
+  rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.inv_eq_left_inv (_root_.Formalism.REAL.Jm_mul_self ε), conjTranspose_mul, conjTranspose_mul,
     conjTranspose_nonsing_inv]
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hH, Matrix.nonsing_inv_mul_cancel_left _ _ hH',
     Matrix.mul_nonsing_inv_cancel_left _ _ hd']
@@ -360,7 +353,7 @@ theorem gramInv_map (τ : D.what₂.Tau) : (S.gram⁻¹).map (tauE D τ) = (gram
   have hu : IsUnit (gramAt D S τ).det := by
     have hd := (isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
     rw [← M.fr_gram, det_mul, det_mul, det_conjTranspose]
-    exact (hd.star.mul (Matrix.isUnit_det_of_left_inverse (Jm_mul_Jm _))).mul hd
+    exact (hd.star.mul (Matrix.isUnit_det_of_left_inverse (_root_.Formalism.REAL.Jm_mul_self _))).mul hd
   have hg : IsUnit S.gram.det := by
     rw [isUnit_iff_ne_zero] at hu ⊢
     intro h

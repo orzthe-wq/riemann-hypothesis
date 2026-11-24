@@ -97,7 +97,7 @@ theorem tauE_injective (D : D7) : Function.Injective (tauE D) := fun _ _ h =>
 
 theorem tauE_cm (D : D7) (σ : D.host.E →+* ℂ) :
     (∃ τ, tauE D τ = σ) ↔ ¬ ∃ τ, tauE D τ = ComplexEmbedding.conjugate σ := by
-  apply GlobalTheory.SmoothForms.RealPts.tauE_cm <;> assumption
+  apply GlobalTheory.SmoothForms.RealPts.tauE_cm
 
 theorem sum_tauE_eq_trace (D : D7) (x : D.host.F) :
     ∑ t, tauE D t (algebraMap D.host.F D.host.E x) = ((Algebra.trace ℚ D.host.F x : ℚ) : ℂ) := by

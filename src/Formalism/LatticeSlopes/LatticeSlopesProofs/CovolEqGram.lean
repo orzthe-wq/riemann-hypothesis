@@ -55,7 +55,7 @@ theorem gram_sum_smul_eq_transpose_mul {E : Type*} [NormedAddCommGroup E] [Inner
     Matrix.gram ℝ (fun j => ∑ i, P i j • v i) = P.transpose * Matrix.gram ℝ v * P := by
   ext j k
   simp only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply, sum_inner, inner_sum,
-    real_inner_smul_left, real_inner_smul_right, Finset.mul_sum, Finset.sum_mul]
+    real_inner_smul_left, real_inner_smul_right, Finset.sum_mul]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun d _ => ?_
   ring
 

@@ -1,7 +1,11 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtOfContinuousRealToComplexExponential
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasDerivAtOfContinuousOfMapAdd
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
 public import GroundTheory.GlobalFields.TateThesis.NoSmallSubgroups
 import Mathlib.Algebra.Order.Floor.Extended
@@ -63,7 +67,7 @@ namespace GlobalTheory.HeisKeepF
 theorem contDiff_real_char (g : ℝ → ℂ) (hc : Continuous g) (hm : ∀ s t, g (s + t) = g s * g t) (h0 : g 0 = 1) :
     ContDiff ℝ ∞ g := by
   set c := deriv g 0
-  have hd : ∀ s, HasDerivAt g (c * g s) s := GlobalTheory.hasDerivAt_of_continuous_additive_to_mul g hc hm h0
+  have hd : ∀ s, HasDerivAt g (c * g s) s := _root_.GlobalTheory.DerivativeOfAdditiveContinuous.hasDerivAt_of_continuous_of_map_add g hc hm h0
   have he : ∀ s : ℝ, HasDerivAt (fun s : ℝ => Complex.exp (-(c * (s : ℂ)))) (Complex.exp (-(c * (s : ℂ))) * -c) s := by
     intro s
     have h1 : HasDerivAt (fun s : ℝ => -(c * (s : ℂ))) (-(c * ((1 : ℝ) : ℂ))) s :=
@@ -102,7 +106,7 @@ theorem contDiff_char {k : ℕ} (χ : (Fin k → ℝ) → ℂ) (hc : Continuous 
   rw [hsplit]
   refine contDiff_prod fun i _ => ?_
   have hsc : Continuous fun s : ℝ => (Pi.single i s : Fin k → ℝ) := by
-    first | fun_prop | exact continuous_single i | exact (LinearMap.single ℝ (fun _ : Fin k => ℝ) i).continuous_of_finiteDimensional
+    first | exact (LinearMap.single ℝ (fun _ : Fin k => ℝ) i).continuous_of_finiteDimensional
   have hi : ContDiff ℝ ∞ fun s : ℝ => χ (Pi.single i s) :=
     contDiff_real_char _ (hc.comp hsc) (fun s t => by rw [Pi.single_add, hm])
       (by rw [Pi.single_zero, h0])
@@ -116,8 +120,8 @@ theorem ker_fin_mem_nhds {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF 
     show ‖ψ (pairA F 0 0) - 1‖ < 1 / 2
     rw [show pairA F 0 (0 : Af F) = 0 from rfl, ψ.map_zero_eq_one]
     norm_num
-  obtain ⟨N, hN, hNV⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV
-  refine Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F N hN) ?_
+  obtain ⟨N, hN, hNV⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hV
+  refine Filter.mem_of_superset (_root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero F N hN) ?_
   rintro _ ⟨a, ha, rfl⟩
   refine GroundTheory.Global.eq_one_of_sq_mem
     (s := {z | ∃ b : Af F, (∀ v, b v ∈ v.adicCompletionIntegers F) ∧ z = ψ (pairA F 0 (N • b))}) ?_ ?_ ⟨a, ha, rfl⟩

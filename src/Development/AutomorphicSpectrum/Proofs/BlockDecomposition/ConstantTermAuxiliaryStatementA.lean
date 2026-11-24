@@ -120,7 +120,7 @@ theorem iwasawa_finite_cosets : ∀ (E : Type) [Field E] [NumberField E] [_root_
     rw [map_add (f := _), show pFin E (sInf E (xi p)) = 0 from rfl, show pFin E (sFin E (xf p)) = xf p from rfl, zero_add]
   refine ⟨fun p => sInf E (xi p) + sFin E (xf p),
     (infGL E r mi.1 * finGL E r mf.1, infGL E s mi.2 * finGL E s mf.2), t, k, l, ht, hl, ga_ext ?_ ?_⟩
-  · simp only [map_mul, map_unip, map_lev, e1, pInf_infGL, pInf_finGL, mul_one, one_mul]
+  · simp only [map_mul, map_unip, map_lev, e1, pInf_infGL, pInf_finGL, mul_one]
     rw [hy, hbi]
   · simp only [map_mul, map_unip, map_lev, e2, pFin_infGL, pFin_finGL, mul_one, one_mul]
     rw [hf, mul_assoc, mul_assoc, mul_assoc]

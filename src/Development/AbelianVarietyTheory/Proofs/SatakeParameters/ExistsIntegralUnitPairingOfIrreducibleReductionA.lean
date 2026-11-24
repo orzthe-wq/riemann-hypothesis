@@ -84,7 +84,7 @@ lemma mem_intLattice_of_smul {W : Submodule k (Fin a → k)} {r : R} (hr : r ≠
   have h' : algebraMap R k r • (fun i => algebraMap R k (x i)) ∈ W := by
     convert h using 1
     ext i
-    simp [Algebra.smul_def]
+    simp
   exact (W.smul_mem_iff ((map_ne_zero_iff _ (IsFractionRing.injective R k)).mpr hr)).mp h'
 
 omit [IsDiscreteValuationRing R] in
